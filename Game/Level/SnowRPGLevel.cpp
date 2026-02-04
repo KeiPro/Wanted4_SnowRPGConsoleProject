@@ -1,10 +1,8 @@
 #include "SnowRPGLevel.h"
 #include "Actor/Player.h"
 #include "Core/Input.h"
-#include "Actor/Wall.h"
-#include "Actor/Ground.h"
-#include "Actor/Box.h"
-#include "Actor/Target.h"
+#include "Actor/Envrionments/En_Wall.h"
+#include "Actor/Envrionments/En_Empty.h"
 #include "Util/Util.h"
 
 #include <iostream>
@@ -19,15 +17,6 @@ t : 타겟.
 
 SnowRPGLevel::SnowRPGLevel()
 {
-	/*if (Wanted::Input::Get().GetKeyDown('Q'))
-	{
-		
-	}*/
-
-	// new TestActor() : r-value reference.
-	// AddNewActor(new Player());
-
-	//LoadMap("Stage1.txt");
 	LoadMap("TestMap.txt");
 }
 
@@ -112,37 +101,16 @@ void SnowRPGLevel::LoadMap(const char* filename)
 		// 한 문자씩 처리.
 		switch (mapCharacter)
 		{
-		case ' ':
-			std::cout << ' ';
-			break;
-		
 		case '#':
-		case '1':
-			
-			AddNewActor(new Wall(position));
+			AddNewActor(new En_Wall(position));
 			break;
 
 		case '.':
-			//std::cout << " ";
-			AddNewActor(new Ground(position));
+			AddNewActor(new En_Empty(position));
 			break;
 
 		case 'p':
-			//std::cout << "P";
 			AddNewActor(new Player(position));
-			AddNewActor(new Ground(position));
-			break;
-
-		case 'b':
-			//std::cout << "B";
-			AddNewActor(new Box(position));
-			AddNewActor(new Ground(position));
-			break;
-
-		case 't':
-			AddNewActor(new Target(position));
-			++targetScore;
-			//std::cout << "T";
 			break;
 		}
 
@@ -158,41 +126,5 @@ void SnowRPGLevel::LoadMap(const char* filename)
 
 bool SnowRPGLevel::CheckGameClear()
 {
-	// 타겟 위에 있는 박스의 수 검증.
-	int currScore = 0;
-
-	// 배열에 박스 및 타겟 저장.
-	std::vector<Actor*> boxes;
-	std::vector<Actor*> targets;
-
-	// 레벨에 배치된 배열 순회하면서 두 액터 필터링.
-	for (Actor* const actor : actors)
-	{
-		if (actor->IsTypeOf<Box>())
-		{
-			boxes.emplace_back(actor);
-			continue;
-		}
-		
-		// 타겟의 경우 타겟 배열에 추가.
-		if (actor->IsTypeOf<Target>())
-		{
-			targets.emplace_back(actor);
-		}
-	}
-
-	// 점수 확인 (박스의 위치가 타겟의 위치와 같은지 비교)
-	for (Actor* const box : boxes)
-	{
-		for (Actor* const target : targets)
-		{
-			// 두 액터의 위치가 같으면 점수 +.
-			if (box->GetPosition() == target->GetPosition())
-			{
-				currScore += 1;
-			}
-		}
-	}
-
-	return currScore == targetScore;
+	return false;
 }

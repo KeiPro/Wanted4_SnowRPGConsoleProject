@@ -1,6 +1,6 @@
-#include "Wall.h"
+#include "En_Wall.h"
 
-Wall::Wall(const Vector2& position)
+En_Wall::En_Wall(const Vector2& position)
 	: super("#", position, Color::White)
 {
 	// 그리기 우선순위 설정.
