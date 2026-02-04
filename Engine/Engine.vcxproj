@@ -117,16 +117,6 @@ xcopy $(OutDir)\Engine.lib ..\Library\Engine\$(Platform)\$(Configuration)\ /e /y
     <ClInclude Include="Render\ScreenBuffer.h" />
     <ClInclude Include="Util\Util.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Memo\01-27.md">
-      <SubType>
-      </SubType>
-    </None>
-    <None Include="Memo\2026_01_26.md">
-      <SubType>
-      </SubType>
-    </None>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

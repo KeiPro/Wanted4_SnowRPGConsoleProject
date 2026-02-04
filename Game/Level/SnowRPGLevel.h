@@ -2,12 +2,12 @@
 #include "Level/Level.h"
 #include "Interface/ICanPlayerMove.h"
 
-class SokobanLevel : public Wanted::Level, public ICanPlayerMove
+class SnowRPGLevel : public Wanted::Level
 {
-	RTTI_DECLARATIONS(SokobanLevel, Level)
+	RTTI_DECLARATIONS(SnowRPGLevel, Level)
 
 public:
-	SokobanLevel();
+	SnowRPGLevel();
 
 	// 이벤트 함수 오버라이드.
 	virtual void Draw() override;
@@ -15,10 +15,6 @@ public:
 private:
 	// 게임에서 사용할 맵을 로드하는 함수.
 	void LoadMap(const char* filename);
-
-	// ICanPlayerMove을(를) 통해 상속됨
-	virtual bool CanMove(const Wanted::Vector2& playerPosition, 
-		const Wanted::Vector2& nextPosition) override;
 
 	// 게임 클리어 확인 함수.
 	bool CheckGameClear();

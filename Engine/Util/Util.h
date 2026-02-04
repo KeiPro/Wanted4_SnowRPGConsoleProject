@@ -2,6 +2,7 @@
 
 #include "Math/Vector2.h"
 #include "Math/Color.h"
+#include <time.h>
 
 using namespace Wanted;
 
@@ -42,6 +43,28 @@ namespace Util
 
 		info.bVisible = true;
 		SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
+	}
+
+	// 정수 난수 함수.
+	inline int Random(int min, int max)
+	{
+		int diff = (max - min) + 1;
+		return ((diff * rand()) / (RAND_MAX + 1)) + min;
+	}
+
+	inline void SetRandomSeed()
+	{
+		srand(static_cast<unsigned int>(time(nullptr)));
+	}
+
+	// 부동소수점 난수 함수.
+	inline float RandomRange(float min, float max)
+	{
+		// 0 ~ 1 사이의 float 기반 랜덤값.
+		float random = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+
+		float diff = (max - min);
+		return (random * diff) + min;
 	}
 };
 

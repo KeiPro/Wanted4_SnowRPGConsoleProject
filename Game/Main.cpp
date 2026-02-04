@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Engine/Engine.h"
-#include "Level/SokobanLevel.h"
+#include "Level/SnowRPGLevel.h"
 #include "Game/Game.h"
 
 using namespace Wanted;

@@ -72,8 +72,4 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Memo\2026_01_26.md" />
-    <None Include="Memo\01-27.md" />
-  </ItemGroup>
 </Project>

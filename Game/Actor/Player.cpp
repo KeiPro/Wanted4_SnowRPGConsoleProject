@@ -14,7 +14,7 @@
 using namespace Wanted;
 
 Player::Player(const Vector2 position)
-	: super("P", position, Color::Red)
+	: super("<=A=>", position, Color::Red)
 {
 	// 그리기 우선순위 높게 설정.
 	sortingOrder = 10;
@@ -39,12 +39,6 @@ void Player::Tick(float deltaTime)
 
 	if (Input::Get().GetKeyDown('Q'))
 	{
-		//if (input->GetKeyDown(VK_ESCAPE))
-		//{
-		//	QuitEngine();
-		//}
-
-
 		Engine::Get().QuitEngine();
 	}
 
@@ -52,17 +46,12 @@ void Player::Tick(float deltaTime)
 	if (Input::Get().GetKeyDown(VK_SPACE))
 	{
 		// 박스 생성.
-
 		if (owner)
 		{
 			owner->AddNewActor(new Box(GetPosition()));
 		}
 	}
-
-	// static을 붙이면 데이터 영역에 저장. 
-	// 맨 처음에 메모리에 잡혀있지 않을 때 한 번 호출되며 데이터 영역에 저장.
-	// 하지만 변수는 이 함수 안에서만 접근 가능.
-	// (멤버변수로 두고 BeginPlay에서 한 번 호출해서 사용하는 방법도 있음)
+	
 	static ICanPlayerMove* canPlayerMoveInterface = nullptr;
 
 	// 오너십 확인(null 확인).
@@ -71,7 +60,6 @@ void Player::Tick(float deltaTime)
 		canPlayerMoveInterface = dynamic_cast<ICanPlayerMove*>(GetOwner());
 	}
 
-	//std::cout << "TestActor::Tick(). deltaTime: " << deltaTime << ", FPS : " << (1.0f / deltaTime) << "\n";
 	// 이동
 	if (Input::Get().GetKeyDown('D') && GetPosition().x < 20)
 	{
@@ -81,10 +69,6 @@ void Player::Tick(float deltaTime)
 		{
 			SetPosition(newPosition);
 		}
-
-		//Vector2 newPosition = GetPosition();
-		//newPosition.x += 1;
-		//SetPosition(newPosition);
 	}
 
 	if (Input::Get().GetKeyDown('A') && GetPosition().x > 0)
@@ -94,10 +78,6 @@ void Player::Tick(float deltaTime)
 		{
 			SetPosition(newPosition);
 		}
-
-		//Vector2 newPosition = GetPosition();
-		//newPosition.x -= 1;
-		//SetPosition(newPosition);
 	}
 
 	if (Input::Get().GetKeyDown('S') && GetPosition().y < 15)
@@ -107,11 +87,6 @@ void Player::Tick(float deltaTime)
 		{
 			SetPosition(newPosition);
 		}
-
-
-		//Vector2 newPosition = GetPosition();
-		//newPosition.y += 1;
-		//SetPosition(newPosition);
 	}
 
 	if (Input::Get().GetKeyDown('W') && GetPosition().y > 0)
@@ -121,10 +96,6 @@ void Player::Tick(float deltaTime)
 		{
 			SetPosition(newPosition);
 		}
-
-		/*Vector2 newPosition = GetPosition();
-		newPosition.y -= 1;
-		SetPosition(newPosition);*/
 	}
 }
 

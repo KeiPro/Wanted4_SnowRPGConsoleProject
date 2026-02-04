@@ -1,4 +1,4 @@
-#include "SokobanLevel.h"
+#include "SnowRPGLevel.h"
 #include "Actor/Player.h"
 #include "Core/Input.h"
 #include "Actor/Wall.h"
@@ -17,7 +17,7 @@ b : 박스
 t : 타겟.
 */
 
-SokobanLevel::SokobanLevel()
+SnowRPGLevel::SnowRPGLevel()
 {
 	/*if (Wanted::Input::Get().GetKeyDown('Q'))
 	{
@@ -28,10 +28,10 @@ SokobanLevel::SokobanLevel()
 	// AddNewActor(new Player());
 
 	//LoadMap("Stage1.txt");
-	LoadMap("Map.txt");
+	LoadMap("TestMap.txt");
 }
 
-void SokobanLevel::Draw()
+void SnowRPGLevel::Draw()
 {
 	super::Draw();
 
@@ -47,7 +47,7 @@ void SokobanLevel::Draw()
 	}
 }
 
-void SokobanLevel::LoadMap(const char* filename)
+void SnowRPGLevel::LoadMap(const char* filename)
 {
 	// 파일 로드.
 	// 최종 파일 경로 만들기. ("../Assets/filename")
@@ -90,7 +90,7 @@ void SokobanLevel::LoadMap(const char* filename)
 	
 	// 객체를 생성할 위치 값.
 	Wanted::Vector2 position;
-
+	//12 22 
 	while (true)
 	{
 		if (index >= fileSize)
@@ -112,9 +112,13 @@ void SokobanLevel::LoadMap(const char* filename)
 		// 한 문자씩 처리.
 		switch (mapCharacter)
 		{
+		case ' ':
+			std::cout << ' ';
+			break;
+		
 		case '#':
 		case '1':
-			//std::cout << "#";
+			
 			AddNewActor(new Wall(position));
 			break;
 
@@ -152,103 +156,7 @@ void SokobanLevel::LoadMap(const char* filename)
 	fclose(file);
 }
 
-bool SokobanLevel::CanMove(const Wanted::Vector2& playerPosition, const Wanted::Vector2& nextPosition)
-{
-	// 레벨에 있는 박스 액터 모으기.
-	// 박스는 플레이어가 밀기 등 추가적으로 처리해야 하기 때문에.
-	std::vector<Actor*> boxes;
-	
-	// 레벨에 배치된 전체 액터를 순회하면서 박스 찾기.
-	for (Actor* const actor : actors)
-	{
-		// 액터가 박스 타입인지 확인.
-		if (actor->IsTypeOf<Box>())
-		{
-			boxes.emplace_back(actor);
-			continue;
-		}
-	}
-
-	// 이동하려는 위치에 박스가 있는지 확인.
-	Actor* boxActor = nullptr;
-	for (Actor* const box : boxes)
-	{
-		// 위치 비교.
-		if (box->GetPosition() == nextPosition)
-		{
-			boxActor = box;
-			break;
-		}
-	}
-
-	if (boxActor)
-	{
-		// #1 : 박스를 이동 시키려는 위치에 다른 박스가 또 있는지 확인.
-		// 두 위치 사이에서 이동 방향 구하기.
-		Vector2 direction = nextPosition - playerPosition;
-		Vector2 newPosition = boxActor->GetPosition() + direction;
-
-		// 검색
-		for (Actor* const otherBox : boxes)
-		{
-			if (otherBox == boxActor)
-				continue;
-
-			if (otherBox->GetPosition() == newPosition)
-			{
-				return false;
-			}
-		}
-
-		for (Actor* const actor : actors)
-		{
-			if (actor->GetPosition() == newPosition)
-			{
-				if (actor->IsTypeOf<Wall>())
-					return false;
-
-
-				// 그라운드 또는 타겟이면 이동 가능.
-				if (actor->IsTypeOf<Ground>() || actor->IsTypeOf<Target>())
-				{
-					boxActor->SetPosition(newPosition);
-
-					// 게임 점수 확인.
-					isGameClear = CheckGameClear();
-
-					return true;
-				}
-			}
-		}
-
-	}
-
-	// 경우의 수 처리.
-	// 이동하려는 곳에 박스가 있는 경우.
-
-	// 이동하려는 곳에 박스가 없는 경우.
-	// 이동하려는 곳에 있는 액터가 벽이 아니면 이동 가능.
-	for (Actor* const actor : actors)
-	{
-		// 먼저, 이동하려는 위치에 있는 액터 검색.
-		if (actor->GetPosition() == nextPosition)
-		{
-			// 이 액터가 벽인지 확인.
-			if (actor->IsTypeOf<Wall>())
-			{
-				return false;
-			}
-
-			// 그라운드 또는 타겟.
-			return true;
-		}
-	}
-	
-	// Error.
-	return false;
-}
-
-bool SokobanLevel::CheckGameClear()
+bool SnowRPGLevel::CheckGameClear()
 {
 	// 타겟 위에 있는 박스의 수 검증.
 	int currScore = 0;
