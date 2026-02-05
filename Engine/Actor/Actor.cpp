@@ -2,6 +2,8 @@
 #include "Render/Renderer.h"
 #include "Util/Util.h"
 #include "Engine/Engine.h"
+#include "Component/Component.h"
+#include "Math/Vector2.h"
 
 #include <iostream>
 #include <Windows.h>
@@ -26,11 +28,22 @@ namespace Wanted
 	{
 		// 이벤트를 받은 후에는 플래그 설정.
 		hasBeganPlay = true;
+
+		for (Component* component : components)
+		{
+			if (component->HasBeganPlay())
+				continue;
+
+			component->BeginPlay();
+		}
 	}
 
 	void Actor::Tick(float deltaTime)
 	{
-
+		for (Component* component : components)
+		{
+			component->Tick(deltaTime);
+		}
 	}
 
 	void Actor::Draw()

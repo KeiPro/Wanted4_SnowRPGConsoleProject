@@ -4,8 +4,11 @@
 #include "Math/Vector2.h"
 #include "Math/Color.h"
 
+#include <vector>
+
 namespace Wanted
 {
+	class Component;
 	class Level;
 	class WANTED_API Actor : public RTTI
 	{
@@ -44,6 +47,10 @@ namespace Wanted
 		void SetOwner(Level* newOwner) { owner = newOwner; }
 		inline Level* GetOwner() const { return owner; }
 
+		void AddNewComponent(Component* newComponent);
+
+		void ProcessAddAndDestroyComponent();
+
 		// Getter
 		inline bool HasBeganPlay() const { return hasBeganPlay; }
 		inline bool IsActive() const { return isActive && !destroyRequested; }
@@ -78,6 +85,9 @@ namespace Wanted
 
 		// À§Ä¡.
 		Vector2 position;
+
+		std::vector<Component*> components;
+		std::vector<Component*> addRequestedComponents;
 	};
 }
 

@@ -48,45 +48,6 @@ void Player::Tick(float deltaTime)
 
 	if (moveDirX != 0.0f)
 		SetPosition(Vector2(position.x + moveDirX, position.y));
-
-
-	// 이동
-	//if (Input::Get().GetKeyDown('D') && GetPosition().x < 20)
-	//{
-	//	// 이동 가능 여부 판단.
-	//	Vector2 newPosition(GetPosition().x + 1, GetPosition().y);
-	//	if (canPlayerMoveInterface->CanMove(GetPosition(), newPosition))
-	//	{
-	//		SetPosition(newPosition);
-	//	}
-	//}
-
-	//if (Input::Get().GetKeyDown('A') && GetPosition().x > 0)
-	//{
-	//	Vector2 newPosition(GetPosition().x - 1, GetPosition().y);
-	//	if (canPlayerMoveInterface->CanMove(GetPosition(), newPosition))
-	//	{
-	//		SetPosition(newPosition);
-	//	}
-	//}
-
-	//if (Input::Get().GetKeyDown('S') && GetPosition().y < 15)
-	//{
-	//	Vector2 newPosition(GetPosition().x, GetPosition().y + 1);
-	//	if (canPlayerMoveInterface->CanMove(GetPosition(), newPosition))
-	//	{
-	//		SetPosition(newPosition);
-	//	}
-	//}
-
-	//if (Input::Get().GetKeyDown('W') && GetPosition().y > 0)
-	//{
-	//	Vector2 newPosition(GetPosition().x, GetPosition().y - 1);
-	//	if (canPlayerMoveInterface->CanMove(GetPosition(), newPosition))
-	//	{
-	//		SetPosition(newPosition);
-	//	}
-	//}
 }
 
 void Player::Draw()
