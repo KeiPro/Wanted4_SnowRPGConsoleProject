@@ -1,11 +1,12 @@
 #include "Level.h"
 #include "Actor/Actor.h"
+#include "Physics/CollisionSystem.h"
 
 namespace Wanted
 {
 	Level::Level()
 	{
-
+		collisionSystem = new CollisionSystem();
 	}
 
 	Level::~Level()
@@ -22,6 +23,9 @@ namespace Wanted
 
 		// 배열 초기화.
 		actors.clear();
+
+		delete collisionSystem;
+		collisionSystem = nullptr;
 	}
 
 	void Level::BeginPlay()
@@ -34,6 +38,8 @@ namespace Wanted
 
 			actor->BeginPlay();
 		}
+
+		collisionSystem->BeginPlay();
 	}
 
 	void Level::Tick(float deltaTime)
@@ -43,6 +49,8 @@ namespace Wanted
 		{
 			actor->Tick(deltaTime);
 		}
+
+		collisionSystem->Tick(deltaTime);
 	}
 
 	void Level::Draw()

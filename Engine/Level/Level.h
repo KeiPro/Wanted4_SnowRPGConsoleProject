@@ -10,6 +10,7 @@ namespace Wanted
 {
 	// 전방 선언
 	class Actor;
+	class CollisionSystem;
 	// 담당 임무 : 레벨에 있는 모든 액터(물체) 관리.
 	class WANTED_API Level : public RTTI
 	{
@@ -36,5 +37,8 @@ namespace Wanted
 
 		// 실행 중에 추가 요청된 액터의 배열.
 		std::vector<Actor*> addRequestedActors;
+
+	private:
+		CollisionSystem* collisionSystem = nullptr;
 	};
 }
