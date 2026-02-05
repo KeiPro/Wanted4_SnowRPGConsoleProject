@@ -21,9 +21,13 @@ namespace Wanted
 
 		bool AABBCollision(const BoxCollider* const other);
 		void SetPosition(int left, int top);
+		void NotifyCollision(const BoxCollider* const other);
+		
+		inline bool GetIsActive() const { return isActive; }
 
 	private:
 
+		bool isActive = true;
 		int left, top, right, bottom;
 		Vector2 size = {};
 	};

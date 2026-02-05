@@ -32,6 +32,11 @@ void BoxCollider::SetPosition(int left, int top)
 	this->bottom = this->bottom + size.y;
 }
 
+void BoxCollider::NotifyCollision(const BoxCollider* const other)
+{
+
+}
+
 bool BoxCollider::AABBCollision(const BoxCollider* const other)
 {
 	// AABB (Axis Aligned Bounding Box).

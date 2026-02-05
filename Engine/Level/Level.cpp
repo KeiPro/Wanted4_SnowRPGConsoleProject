@@ -76,8 +76,6 @@ namespace Wanted
 
 	void Level::ProcessAddAndDestroyActors()
 	{
-		collisionSystem->ProcessAddAndDestroyColliders();
-
 		// ���� �迭���� ��Ÿ���߿� �ε����� ��ȭ�� �Ͼ ���ɼ��� �ִٸ�, �Ű����� ��.
 		// ���� ó��
 		for (int ix = 0; ix < static_cast<int>(actors.size()); )

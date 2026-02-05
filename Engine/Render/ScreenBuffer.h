@@ -5,27 +5,27 @@
 
 namespace Wanted
 {
-	// ´õºí ¹öÆÛ¸µ¿¡ »ç¿ëÇÒ Console output ÇÚµéÀ» °ü¸®ÇÏ´Â Å¬·¡½º.
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Û¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Console output ï¿½Úµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½.
 	class ScreenBuffer
 	{
 	public:
 		ScreenBuffer(const Vector2& screenSize);
 		~ScreenBuffer();
 
-		// ÄÜ¼Ö ¹öÆÛ¸¦ Áö¿ì´Â ÇÔ¼ö.
+		// ï¿½Ü¼ï¿½ ï¿½ï¿½ï¿½Û¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
 		void Clear();
 
-		// ÄÜ¼Ö¿¡ 2Â÷¿ø ±ÛÀÚ ¹è¿­À» ±×¸± ¶§ »ç¿ëÇÏ´Â ÇÔ¼ö.
+		// ï¿½Ü¼Ö¿ï¿½ 2ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½.
 		void Draw(CHAR_INFO* charInfo);
 
-		// ¹öÆÛ ¹ÝÈ¯ Getter.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ Getter.
 		inline HANDLE GetBuffer() const { return buffer; }
 
 	private:
-		// ÄÜ¼Ö Ãâ·Â ÇÚµé.
+		// ï¿½Ü¼ï¿½ ï¿½ï¿½ï¿½ ï¿½Úµï¿½.
 		HANDLE buffer = nullptr;
 
-		// È­¸é Å©±â.
+		// È­ï¿½ï¿½ Å©ï¿½ï¿½.
 		Vector2 screenSize;
 
 

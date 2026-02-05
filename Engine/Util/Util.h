@@ -6,10 +6,10 @@
 
 using namespace Wanted;
 
-// ÇïÆÛ(Helper) ±â´É Á¦°ø.
+// ï¿½ï¿½ï¿½ï¿½(Helper) ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 namespace Util
 {
-	// ÄÜ¼Ö Ä¿¼­ À§Ä¡ ÀÌµ¿(¼³Á¤)ÇÏ´Â ÇÔ¼ö.
+	// ï¿½Ü¼ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½Ìµï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½.
 	inline void SetConsolePosition(const Vector2& position)
 	{
 		SetConsoleCursorPosition(
@@ -23,29 +23,29 @@ namespace Util
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<unsigned short>(color));
 	}
 
-	// Ä¿¼­ ²ô±â.
+	// Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½.
 	inline void TurnOffCursor()
 	{
 		CONSOLE_CURSOR_INFO info = {};
 
-		GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info); // Ä¿¼­ Á¤º¸ °¡Á®¿Í¼­ ¼³Á¤ÇÏ±â.
+		GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info); // Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½.
 
 		info.bVisible = false;
 		SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
 	}
 
-	// Ä¿¼­ ÄÑ±â.
+	// Ä¿ï¿½ï¿½ ï¿½Ñ±ï¿½.
 	inline void TurnOnCursor()
 	{
 		CONSOLE_CURSOR_INFO info = {};
 
-		GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info); // Ä¿¼­ Á¤º¸ °¡Á®¿Í¼­ ¼³Á¤ÇÏ±â.
+		GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info); // Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½.
 
 		info.bVisible = true;
 		SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
 	}
 
-	// Á¤¼ö ³­¼ö ÇÔ¼ö.
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
 	inline int Random(int min, int max)
 	{
 		int diff = (max - min) + 1;
@@ -57,10 +57,10 @@ namespace Util
 		srand(static_cast<unsigned int>(time(nullptr)));
 	}
 
-	// ºÎµ¿¼Ò¼öÁ¡ ³­¼ö ÇÔ¼ö.
+	// ï¿½Îµï¿½ï¿½Ò¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
 	inline float RandomRange(float min, float max)
 	{
-		// 0 ~ 1 »çÀÌÀÇ float ±â¹Ý ·£´ý°ª.
+		// 0 ~ 1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ float ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 		float random = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 
 		float diff = (max - min);
@@ -68,7 +68,7 @@ namespace Util
 	}
 };
 
-// ¸Þ¸ð¸® Á¤¸® ÇÔ¼ö.
+// ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
 template<typename T>
 void SafeDelete(T*& t)
 {

@@ -3,6 +3,6 @@
 En_Wall::En_Wall(const Vector2& position)
 	: super("#", position, Color::White)
 {
-	// ±×¸®±â ¿ì¼±¼øÀ§ ¼³Á¤.
+	// ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ì¼±ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	sortingOrder = 0;
 }

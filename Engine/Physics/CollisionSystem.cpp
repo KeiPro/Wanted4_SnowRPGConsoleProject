@@ -10,14 +10,7 @@ CollisionSystem::CollisionSystem()
 
 CollisionSystem::~CollisionSystem()
 {
-	for (BoxCollider* collider : colliders)
-	{
-		if (collider)
-		{
-			delete collider;
-			collider = nullptr;
-		}
-	}
+
 }
 
 void CollisionSystem::BeginPlay()
@@ -27,39 +20,56 @@ void CollisionSystem::BeginPlay()
 
 void CollisionSystem::Tick(float deltaTime)
 {
-	for (BoxCollider* const boxCollider : colliders)
+	// collision
+	int totalSize = colliders.size();
+	for (int i = 0; i < totalSize - 1; i++)
 	{
-		boxCollider->Tick(deltaTime);
-	}
-}
-
-void CollisionSystem::ProcessAddAndDestroyColliders()
-{
-	for (int ix = 0; ix < static_cast<int>(colliders.size()); )
-	{
-		if (colliders[ix]->DestroyRequested())
-		{
-			delete colliders[ix];
-			colliders.erase(colliders.begin() + ix);
+		if (colliders[i]->GetIsActive() == false)
 			continue;
+
+		for (int j = i + 1; j < totalSize; j++)
+		{
+			if (colliders[j]->GetIsActive() == false)
+				continue;
+
+			if (colliders[i]->AABBCollision(colliders[j]))
+			{
+				colliders[i]->NotifyCollision(colliders[j]);
+				colliders[j]->NotifyCollision(colliders[i]);
+			}
+		}
+	}
+
+	if (removeRequested.size() != 0)
+	{
+		for (BoxCollider* const boxCollider : removeRequested)
+		{
+			auto it = std::find(colliders.begin(), colliders.end(), boxCollider);
+			if (it != colliders.end())
+			{
+				*it = colliders.back();
+				colliders.pop_back();
+			}
+		}
+	}
+
+	if (addRequested.size() != 0)
+	{
+		for (BoxCollider* const boxCollider : addRequested)
+		{
+			colliders.emplace_back(boxCollider);
 		}
 
-		++ix;
+		addRequested.clear();
 	}
-
-	if (addRequestedColliders.size() == 0)
-		return;
-
-	for (BoxCollider* const boxCollider : addRequestedColliders)
-	{
-		colliders.emplace_back(boxCollider);
-	}
-
-	addRequestedColliders.clear();
 }
-
 
 void CollisionSystem::Register(BoxCollider* newCollider)
 {
-	addRequestedColliders.emplace_back(newCollider);
+	addRequested.emplace_back(newCollider);
+}
+
+void CollisionSystem::UnRegister(BoxCollider* collider)
+{
+	removeRequested.emplace_back(collider);
 }

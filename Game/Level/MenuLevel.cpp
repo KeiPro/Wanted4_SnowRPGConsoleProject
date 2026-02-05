@@ -7,7 +7,7 @@
 
 MenuLevel::MenuLevel()
 {
-	// ¸Þ´º ¾ÆÀÌÅÛ »ý¼º
+	// ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	items.emplace_back(
 		new MenuItem(
 			"Resume Game", []() {
@@ -27,7 +27,7 @@ MenuLevel::MenuLevel()
 
 MenuLevel::~MenuLevel()
 {
-	// ¸Þ´º ¾ÆÀÌÅÛ Á¦°Å.
+	// ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	for (MenuItem*& item : items)
 	{
 		delete item;
@@ -41,8 +41,8 @@ void MenuLevel::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
 
-	// ÀÔ·Â Ã³¸® (¹æÇâÅ° À§/¾Æ·¡Å°, ¿£ÅÍÅ°, ESC)
-	// ¹è¿­ ±æÀÌ.
+	// ï¿½Ô·ï¿½ Ã³ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½Å° ï¿½ï¿½/ï¿½Æ·ï¿½Å°, ï¿½ï¿½ï¿½ï¿½Å°, ESC)
+	// ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½.
 	static int length = items.size();
 	if (Input::Get().GetKeyDown('W'))
 	{
@@ -51,49 +51,49 @@ void MenuLevel::Tick(float deltaTime)
 
 	if (Input::Get().GetKeyDown('S'))
 	{
-		// ÀÎµ¦½º µ¹¸®±â
+		// ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		currentIndex = (currentIndex + 1) % length;
 	}
 	
 	if (Input::Get().GetKeyDown(VK_RETURN))
 	{
-		// ¸Þ´º ¾ÆÀÌÅÛÀÌ ÀúÀåÇÑ ÇÔ¼ö Æ÷ÀÎÅÍ È£Ãâ.
+		// ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½.
 		items[currentIndex]->onSelected();
 	}
 
 	if (Input::Get().GetKeyDown(VK_ESCAPE))
 	{
-		// ¸Þ´º Åä±Û
+		// ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½
 		Game::Get().ToggleMenu();
 
-		// ÀÎµ¦½º ÃÊ±âÈ­
+		// ï¿½Îµï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
 		currentIndex = 0;
 	}
 }
 
 void MenuLevel::Draw()
 {
-	// ¸Þ´º Á¦¸ñ Ãâ·Â.
+	// ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½.
 	//Util::SetConsolePosition(Vector2::Zero);
 	//Util::SetConsoleTextColor(Color::White);
 
-	//// ÅØ½ºÆ® Ãâ·Â.
+	//// ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½.
 	//std::cout << "Sokoban Game\n\n";
 
 	Renderer::Get().Submit("Sokoban Game", Vector2::Zero);
 
-	// ¸Þ´º ¾ÆÀÌÅÛ Ãâ·Â.
+	// ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½.
 	for (int i = 0; i < static_cast<int>(items.size()); i++)
 	{
-		// ¾ÆÀÌÅÛ »ö»ó È®ÀÎ(¼±ÅÃµÆ´ÂÁö ¿©ºÎ).
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½(ï¿½ï¿½ï¿½ÃµÆ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½).
 		Color textColor = (i == currentIndex) ? selectedColor : unselectedColor;
 
 		Renderer::Get().Submit(items[i]->text, Vector2(0, 2 + i), textColor);
 
-		// »ö»ó ¼³Á¤.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		// Util::SetConsoleTextColor(textColor);
 
-		// ÅØ½ºÆ® Ãâ·Â.
+		// ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½.
 		// std::cout << items[i]->text << "\n";
 	}
 }

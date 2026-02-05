@@ -18,12 +18,12 @@ namespace Wanted
 
 		void Register(BoxCollider* newCollider);
 		void UnRegister(BoxCollider* colliderToRemove);
-		void ProcessAddAndDestroyColliders();
 
 	private:
 
 		std::vector<BoxCollider*> colliders;
 
-		std::vector<BoxCollider*> addRequestedColliders;
+		std::vector<BoxCollider*> addRequested;
+		std::vector<BoxCollider*> removeRequested;
 	};
 }
