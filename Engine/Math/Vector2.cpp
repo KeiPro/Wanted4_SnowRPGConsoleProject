@@ -17,6 +17,12 @@ namespace Wanted
 	{
 	}
 
+	Vector2::Vector2(float x, float y)
+		: x(x), y(y)
+	{
+
+	}
+
 	Vector2::~Vector2()
 	{
 		if (string != nullptr)
@@ -37,7 +43,7 @@ namespace Wanted
 
 		string = new char[128];
 		memset(string, 0, sizeof(char) * 128);
-		sprintf_s(string, 128, "(%d, %d)", x, y);
+		sprintf_s(string, 128, "(%f, %f)", x, y);
 
 		return string;
 	}

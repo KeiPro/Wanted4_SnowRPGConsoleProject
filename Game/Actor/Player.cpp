@@ -37,6 +37,18 @@ void Player::Tick(float deltaTime)
 	}
 
 
+	float moveDirX = 0.0f;
+
+	// 이동
+	if (Input::Get().GetKey(VK_RIGHT))
+		moveDirX += moveSpeed * deltaTime;
+
+	if (Input::Get().GetKey(VK_LEFT))
+		moveDirX -= moveSpeed * deltaTime;
+
+	if (moveDirX != 0.0f)
+		SetPosition(Vector2(position.x + moveDirX, position.y));
+
 
 	// 이동
 	//if (Input::Get().GetKeyDown('D') && GetPosition().x < 20)
