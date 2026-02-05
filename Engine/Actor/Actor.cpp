@@ -22,6 +22,12 @@ namespace Wanted
 	Actor::~Actor()
 	{
 		SafeDeleteArray(this->image);
+
+		for (Component* component : components)
+		{
+			delete component;
+			component = nullptr;
+		}
 	}
 
 	void Actor::BeginPlay()
@@ -106,5 +112,37 @@ namespace Wanted
 
 		// 새로운 위치 설정.
 		position = newPosition;
+	}
+
+	void Actor::AddNewComponent(Component* newComponent)
+	{
+		components.emplace_back(newComponent);
+
+		newComponent->SetOwner(this);
+	}
+
+	void Actor::ProcessAddAndDestroyComponent()
+	{
+		for (int i = 0; i < static_cast<int>(components.size()); )
+		{
+			if (components[i]->DestroyRequested())
+			{
+				delete components[i];
+				components.erase(components.begin() + i);
+				continue;
+			}
+
+			++i;
+		}
+
+		if (addRequestedComponents.size() == 0)
+			return;
+
+		for (Component* const component : addRequestedComponents)
+		{
+			components.emplace_back(component);
+		}
+
+		addRequestedComponents.clear();
 	}
 }
