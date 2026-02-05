@@ -1,15 +1,14 @@
 #include "Component.h"
+#include <iostream>
 
 namespace Wanted
 {
 	Component::Component()
 	{
-
 	}
 
 	Component::~Component()
 	{
-
 	}
 
 	void Component::BeginPlay()

@@ -2,9 +2,9 @@
 
 #include "Common/RTTI.h"
 
-class Actor;
 namespace Wanted
 {
+	class Actor;
 	class WANTED_API Component : public RTTI
 	{
 		RTTI_DECLARATIONS(Component, RTTI)
@@ -33,7 +33,6 @@ namespace Wanted
 		bool destroyRequested = false;
 
 		Actor* owner = nullptr;
-
 	};
 }
 

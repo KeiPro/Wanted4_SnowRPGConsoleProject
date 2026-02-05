@@ -2,12 +2,10 @@
 #include "Core/Input.h"
 #include "Engine/Engine.h"
 #include "Level/Level.h"
-
 #include "Game/Game.h"
+#include "Component/MoveComponent.h"
+#include "Component/BoxCollider.h"
 
-#include "Interface/ICanPlayerMove.h"
-
-#include <iostream>
 #include <Windows.h>
 
 using namespace Wanted;
@@ -17,6 +15,10 @@ Player::Player(const Vector2 position)
 {
 	// 그리기 우선순위 높게 설정.
 	sortingOrder = 10;
+
+	AddNewComponent(new MoveComponent());
+	/*AddNewComponent(new BoxCollider("FloorBoxCollider"));
+	AddNewComponent(new BoxCollider("CollisionCollider"));*/
 }
 
 void Player::BeginPlay()
@@ -28,6 +30,8 @@ void Player::BeginPlay()
 
 void Player::Tick(float deltaTime)
 {
+	Actor::Tick(deltaTime);
+
 	// ESC키 처리.
 	if (Wanted::Input::Get().GetKeyDown(VK_ESCAPE))
 	{
@@ -35,19 +39,6 @@ void Player::Tick(float deltaTime)
 		Game::Get().ToggleMenu();
 		return;
 	}
-
-
-	float moveDirX = 0.0f;
-
-	// 이동
-	if (Input::Get().GetKey(VK_RIGHT))
-		moveDirX += moveSpeed * deltaTime;
-
-	if (Input::Get().GetKey(VK_LEFT))
-		moveDirX -= moveSpeed * deltaTime;
-
-	if (moveDirX != 0.0f)
-		SetPosition(Vector2(position.x + moveDirX, position.y));
 }
 
 void Player::Draw()
