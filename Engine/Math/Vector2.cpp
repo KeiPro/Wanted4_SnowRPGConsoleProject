@@ -34,7 +34,7 @@ namespace Wanted
 
 	const char* Vector2::ToString()
 	{
-		// ±âÁ¸ ¹®ÀÚ¿­ÀÌ ÀÖ´Ù¸é
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½
 		if (string != nullptr)
 		{
 			delete[] string;
@@ -59,6 +59,11 @@ namespace Wanted
 		return Vector2(x - other.x, y - other.y);
 	}
 
+	Vector2 Vector2::operator*(const float other) const
+	{
+		return Vector2(x * other, y * other);
+	}
+
 	bool Vector2::operator==(const Vector2& other) const
 	{
 		return (x == other.x) && (y == other.y);
@@ -67,6 +72,14 @@ namespace Wanted
 	bool Vector2::operator!=(const Vector2& other) const
 	{
 		return !(*this == other);
+	}
+
+	Vector2& Vector2::operator+=(const Vector2& other)
+	{
+		x += other.x;
+		y += other.y;
+
+		return *this;
 	}
 
 	Vector2::operator COORD() const

@@ -4,23 +4,23 @@
 
 namespace Wanted
 {
-	// Àü¹æ ¼±¾ð.
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	class Input;
 	class Renderer;
 
 	// Main game engine class.
 	class WANTED_API Engine
 	{
-		// ¿£Áø ¼³Á¤ ±¸Á¶Ã¼.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼.
 		struct EngineSetting
 		{
-			// ÇÁ·¹ÀÓ ¼Óµµ.
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½.
 			float frameRate = 0.0f;
 
-			// È­¸é ³Êºñ
+			// È­ï¿½ï¿½ ï¿½Êºï¿½
 			int width = 0;
 
-			// È­¸é ³ôÀÌ
+			// È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			int height = 0;
 		};
 
@@ -28,52 +28,52 @@ namespace Wanted
 		Engine();
 		virtual ~Engine();
 
-		// ¿£Áø ·çÇÁ(°ÔÀÓ ·çÇÁ).
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½).
 		void Run();
 
-		// ¿£Áø Á¾·áÇÔ¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½.
 		void QuitEngine();
 
-		// »õ ·¹º§À» Ãß°¡(¼³Á¤)ÇÏ´Â ÇÔ¼ö. 
+		// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½. 
 		void SetNewLevel(class Level* newLevel);
 
 		static Engine& Get();
 
 	protected:
 
-		// Á¤¸®ÇÔ¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½.
 		void Shutdown();
 
-		// ¼³Á¤ ÆÄÀÏ ·Îµå ÇÔ¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½Ô¼ï¿½.
 		void LoadSetting();
 
-		// °ÔÀÓ ÇÃ·¹ÀÌ ½ÃÀÛ ÇÔ¼ö.
-		// UnityÀÇ °æ¿ì : Start / Awake.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
+		// Unityï¿½ï¿½ ï¿½ï¿½ï¿½ : Start / Awake.
 		void BeginPlay();
 
-		// ¾÷µ¥ÀÌÆ® ÇÔ¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ô¼ï¿½.
 		void Tick(float deltaTime);
 
-		// ±×¸®±â ÇÔ¼ö(Draw / Render).
+		// ï¿½×¸ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½(Draw / Render).
 		void Draw();
 
 	protected:
-		// ¿£Áø Á¾·á ÇÃ·¡±×.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½.
 		bool isQuit = false;
 
-		// ¿£Áø ¼³Á¤ °ª.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½.
 		EngineSetting setting;
 
-		// ÀÔ·Â °ü¸®ÀÚ
+		// ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Input* input = nullptr;
 		
-		// ·»´õ·¯ °´Ã¼.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼.
 		Renderer* renderer = nullptr;
 
-		// ¸ÞÀÎ ·¹º§
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		class Level* mainLevel = nullptr;
 
-		// Àü¿ª º¯¼ö
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		static Engine* instance;
 	};
 }

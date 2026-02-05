@@ -7,7 +7,7 @@ namespace Wanted
 	ScreenBuffer::ScreenBuffer(const Vector2& screenSize)
 		: screenSize(screenSize)
 	{
-		// Console Output »ý¼º.
+		// Console Output ï¿½ï¿½ï¿½ï¿½.
 		buffer = CreateConsoleScreenBuffer(
 			GENERIC_READ | GENERIC_WRITE,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
@@ -22,7 +22,7 @@ namespace Wanted
 			__debugbreak();
 		}
 
-		// ¹öÆÛ »ý¼º ÈÄ¿¡´Â ÄÜ¼Ö Ã¢ Å©±â ÁöÁ¤.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¿ï¿½ï¿½ï¿½ ï¿½Ü¼ï¿½ Ã¢ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		SMALL_RECT rect;
 		rect.Left = 0;
 		rect.Top = 0;
@@ -36,14 +36,14 @@ namespace Wanted
 			__debugbreak();
 		}
 
-		// ¹öÆÛ Å©±â ¼³Á¤.
+		// ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		if (!SetConsoleScreenBufferSize(buffer, screenSize))
 		{
 			__debugbreak();
 			std::cerr << "Failed to set screen buffer info. \n";
 		}
 
-		// Ä¿¼­ ²ô±â.
+		// Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½.
 		CONSOLE_CURSOR_INFO info;
 		GetConsoleCursorInfo(buffer, &info);
 
@@ -53,7 +53,7 @@ namespace Wanted
 
 	ScreenBuffer::~ScreenBuffer()
 	{
-		// ¹öÆÛ ÇØÁ¦
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (buffer)
 		{
 			CloseHandle(buffer);
@@ -62,24 +62,24 @@ namespace Wanted
 
 	void ScreenBuffer::Clear()
 	{
-		// ½ÇÁ¦·Î È­¸éÀ» Áö¿ì°í ³­ µÚ¿¡ ¸î ±ÛÀÚ¸¦ ½è´ÂÁö ¹ÝÈ¯ ¹Þ´Âµ¥ »ç¿ë.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ú¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½Þ´Âµï¿½ ï¿½ï¿½ï¿½.
 		DWORD writtenCount = 0;
 
-		// ÄÜ¼Ö ¹öÆÛ¿¡ ÀÖ´Â È­¸é Áö¿ì±â
-		// ±×·¡ÇÈ½º -> Áö¿ì±â -> ÇÑ »ö»ó(¶Ç´Â °ª)À¸·Î µ¤¾î¾²±â.
-		FillConsoleOutputCharacterA(buffer, ' ', screenSize.x * screenSize.y, Vector2::Zero, &writtenCount);
+		// ï¿½Ü¼ï¿½ ï¿½ï¿½ï¿½Û¿ï¿½ ï¿½Ö´ï¿½ È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+		// ï¿½×·ï¿½ï¿½È½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½Ç´ï¿½ ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î¾²ï¿½ï¿½.
+		FillConsoleOutputCharacterA(buffer, ' ', static_cast<int>(screenSize.x * screenSize.y), Vector2::Zero, &writtenCount);
 	}
 
 	void ScreenBuffer::Draw(CHAR_INFO* charInfo)
 	{
-		// ¼³Á¤ÇÑ ¹öÆÛÀÇ Å©±â
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½
 		SMALL_RECT writeRegion = {};
 		writeRegion.Left = 0;
 		writeRegion.Top = 0;
 		writeRegion.Right = static_cast<short>(screenSize.x - 1);
 		writeRegion.Bottom = static_cast<short>(screenSize.y - 1);
 
-		// ¹öÆÛ¿¡ Àü´Þ ¹ÞÀº ±ÛÀÚ ¹è¿­ ¼³Á¤.
+		// ï¿½ï¿½ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½.
 		WriteConsoleOutputA(buffer, charInfo, screenSize, Vector2::Zero, &writeRegion);
 	}
 }

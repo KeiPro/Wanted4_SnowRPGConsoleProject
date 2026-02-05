@@ -8,7 +8,7 @@ class En_Wall : public Actor
 	RTTI_DECLARATIONS(En_Wall, Actor)
 
 public:
-	// À§Ä¡ ÁöÁ¤ÀÌ °¡´ÉÇÏµµ·Ï »ý¼ºÀÚ ¼±¾ð.
+	// ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	En_Wall(const Vector2& position);
 };
 

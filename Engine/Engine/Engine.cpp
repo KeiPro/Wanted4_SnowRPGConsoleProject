@@ -15,13 +15,13 @@ namespace Wanted
 	{
 		instance = this;
 
-		// ÀÔ·Â °ü¸®ÀÚ »ý¼º.
+		// ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		input = new Input();
 
-		// ¼³Á¤ ÆÄÀÏ ·Îµå
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½
 		LoadSetting();
 
-		// ·»´õ·¯ °´Ã¼ »ý¼º.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½.
 		renderer = new Renderer(Vector2(setting.width, setting.height));
 
 		Util::TurnOffCursor();
@@ -29,81 +29,81 @@ namespace Wanted
 
 	Engine::~Engine()
 	{
-		// ¸ÞÀÎ ·¹º§ Á¦°Å.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		if (mainLevel)
 		{
 			delete mainLevel;
 			mainLevel = nullptr;
 		}
 
-		// ÀÔ·Â °ü¸®ÀÚ Á¦°Å.
+		// ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		if (input)
 		{
 			delete input;
 			input = nullptr;
 		}
 
-		// ·»´õ·¯ °´Ã¼ Á¦°Å.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½.
 		SafeDelete(renderer);
 	}
 
 	void Engine::Run()
 	{
-		// ½Ã°èÀÇ Á¤¹Ðµµ // 1ÃÊ¿¡ ¸î ¹ø Áøµ¿ÇÒ ¼ö ÀÖ´ÂÁö.
+		// ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ðµï¿½ // 1ï¿½Ê¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½.
 		LARGE_INTEGER frequency;
 		QueryPerformanceFrequency(&frequency);
 
-		// ÇÁ·¹ÀÓ °è»ê¿ë º¯¼ö.
-		//int64_t : stdint¿¡¼­ Å¸ÀÔ ÀçÁ¤ÀÇ µÈ °Í. µÑ ´Ù ¶È°°´Ù.
-		//__int64 : msÄÄÆÄÀÏ·¯. 
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+		//int64_t : stdintï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½. ï¿½ï¿½ ï¿½ï¿½ ï¿½È°ï¿½ï¿½ï¿½.
+		//__int64 : msï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½. 
 		int64_t currentTime = 0;
 		int64_t previousTime = 0;
 
-		// ÇÏµå¿þ¾î Å¸ÀÌ¸Ó·Î ½Ã°£ ±¸ÇÏ±â.
+		// ï¿½Ïµï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ì¸Ó·ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½Ï±ï¿½.
 		LARGE_INTEGER time;
 		QueryPerformanceCounter(&time);
 
-		// ¿£Áø ½ÃÀÛ Á÷Àü¿¡´Â µÎ ½Ã°£ °ªÀ» °°°Ô ¸ÂÃã.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		currentTime = time.QuadPart;
 		previousTime = currentTime;
 
-		// ±âÁØ ÇÁ·¹ÀÓ(´ÜÀ§ : ÃÊ)
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½)
 		//float targetFrameRate = 120;
 		setting.frameRate = setting.frameRate == 0.0f ? 60.0f : setting.frameRate;
 		float oneFrameTime = 1.0f / setting.frameRate;
 
-		// ¿£Áø ·çÇÁ(°ÔÀÓ ·çÇÁ).
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½).
 		while (!isQuit)
 		{
-			//timeGetTime() : 1000ms¹Û¿¡ ÃøÁ¤ÇÏÁö ¸øÇØ¼­ QueryPerformanceCounter·Î ´ëÃ¼.
+			//timeGetTime() : 1000msï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ QueryPerformanceCounterï¿½ï¿½ ï¿½ï¿½Ã¼.
 
-			// ÇöÀç½Ã°£ ±¸ÇÏ±â. // ÇÏµå¿þ¾î Å¬¶ô
-			// intel x86 instruction set architecture pdf¿¡ ÀÖ´Â ÇÏµå¿þ¾î Å¬¶ô È®ÀÎ.
+			// ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½Ï±ï¿½. // ï¿½Ïµï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½
+			// intel x86 instruction set architecture pdfï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Ïµï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ È®ï¿½ï¿½.
 			QueryPerformanceCounter(&time);
 			currentTime = time.QuadPart;
 
-			// ÇÁ·¹ÀÓ ½Ã°£ °è»ê.
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½.
 			float deltaTime = static_cast<float>(currentTime - previousTime);
 
-			// ÃÊ´ÜÀ§ º¯È¯
+			// ï¿½Ê´ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 			deltaTime = deltaTime / static_cast<float>(frequency.QuadPart);
 
-			// °íÁ¤ ÇÁ·¹ÀÓ ±â¹ý.
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½.
 			if (deltaTime >= oneFrameTime)
 			{
 				input->ProcessInput();
 
-				// ÇÁ·¹ÀÓ Ã³¸®.
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½.
 				BeginPlay();
 				Tick(deltaTime);
 				Draw();
 
-				// ÀÌÀü ½Ã°£ °ª °»½Å.
+				// ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 				previousTime = currentTime;
 
 				input->SavePreviousInputStates();
 
-				// ·¹º§¿¡ ¿äÃ»µÈ Ãß°¡/Á¦°Å Ã³¸®.
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½ß°ï¿½/ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½.
 				if (mainLevel)
 				{
 					mainLevel->ProcessAddAndDestroyActors();
@@ -121,22 +121,22 @@ namespace Wanted
 
 	void Engine::SetNewLevel(Level* newLevel)
 	{
-		// ±âÁ¸ ·¹º§¿¡ ÀÖ´ÂÁö È®ÀÎ.
-		// ÀÖÀ¸¸é ±âÁ¸ ·¹º§ Á¦°Å
-		// TODO : ÀÓ½Ã ÄÚµå. ·¹º§ ÀüÈ­ÇÒ ¶§´Â ¹Ù·Î Á¦°ÅÇÏ¸é ¾ÈµÊ.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		// TODO : ï¿½Ó½ï¿½ ï¿½Úµï¿½. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Èµï¿½.
 		if (mainLevel)
 		{
 			delete mainLevel;
 			mainLevel = nullptr;
 		}
 
-		// ·¹º§ ¼³Á¤
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		mainLevel = newLevel;
 	}
 
 	Engine& Engine::Get()
 	{
-		// ¿¹¿ÜÃ³¸®
+		// ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½
 		if (!instance)
 		{
 			std::cout << "Error : Engine::Get(). instance is null\n";
@@ -148,7 +148,7 @@ namespace Wanted
 
 	void Engine::Shutdown()
 	{
-		// Á¤¸® ÀÛ¾÷.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½.
 		std::cout << "Engine has been shutdown...\n";
 
 		Util::TurnOnCursor();
@@ -156,7 +156,7 @@ namespace Wanted
 
 	void Engine::LoadSetting()
 	{
-		// ¿£Áø ¼³Á¤ ÆÄÀÏ ¿­±â.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		FILE* file = nullptr;
 		fopen_s(&file, "../Config/Setting.txt", "rt"); // read text
 		if (file == nullptr)
@@ -168,27 +168,27 @@ namespace Wanted
 
 		char buffer[2048] = {};
 
-		// ÆÄÀÏ¿¡¼­ ÀÐ±â.
+		// ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½.
 		size_t readSize = fread(buffer, sizeof(char), 2048, file);
 
-		// ¹®ÀÚ¿­ ÀÚ¸£±â(ÆÄ½Ì).
-		// Ã¹ ¹øÂ° ¹®ÀÚ¿­ ºÐ¸®ÇÒ ¶§´Â Ã¹ ÆÄ¶ó¹ÌÅÍ Àü´Þ.
+		// ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½Ú¸ï¿½ï¿½ï¿½(ï¿½Ä½ï¿½).
+		// Ã¹ ï¿½ï¿½Â° ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½Ð¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¹ ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		char* context = nullptr;
 		char* token = nullptr;
 		token = strtok_s(buffer, "\n", &context);
 
-		// ¹Ýº¹ÇØ¼­ ÀÚ¸£±â.
+		// ï¿½Ýºï¿½ï¿½Ø¼ï¿½ ï¿½Ú¸ï¿½ï¿½ï¿½.
 		while (token)
 		{
-			// ¼³Á¤ ÅØ½ºÆ®¿¡¼­ ÆÄ¶ó¹ÌÅÍ ÀÌ¸§¸¸ ÀÐ±â.
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½.
 			char header[10] = {};
 
 
-			// ¹®ÀÚ¿­ ÀÐ±â ÇÔ¼ö È°¿ë.
-			// ÀÌ¶§ "%s"·Î ÀÐÀ¸¸é "½ºÆäÀÌ½º°¡ ÀÖÀ¸¸é °Å±â±îÁö ÀÐÀ½."
+			// ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½Ð±ï¿½ ï¿½Ô¼ï¿½ È°ï¿½ï¿½.
+			// ï¿½Ì¶ï¿½ "%s"ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å±ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½."
 			sscanf_s(token, "%s", header, 10);
 
-			// ¹®ÀÚ¿­ ºñ±³ ¹× °ª ÀÐ±â.
+			// ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ð±ï¿½.
 			if (strcmp(header, "framerate") == 0)
 			{
 				sscanf_s(token, "framerate = %f", &setting.frameRate);
@@ -202,7 +202,7 @@ namespace Wanted
 				sscanf_s(token, "height = %d", &setting.height);
 			}
 
-			// °³Çà ¹®ÀÚ·Î ¹®ÀÚ¿­ ºÐ¸®.
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú·ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½Ð¸ï¿½.
 			token = strtok_s(nullptr, "\n", &context);
 		}
 
@@ -211,12 +211,12 @@ namespace Wanted
 
 	void Engine::BeginPlay()
 	{
-		// ·¹º§ÀÌ ÀÖÀ¸¸é ÀÌº¥Æ® Àü´Þ.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½.
 		if (mainLevel == nullptr)
 		{
 			// Silent is violent
-			// Ä§¹¬Àº Æø·ÂÀÌ´Ù.
-			// -> ·Î±× ¸Þ½ÃÁö´Â ³²°Ü¶ó.
+			// Ä§ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½.
+			// -> ï¿½Î±ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ü¶ï¿½.
 			std::cout << "mainLevel is empty.\n";
 			return;
 		}
@@ -230,8 +230,8 @@ namespace Wanted
 		//	<< "DeltaTime : " << deltaTime
 		//	<< ", FPS : " << (1.0f / deltaTime) << "\n";
 
-		// ·¹º§¿¡ ÀÌº¥Æ® ÇÃ¸®±â.
-		// ¿¹¿ÜÃ³¸®
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½Ã¸ï¿½ï¿½ï¿½.
+		// ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½
 		if (!mainLevel)
 		{
 			std::cout << "Error: Engine::Tick(). mainLevel is empty. \n";
@@ -249,10 +249,10 @@ namespace Wanted
 			return;
 		}
 
-		// ·¹º§ÀÇ ¸ðµç ¾×ÅÍ°¡ ·»´õ µ¥ÀÌÅÍ¸¦ Á¦Ãâ.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		mainLevel->Draw();
 
-		// ·»´õ·¯¿¡ ±×¸®±â ¸í·É Àü´Þ.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		renderer->Draw();
 	}
 

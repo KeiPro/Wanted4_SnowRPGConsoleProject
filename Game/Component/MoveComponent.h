@@ -23,6 +23,5 @@ private:
 	float jumpPower = 30.0f;
 	Vector2 velocity = {0, 0};
 	bool onGrounded = true;
-
 };
 

@@ -13,7 +13,7 @@ namespace Wanted
 	Actor::Actor(const char* image, const Vector2& position, Color color)
 		: position(position), color(color)
 	{
-		// ¹®ÀÚ¿­ º¹»ç.
+		// ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		size_t length = strlen(image) + 1;
 		this->image = new char[length];
 		strcpy_s(this->image, length, image);
@@ -32,7 +32,7 @@ namespace Wanted
 
 	void Actor::BeginPlay()
 	{
-		// ÀÌº¥Æ®¸¦ ¹ÞÀº ÈÄ¿¡´Â ÇÃ·¡±× ¼³Á¤.
+		// ï¿½Ìºï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¿ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		hasBeganPlay = true;
 
 		for (Component* component : components)
@@ -54,9 +54,6 @@ namespace Wanted
 
 	void Actor::Draw()
 	{
-		//Renderer::Draw(position, color, image);
-
-		// ·»´õ·¯¿¡ µ¥ÀÌÅÍ Á¦Ãâ.
 		Renderer::Get().Submit(image, position, color, sortingOrder);
 	}
 
@@ -80,37 +77,37 @@ namespace Wanted
 	bool Actor::TestIntersect(const Actor* const other)
 	{
 		// AABB(Axis Aligned Bounding Box).
-		// x ÁÂÇ¥¸¸ °í·ÁÇÏ¸é µÊ. y´Â Å©±â°¡ 1ÀÌ±â ¶§¹®.
+		// x ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½. yï¿½ï¿½ Å©ï¿½â°¡ 1ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½.
 
-		// ÀÚ±âÀÚ½ÅÀÇ xÁÂÇ¥ Á¤º¸.
+		// ï¿½Ú±ï¿½ï¿½Ú½ï¿½ï¿½ï¿½ xï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½.
 		int xMin = position.x;
 		int xMax = position.x + width - 1;
 
-		// Ãæµ¹À» ºñ±³ÇÒ ´Ù¸¥ ¾×ÅÍÀÇ xÁÂÇ¥ Á¤º¸.
+		// ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ xï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½.
 		int otherXMin = other->GetPosition().x;
 		int otherXMax = other->GetPosition().x + other->GetWidth() - 1;
 
-		// ¾È°ãÄ¡´Â Á¶°Ç È®ÀÎ.
+		// ï¿½È°ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½.
 		if (otherXMin > xMax)
 			return false;
 
 		if (otherXMax < xMin)
 			return false;
 
-		// y´Â Å©±â°¡ 1ÀÌ±â ¶§¹®¿¡ ÁÂÇ¥°¡ °°ÀºÁö ¿©ºÎ¸¸ È®ÀÎ.
+		// yï¿½ï¿½ Å©ï¿½â°¡ 1ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¸ï¿½ È®ï¿½ï¿½.
 		return position.y == other->position.y;
 	}
 
 	void Actor::SetPosition(const Vector2& newPosition)
 	{
-		// renderer¿¡ ºóÄ­ ±×¸®±â ¿äÃ».
+		// rendererï¿½ï¿½ ï¿½ï¿½Ä­ ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½Ã».
 		// Renderer::Draw(position, ' ');
 
-		// º¯°æÇÏ·Á´Â À§Ä¡°¡ ÇöÀç À§Ä¡¿Í °¡À¸¸é °Ç³Ê¶Ü.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç³Ê¶ï¿½.
 		if (position == newPosition)
 			return;
 
-		// »õ·Î¿î À§Ä¡ ¼³Á¤.
+		// ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½.
 		position = newPosition;
 	}
 

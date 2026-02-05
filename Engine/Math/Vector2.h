@@ -14,31 +14,33 @@ namespace Wanted
 		Vector2(float x, float y);
 		~Vector2();
 
-		// ¹®ÀÚ¿­·Î º¯È¯ÇØ¼­ ¹ÝÈ¯ÇÏ´Â ÇÔ¼ö.
+		// ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ø¼ï¿½ ï¿½ï¿½È¯ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½.
 		const char* ToString();
 
 		Vector2 operator+(const Vector2& other) const;
 		Vector2 operator-(const Vector2& other) const;
+		Vector2 operator*(const float other) const;
 
 		bool operator==(const Vector2& other) const;
 		bool operator!=(const Vector2& other) const;
-
-		// Çüº¯È¯ ¿¬»êÀÚ ¿À¹ö·Îµù.
+		Vector2& operator+=(const Vector2& other);
+		
+		// ï¿½ï¿½ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½.
 		operator COORD() const;
 
-		// º¤ÅÍ ±âº» °ª.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½âº» ï¿½ï¿½.
 		static Vector2 Zero;
 		static Vector2 One;
 		static Vector2 Up;
 		static Vector2 Right;
 
 	public:
-		// (x, y) ÁÂÇ¥.
+		// (x, y) ï¿½ï¿½Ç¥.
 		float x = 0;
 		float y = 0;
 
 	private:
-		// º¤ÅÍ °ªÀ» ¹®ÀÚ¿­·Î º¯È¯ÇÒ ¶§ »ç¿ëÇÒ º¯¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		char* string = nullptr;
 	};
 }

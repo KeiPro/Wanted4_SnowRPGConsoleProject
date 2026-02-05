@@ -6,12 +6,8 @@
 
 namespace Wanted
 {
-	class WANTED_API ICollider
-	{
-		
-	};
-
-	class CollisionSystem : ICollider
+	class BoxCollider;
+	class CollisionSystem
 	{
 	public:
 		CollisionSystem();
@@ -20,11 +16,14 @@ namespace Wanted
 		void BeginPlay();
 		void Tick(float deltaTime);
 
-		void Register(ICollider* newCollider);
-		void UnRegister(ICollider* colliderToRemove);
+		void Register(BoxCollider* newCollider);
+		void UnRegister(BoxCollider* colliderToRemove);
+		void ProcessAddAndDestroyColliders();
 
 	private:
 
-		std::vector<ICollider*> colliders;
+		std::vector<BoxCollider*> colliders;
+
+		std::vector<BoxCollider*> addRequestedColliders;
 	};
 }

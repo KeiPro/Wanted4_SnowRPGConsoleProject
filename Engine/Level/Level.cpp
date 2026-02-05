@@ -11,7 +11,7 @@ namespace Wanted
 
 	Level::~Level()
 	{
-		// ¸Þ¸ð¸® Á¤¸®.
+		// ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		for (Actor* actor : actors)
 		{
 			if (actor)
@@ -21,7 +21,7 @@ namespace Wanted
 			}
 		}
 
-		// ¹è¿­ ÃÊ±âÈ­.
+		// ï¿½è¿­ ï¿½Ê±ï¿½È­.
 		actors.clear();
 
 		delete collisionSystem;
@@ -30,7 +30,7 @@ namespace Wanted
 
 	void Level::BeginPlay()
 	{
-		// ¾×ÅÍ¿¡ ÀÌº¥Æ® Èê¸®±â.
+		// ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½Ìºï¿½Æ® ï¿½ê¸®ï¿½ï¿½.
 		for (Actor* actor : actors)
 		{
 			if (actor->HasBeganPlay())
@@ -44,7 +44,7 @@ namespace Wanted
 
 	void Level::Tick(float deltaTime)
 	{
-		// ¾×ÅÍ¿¡ ÀÌº¥Æ® Èê¸®±â.
+		// ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½Ìºï¿½Æ® ï¿½ê¸®ï¿½ï¿½.
 		for (Actor* actor : actors)
 		{
 			actor->Tick(deltaTime);
@@ -55,7 +55,7 @@ namespace Wanted
 
 	void Level::Draw()
 	{
-		// ¾×ÅÍ ¼øÈ¸ÇÏ¸é¼­ DrawÇÔ¼ö È£Ãâ.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½Ï¸é¼­ Drawï¿½Ô¼ï¿½ È£ï¿½ï¿½.
 		for (Actor* const actor : actors)
 		{
 			if (!actor->IsActive())
@@ -67,32 +67,34 @@ namespace Wanted
 
 	void Level::AddNewActor(Actor* newActor)
 	{
-		// ³ªÁß¿¡ Ãß°¡¸¦ À§ÇÑ ÀÓ½Ã ¹è¿­¿¡ ÀúÀå.
+		// ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		addRequestedActors.emplace_back(newActor);
 
-		// ¿À³Ê½Ê ¼³Á¤.
+		// ï¿½ï¿½ï¿½Ê½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		newActor->SetOwner(this);
 	}
 
 	void Level::ProcessAddAndDestroyActors()
 	{
-		// µ¿Àû ¹è¿­¿¡¼­ ·±Å¸ÀÓÁß¿¡ ÀÎµ¦½ºÀÇ º¯È­°¡ ÀÏ¾î³¯ °¡´É¼ºÀÌ ÀÖ´Ù¸é, ½Å°æ½áÁà¾ß ÇÔ.
-		// Á¦°Å Ã³¸®
+		collisionSystem->ProcessAddAndDestroyColliders();
+
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½Ï¾î³¯ ï¿½ï¿½ï¿½É¼ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½, ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½.
+		// ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 		for (int ix = 0; ix < static_cast<int>(actors.size()); )
 		{
-			// Á¦°Å ¿äÃ»µÈ ¾×ÅÍ°¡ ÀÖ´ÂÁö È®ÀÎ.
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½.
 			if (actors[ix]->DestroyRequested())
 			{
-				// »èÁ¦ Ã³¸®
+				// ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 				delete actors[ix];
-				actors.erase(actors.begin() + ix); // actors.begin() + ix : ix¹ø ÀÌÅÍ·¹ÀÌÅÍ : ix¹øÂ° Æ÷ÀÎÅÍ.
+				actors.erase(actors.begin() + ix); // actors.begin() + ix : ixï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ : ixï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 				continue;
 			}
 
 			++ix;
 		}
 
-		// Ãß°¡ Ã³¸®.
+		// ï¿½ß°ï¿½ Ã³ï¿½ï¿½.
 		if (addRequestedActors.size() == 0)
 			return;
 
