@@ -1,10 +1,14 @@
 #include "BoxCollider.h"
 #include "Actor/Actor.h"
+#include "Render/Renderer.h"
+
+#include <iostream>
+#include <Windows.h>
 
 using namespace Wanted;
 
-BoxCollider::BoxCollider(int left, int top, int right, int bottom)
-	: left(left), top(top), right(right), bottom(bottom)
+BoxCollider::BoxCollider(int left, int top, int right, int bottom, int offsetX, int offsetY)
+	: left(left), top(top), right(right), bottom(bottom), offsetX(offsetX), offsetY(offsetY)
 {
 	size = { right - left, bottom - top };
 }
@@ -24,17 +28,37 @@ void BoxCollider::Tick(float deltaTime)
 	SetPosition(GetOwner()->GetPosition().x, GetOwner()->GetPosition().y);
 }
 
-void BoxCollider::SetPosition(int left, int top)
+void BoxCollider::Draw()
 {
-	this->left = left;
-	this->top = top;
-	this->right = this->left + size.x;
-	this->bottom = this->bottom + size.y;
+	if (debugMode)
+	{
+		for (int i = left; i <= right; i++)
+		{
+			for (int j = top; j <= bottom; j++)
+			{
+				Renderer::Get().Submit("-", Vector2(i, j), Color::Red, 9999);
+			}
+		}
+	}
 }
 
-void BoxCollider::NotifyCollision(const BoxCollider* const other)
+void BoxCollider::SetPosition(int left, int top)
 {
+	this->left = GetOwner()->GetPosition().x + offsetX;
+	this->top = GetOwner()->GetPosition().y + offsetY;
+	this->right = left + size.x;
+	this->bottom = top + size.y;
+}
 
+void BoxCollider::NotifyCollision(BoxCollider* const other)
+{
+	if (GetIsActive() == false)
+		return;
+
+	if (onCollision)
+	{
+		onCollision(this, other);
+	}
 }
 
 bool BoxCollider::AABBCollision(const BoxCollider* const other)

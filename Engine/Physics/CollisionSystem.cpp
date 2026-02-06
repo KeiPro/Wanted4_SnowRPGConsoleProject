@@ -1,11 +1,14 @@
 #include "CollisionSystem.h"
 #include "../Component/Collider/BoxCollider.h"
+#include <iostream>
 
 using namespace Wanted;
 
+CollisionSystem* CollisionSystem::instance = nullptr;
+
 CollisionSystem::CollisionSystem()
 {
-
+	instance = this;
 }
 
 CollisionSystem::~CollisionSystem()
@@ -13,33 +16,19 @@ CollisionSystem::~CollisionSystem()
 
 }
 
-void CollisionSystem::BeginPlay()
+CollisionSystem& CollisionSystem::Get()
 {
+	if (!instance)
+	{
+		std::cout << "Error: CollisionSystem::Get(). instance is null\n";
+		__debugbreak();
+	}
 
+	return *instance;
 }
 
 void CollisionSystem::Tick(float deltaTime)
 {
-	// collision
-	int totalSize = colliders.size();
-	for (int i = 0; i < totalSize - 1; i++)
-	{
-		if (colliders[i]->GetIsActive() == false)
-			continue;
-
-		for (int j = i + 1; j < totalSize; j++)
-		{
-			if (colliders[j]->GetIsActive() == false)
-				continue;
-
-			if (colliders[i]->AABBCollision(colliders[j]))
-			{
-				colliders[i]->NotifyCollision(colliders[j]);
-				colliders[j]->NotifyCollision(colliders[i]);
-			}
-		}
-	}
-
 	if (removeRequested.size() != 0)
 	{
 		for (BoxCollider* const boxCollider : removeRequested)
@@ -61,6 +50,28 @@ void CollisionSystem::Tick(float deltaTime)
 		}
 
 		addRequested.clear();
+	}
+
+	// collision
+	int totalSize = colliders.size();
+	for (int i = 0; i < totalSize - 1; i++)
+	{
+		if (colliders[i]->HasBeganPlay() == false ||
+			colliders[i]->GetIsActive() == false)
+			continue;
+
+		for (int j = i + 1; j < totalSize; j++)
+		{
+			if (colliders[j]->HasBeganPlay() == false ||
+				colliders[j]->GetIsActive() == false)
+				continue;
+
+			if (colliders[i]->AABBCollision(colliders[j]))
+			{
+				colliders[i]->NotifyCollision(colliders[j]);
+				colliders[j]->NotifyCollision(colliders[i]);
+			}
+		}
 	}
 }
 

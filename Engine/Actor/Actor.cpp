@@ -13,10 +13,12 @@ namespace Wanted
 	Actor::Actor(const char* image, const Vector2& position, Color color)
 		: position(position), color(color)
 	{
-		// ���ڿ� ����.
 		size_t length = strlen(image) + 1;
 		this->image = new char[length];
 		strcpy_s(this->image, length, image);
+
+		width = length - 1;
+		height = 1;
 	}
 
 	Actor::~Actor()
@@ -32,7 +34,6 @@ namespace Wanted
 
 	void Actor::BeginPlay()
 	{
-		// �̺�Ʈ�� ���� �Ŀ��� �÷��� ����.
 		hasBeganPlay = true;
 
 		for (Component* component : components)
@@ -55,6 +56,14 @@ namespace Wanted
 	void Actor::Draw()
 	{
 		Renderer::Get().Submit(image, position, color, sortingOrder);
+
+		for (Component* component : components)
+		{
+			if (component->GetIsActive() == false)
+				continue;
+
+			component->Draw();
+		}
 	}
 
 	void Actor::Destroy()
@@ -77,37 +86,26 @@ namespace Wanted
 	bool Actor::TestIntersect(const Actor* const other)
 	{
 		// AABB(Axis Aligned Bounding Box).
-		// x ��ǥ�� ����ϸ� ��. y�� ũ�Ⱑ 1�̱� ����.
-
-		// �ڱ��ڽ��� x��ǥ ����.
 		int xMin = position.x;
 		int xMax = position.x + width - 1;
 
-		// �浹�� ���� �ٸ� ������ x��ǥ ����.
 		int otherXMin = other->GetPosition().x;
 		int otherXMax = other->GetPosition().x + other->GetWidth() - 1;
 
-		// �Ȱ�ġ�� ���� Ȯ��.
 		if (otherXMin > xMax)
 			return false;
 
 		if (otherXMax < xMin)
 			return false;
 
-		// y�� ũ�Ⱑ 1�̱� ������ ��ǥ�� ������ ���θ� Ȯ��.
 		return position.y == other->position.y;
 	}
 
 	void Actor::SetPosition(const Vector2& newPosition)
 	{
-		// renderer�� ��ĭ �׸��� ��û.
-		// Renderer::Draw(position, ' ');
-
-		// �����Ϸ��� ��ġ�� ���� ��ġ�� ������ �ǳʶ�.
 		if (position == newPosition)
 			return;
 
-		// ���ο� ��ġ ����.
 		position = newPosition;
 	}
 

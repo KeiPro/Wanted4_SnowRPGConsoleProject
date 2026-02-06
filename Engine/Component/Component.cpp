@@ -21,6 +21,11 @@ namespace Wanted
 
 	}
 
+	void Component::Draw()
+	{
+
+	}
+
 	void Component::Destory()
 	{
 		destroyRequested = true;

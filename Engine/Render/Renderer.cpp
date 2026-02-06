@@ -6,7 +6,6 @@ namespace Wanted
 {
 	Renderer::Frame::Frame(int bufferCount)
 	{
-		// �迭 ���� �� �ʱ�ȭ.
 		charInfoArray = new CHAR_INFO[bufferCount];
 		memset(charInfoArray, 0, sizeof(CHAR_INFO) * bufferCount);
 
@@ -22,7 +21,6 @@ namespace Wanted
 
 	void Renderer::Frame::Clear(const Vector2 screenSize)
 	{
-		// 2���� �迭�� �ٷ�� 1���� �迭�� ��ȸ�ϸ鼭 �� ���ڸ� ����.
 		const int width = static_cast<int>(screenSize.x);
 		const int height = static_cast<int>(screenSize.y);
 
@@ -30,15 +28,12 @@ namespace Wanted
 		{
 			for (int x = 0; x < width; x++)
 			{
-				// �迭 �ε��� ���ϱ�.
 				const int index = (y * width) + x;
 
-				// ���� �� �� �Ӽ� ����.
 				CHAR_INFO& info = charInfoArray[index];
 				info.Char.AsciiChar = ' ';
 				info.Attributes = 0;
 
-				// �׸��� �켱���� �ʱ�ȭ.
 				sortingOrderArray[index] = -1;
 			}
 		}
@@ -59,21 +54,17 @@ namespace Wanted
 	{
 		instance = this;
 
-		// ������ ��ü ����.
 		const int bufferCount = static_cast<int>(screenSize.x * screenSize.y);
 		frame = new Frame(bufferCount);
 
-		// ������ �ʱ�ȭ.
 		frame->Clear(screenSize);
 
-		// ���� ���� ��ü ����.
 		screenBuffers[0] = new ScreenBuffer(screenSize);
 		screenBuffers[0]->Clear();
 
 		screenBuffers[1] = new ScreenBuffer(screenSize);
 		screenBuffers[1]->Clear();
 
-		// Ȱ��ȭ ���� ����.
 		Present();
 	}
 
@@ -99,31 +90,23 @@ namespace Wanted
 
 	void Renderer::Draw()
 	{
-		// ȭ�� �����.
 		Clear();
 
-		// �������� : ������ ��� ���Ͱ� �������� Submit�� �Ϸ�.
-		// ����ť ��ȸ�ϸ鼭 ������ ä���.
 		for (const RenderCommand& command : renderQueue)
 		{
-			// ȭ�鿡 �׸� �ؽ�Ʈ�� ������ �ǳʶ�.
 			if (!command.text)
 				continue;
 
-			// ���� ���� ȭ�� ������� Ȯ��.
 			if (command.position.y < 0 || command.position.y >= screenSize.y)
 				continue;
 
-			// ȭ�鿡 �׸� ���ڿ� ����
 			const int length = static_cast<int>(strlen(command.text));
 
-			// �ȱ׷��� �Ǹ� �ǳʶ�.
 			if (length <= 0)
 			{
 				continue;
 			}
 
-			// x��ǥ �������� ȭ�鿡�� ������� Ȯ��.
 			const int startX = static_cast<int>(command.position.x);
 			const int endX = static_cast<int>(command.position.x) + length - 1;
 
@@ -132,65 +115,49 @@ namespace Wanted
 				continue;
 			}
 
-			// ���� �ε����� �� �ε��� ���ϱ�.
 			const int visibleStart = startX < 0 ? 0 : startX;
 			const int visibleEnd = endX >= static_cast<int>(screenSize.x) ? static_cast<int>(screenSize.x) - 1 : endX;
 
-			// ���ڿ� ����.
 			for (int x = visibleStart; x <= visibleEnd; x++)
 			{
-				// ���ڿ� ���� ���� �ε���.
 				const int sourceIndex = x - startX;
 
-				// ������  (2���� ���� �迭)�ε���.
 				const int index = (command.position.y * screenSize.x) + x;
 
-				// �׸��� �켱���� ��.
 				if (frame->sortingOrderArray[index] > command.sortingOrder)
 					continue;
 
-				// ������ ���.
 				frame->charInfoArray[index].Char.AsciiChar = command.text[sourceIndex];
 				frame->charInfoArray[index].Attributes = (WORD)command.color;
 
-				// �켱���� ������Ʈ.
 				frame->sortingOrderArray[index] = command.sortingOrder;
 			}
 		}
 
-		// �׸���.
 		GetCurrentBuffer()->Draw(frame->charInfoArray);
 
-		// ���� ��ȯ.
 		Present();
 
-		// ���� ť ����.
 		renderQueue.clear();
 	}
 
 	void Renderer::Clear()
 	{
-		// ȭ�� �����.
-		// 1. ������(2���� �迭 ������) �����.
 		frame->Clear(screenSize);
 
-		// 2. �ܼ� ���� �����.
 		GetCurrentBuffer()->Clear();
 	}
 
 	void Renderer::Present()
 	{
-		// ���� ��ȯ.
 		SetConsoleActiveScreenBuffer(GetCurrentBuffer()->GetBuffer());
 
-		// �ε��� ��ü.
 		currentBufferIndex = 1 - currentBufferIndex;
 	}
 
 
 	void Renderer::Submit(const char* text, const Vector2& position, Color color, int sortingOrder)
 	{
-		// ���� ������ ���� �� ť�� �߰�.
 		RenderCommand command = {};
 		command.text = text;
 		command.position = position;

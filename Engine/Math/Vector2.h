@@ -14,7 +14,6 @@ namespace Wanted
 		Vector2(float x, float y);
 		~Vector2();
 
-		// ���ڿ��� ��ȯ�ؼ� ��ȯ�ϴ� �Լ�.
 		const char* ToString();
 
 		Vector2 operator+(const Vector2& other) const;
@@ -25,22 +24,18 @@ namespace Wanted
 		bool operator!=(const Vector2& other) const;
 		Vector2& operator+=(const Vector2& other);
 		
-		// ����ȯ ������ �����ε�.
 		operator COORD() const;
 
-		// ���� �⺻ ��.
 		static Vector2 Zero;
 		static Vector2 One;
 		static Vector2 Up;
 		static Vector2 Right;
 
 	public:
-		// (x, y) ��ǥ.
 		float x = 0;
 		float y = 0;
 
 	private:
-		// ���� ���� ���ڿ��� ��ȯ�� �� ����� ����.
 		char* string = nullptr;
 	};
 }

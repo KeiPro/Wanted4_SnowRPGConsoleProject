@@ -11,7 +11,6 @@ namespace Wanted
 
 	Level::~Level()
 	{
-		// �޸� ����.
 		for (Actor* actor : actors)
 		{
 			if (actor)
@@ -21,7 +20,6 @@ namespace Wanted
 			}
 		}
 
-		// �迭 �ʱ�ȭ.
 		actors.clear();
 
 		delete collisionSystem;
@@ -30,7 +28,6 @@ namespace Wanted
 
 	void Level::BeginPlay()
 	{
-		// ���Ϳ� �̺�Ʈ �긮��.
 		for (Actor* actor : actors)
 		{
 			if (actor->HasBeganPlay())
@@ -38,13 +35,10 @@ namespace Wanted
 
 			actor->BeginPlay();
 		}
-
-		collisionSystem->BeginPlay();
 	}
 
 	void Level::Tick(float deltaTime)
 	{
-		// ���Ϳ� �̺�Ʈ �긮��.
 		for (Actor* actor : actors)
 		{
 			actor->Tick(deltaTime);
@@ -55,7 +49,6 @@ namespace Wanted
 
 	void Level::Draw()
 	{
-		// ���� ��ȸ�ϸ鼭 Draw�Լ� ȣ��.
 		for (Actor* const actor : actors)
 		{
 			if (!actor->IsActive())
@@ -67,32 +60,24 @@ namespace Wanted
 
 	void Level::AddNewActor(Actor* newActor)
 	{
-		// ���߿� �߰��� ���� �ӽ� �迭�� ����.
 		addRequestedActors.emplace_back(newActor);
-
-		// ���ʽ� ����.
 		newActor->SetOwner(this);
 	}
 
 	void Level::ProcessAddAndDestroyActors()
 	{
-		// ���� �迭���� ��Ÿ���߿� �ε����� ��ȭ�� �Ͼ ���ɼ��� �ִٸ�, �Ű����� ��.
-		// ���� ó��
 		for (int ix = 0; ix < static_cast<int>(actors.size()); )
 		{
-			// ���� ��û�� ���Ͱ� �ִ��� Ȯ��.
 			if (actors[ix]->DestroyRequested())
 			{
-				// ���� ó��
 				delete actors[ix];
-				actors.erase(actors.begin() + ix); // actors.begin() + ix : ix�� ���ͷ����� : ix��° ������.
+				actors.erase(actors.begin() + ix);
 				continue;
 			}
 
 			++ix;
 		}
 
-		// �߰� ó��.
 		if (addRequestedActors.size() == 0)
 			return;
 

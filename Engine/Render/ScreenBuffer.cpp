@@ -7,7 +7,7 @@ namespace Wanted
 	ScreenBuffer::ScreenBuffer(const Vector2& screenSize)
 		: screenSize(screenSize)
 	{
-		// Console Output ����.
+		// Console Output
 		buffer = CreateConsoleScreenBuffer(
 			GENERIC_READ | GENERIC_WRITE,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
@@ -22,7 +22,6 @@ namespace Wanted
 			__debugbreak();
 		}
 
-		// ���� ���� �Ŀ��� �ܼ� â ũ�� ����.
 		SMALL_RECT rect;
 		rect.Left = 0;
 		rect.Top = 0;
@@ -36,14 +35,12 @@ namespace Wanted
 			__debugbreak();
 		}
 
-		// ���� ũ�� ����.
 		if (!SetConsoleScreenBufferSize(buffer, screenSize))
 		{
 			__debugbreak();
 			std::cerr << "Failed to set screen buffer info. \n";
 		}
 
-		// Ŀ�� ���.
 		CONSOLE_CURSOR_INFO info;
 		GetConsoleCursorInfo(buffer, &info);
 
@@ -53,7 +50,6 @@ namespace Wanted
 
 	ScreenBuffer::~ScreenBuffer()
 	{
-		// ���� ����
 		if (buffer)
 		{
 			CloseHandle(buffer);
@@ -62,24 +58,19 @@ namespace Wanted
 
 	void ScreenBuffer::Clear()
 	{
-		// ������ ȭ���� ����� �� �ڿ� �� ���ڸ� ����� ��ȯ �޴µ� ���.
 		DWORD writtenCount = 0;
 
-		// �ܼ� ���ۿ� �ִ� ȭ�� �����
-		// �׷��Ƚ� -> ����� -> �� ����(�Ǵ� ��)���� �����.
 		FillConsoleOutputCharacterA(buffer, ' ', static_cast<int>(screenSize.x * screenSize.y), Vector2::Zero, &writtenCount);
 	}
 
 	void ScreenBuffer::Draw(CHAR_INFO* charInfo)
 	{
-		// ������ ������ ũ��
 		SMALL_RECT writeRegion = {};
 		writeRegion.Left = 0;
 		writeRegion.Top = 0;
 		writeRegion.Right = static_cast<short>(screenSize.x - 1);
 		writeRegion.Bottom = static_cast<short>(screenSize.y - 1);
 
-		// ���ۿ� ���� ���� ���� �迭 ����.
 		WriteConsoleOutputA(buffer, charInfo, screenSize, Vector2::Zero, &writeRegion);
 	}
 }

@@ -7,17 +7,19 @@
 namespace Wanted
 {
 	class BoxCollider;
-	class CollisionSystem
+	class WANTED_API CollisionSystem
 	{
+		
 	public:
 		CollisionSystem();
 		~CollisionSystem();
 
-		void BeginPlay();
 		void Tick(float deltaTime);
 
 		void Register(BoxCollider* newCollider);
 		void UnRegister(BoxCollider* colliderToRemove);
+
+		static CollisionSystem& Get();
 
 	private:
 
@@ -25,5 +27,7 @@ namespace Wanted
 
 		std::vector<BoxCollider*> addRequested;
 		std::vector<BoxCollider*> removeRequested;
+
+		static CollisionSystem* instance;
 	};
 }
