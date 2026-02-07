@@ -33,7 +33,7 @@ namespace Wanted
 	private:
 
 		bool hasBeganPlay = false;
-		bool isActive = true;
+		bool isActive = false;
 		bool destroyRequested = false;
 
 		Actor* owner = nullptr;

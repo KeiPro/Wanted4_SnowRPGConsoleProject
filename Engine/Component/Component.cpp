@@ -14,6 +14,7 @@ namespace Wanted
 	void Component::BeginPlay()
 	{
 		hasBeganPlay = true;
+		isActive = true;
 	}
 
 	void Component::Tick(float deltaTime)

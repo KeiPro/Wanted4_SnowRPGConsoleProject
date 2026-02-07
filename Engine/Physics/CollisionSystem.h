@@ -18,7 +18,6 @@ namespace Wanted
 		void Tick(float deltaTime);
 
 		void Register(BoxCollider* newCollider);
-		//void UnRegister(BoxCollider* colliderToRemove);
 		void ApplyNewRequested();
 		void MakePairAndSwapPair();
 

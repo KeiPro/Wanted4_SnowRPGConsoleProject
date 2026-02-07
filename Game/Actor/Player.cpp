@@ -14,48 +14,54 @@
 using namespace Wanted;
 
 Player::Player(const Vector2 position)
-	: super("<=A=>", position, Color::Blue)
+	: super("P", position, Color::Blue)
 {
 	sortingOrder = 10;
 
 	AddNewComponent(new MoveComponent());
 
-	int left = static_cast<int>(position.x);
-	int top = static_cast<int>(position.y);
-	int right = left + GetWidth();
-	int bottom = top + GetHeight();
-
-	BoxCollider* footCollider = new BoxCollider(left, bottom, right, bottom + 1, 0, 1);
-	footCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
+	// footCollider
 	{
-		if (!other->GetOwner()->IsTypeOf<En_Wall>())
-			return;
+		int left = static_cast<int>(position.x);
+		int top = static_cast<int>(position.y);
+		int right = left + GetWidth();
+		int bottom = top + GetHeight();
 
-		MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
-		if (!moveComp || !moveComp->HasBeganPlay())
-			return;
+		BoxCollider* footCollider = new BoxCollider(left, bottom, right, bottom + 1, 0, 1);
+		footCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
+			{
+				if (!other->GetOwner()->IsTypeOf<En_Wall>())
+					return;
 
-		moveComp->OnFootEnter(other);
+				MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
+				if (!moveComp || !moveComp->HasBeganPlay())
+					return;
 
-		moveComp->RequestOnGrounded(other->GetOwner()->GetPosition().y - 1);
-	});
+				moveComp->OnFootEnter(other);
 
-	footCollider->SetOnExit([](BoxCollider* self, BoxCollider* other)
-	{
-		if (!other->GetOwner()->IsTypeOf<En_Wall>())
-			return;
+				moveComp->RequestOnGrounded(other->GetOwner()->GetPosition().y - 1);
+			});
 
-		MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
-		if (!moveComp)
-			return;
+		footCollider->SetOnExit([](BoxCollider* self, BoxCollider* other)
+			{
+				if (!other->GetOwner()->IsTypeOf<En_Wall>())
+					return;
 
-		moveComp->OnFootExit(other);
-	});
+				MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
+				if (!moveComp)
+					return;
 
-	footCollider->debugMode = true;
+				moveComp->OnFootExit(other);
+			});
 
-	AddNewComponent(footCollider);
-	CollisionSystem::Get().Register(footCollider);
+		footCollider->debugMode = true;
+
+		AddNewComponent(footCollider);
+		CollisionSystem::Get().Register(footCollider);
+	}
+
+	// sideCollider
+
 }
 
 void Player::BeginPlay()

@@ -60,13 +60,14 @@ void Wanted::CollisionSystem::MakePairAndSwapPair()
 	for (int i = 0; i < n; i++)
 	{
 		BoxCollider* a = colliders[i];
-		if (a->HasBeganPlay() == false)
+		if (!a || a->GetIsActive() == false)
 			continue;
 
 		for (int j = i + 1; j < n; ++j)
 		{
 			BoxCollider* b = colliders[j];
-			if (!b) continue;
+			if (!b || b->GetIsActive() == false) 
+				continue;
 
 			if (a->AABBCollision(b))
 			{

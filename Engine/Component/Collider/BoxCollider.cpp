@@ -32,11 +32,11 @@ void BoxCollider::Draw()
 {
 	if (debugMode)
 	{
-		for (int i = left; i <= right; i++)
+		for (int i = left; i < right; i++)
 		{
-			for (int j = top; j <= bottom; j++)
+			for (int j = top; j < bottom; j++)
 			{
-				Renderer::Get().Submit("-", Vector2(i, j), Color::Red, 9999);
+				Renderer::Get().Submit("C", Vector2(i, j), Color::Red, 9999);
 			}
 		}
 	}
@@ -46,8 +46,8 @@ void BoxCollider::SetPosition(int left, int top)
 {
 	this->left = GetOwner()->GetPosition().x + offsetX;
 	this->top = GetOwner()->GetPosition().y + offsetY;
-	this->right = left + size.x;
-	this->bottom = top + size.y;
+	this->right = this->left + size.x;
+	this->bottom = this->top + size.y;
 }
 
 bool BoxCollider::AABBCollision(const BoxCollider* const other)
