@@ -30,6 +30,7 @@ namespace Wanted
 		std::vector<Actor*> addRequestedActors;
 
 	private:
+
 		CollisionSystem* collisionSystem = nullptr;
 	};
 }

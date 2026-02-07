@@ -14,7 +14,7 @@
 using namespace Wanted;
 
 Player::Player(const Vector2 position)
-	: super("<=A=>", position, Color::Red)
+	: super("<=A=>", position, Color::Blue)
 {
 	sortingOrder = 10;
 
@@ -25,25 +25,37 @@ Player::Player(const Vector2 position)
 	int right = left + GetWidth();
 	int bottom = top + GetHeight();
 
-	//위치 재설정.
 	BoxCollider* footCollider = new BoxCollider(left, bottom, right, bottom + 1, 0, 1);
-	footCollider->SetCollisionCallback([](BoxCollider* self, BoxCollider* other)
-		{
-			if (other->GetOwner()->IsTypeOf<En_Wall>())
-			{
-				MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
-				if (moveComp && moveComp->HasBeganPlay() && moveComp->IsOnGrounded() == false)
-					moveComp->RequestOnGrounded(other->GetOwner()->GetPosition().y - 1);
-			}
-		});
+	footCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
+	{
+		if (!other->GetOwner()->IsTypeOf<En_Wall>())
+			return;
+
+		MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
+		if (!moveComp || !moveComp->HasBeganPlay())
+			return;
+
+		moveComp->OnFootEnter(other);
+
+		moveComp->RequestOnGrounded(other->GetOwner()->GetPosition().y - 1);
+	});
+
+	footCollider->SetOnExit([](BoxCollider* self, BoxCollider* other)
+	{
+		if (!other->GetOwner()->IsTypeOf<En_Wall>())
+			return;
+
+		MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
+		if (!moveComp)
+			return;
+
+		moveComp->OnFootExit(other);
+	});
 
 	footCollider->debugMode = true;
 
 	AddNewComponent(footCollider);
 	CollisionSystem::Get().Register(footCollider);
-
-	/*AddNewComponent(new BoxCollider());
-	AddNewComponent(new BoxCollider("CollisionCollider"));*/
 }
 
 void Player::BeginPlay()

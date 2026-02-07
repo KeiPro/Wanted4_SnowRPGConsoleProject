@@ -20,9 +20,6 @@ void MoveComponent::BeginPlay()
 	Component::BeginPlay();
 
     physY = GetOwner()->GetPosition().y;
-
-    BoxCollider* boxCollider = GetOwner()->GetComponent<BoxCollider>();
-
     floorBox = GetOwner()->GetComponent<BoxCollider>();
 }
 
@@ -34,9 +31,6 @@ void MoveComponent::Tick(float deltaTime)
 
     float dt = deltaTime;
     if (dt > 0.05f) dt = 0.05f;
-    elapsedTime += dt;
-
-    onGrounded = (elapsedTime - lastGroundedTime) <= 0.03f;
     
     float dirX = 0.f;
     if (Input::Get().GetKey(VK_RIGHT)) dirX += 1.f;
@@ -46,8 +40,6 @@ void MoveComponent::Tick(float deltaTime)
     // Jump
     if (Input::Get().GetKeyDown('S') && onGrounded)
     {
-        lastGroundedTime = 0.0f;
-
         // 박스 콜라이더 비활성화.
         floorBox->SetIsActive(false);
 
@@ -74,15 +66,19 @@ void MoveComponent::Tick(float deltaTime)
 
 void MoveComponent::RequestOnGrounded(int floorY)
 {
-    // 하강 중일때에만,
-    if (velocity.y < 0)
-        return;
-
     physY = floorY;
-    onGrounded = true;
     velocity.y = 0.f;
-
-    lastGroundedTime = elapsedTime;
-
     floorBox->SetIsActive(true);
+}
+
+void MoveComponent::OnFootEnter(BoxCollider* ground)
+{
+    groundContacts.insert(ground); 
+    onGrounded = true;
+}
+
+void MoveComponent::OnFootExit(BoxCollider* ground)
+{
+    groundContacts.erase(ground);
+    onGrounded = !groundContacts.empty();
 }

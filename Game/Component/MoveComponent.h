@@ -3,6 +3,8 @@
 #include "Math/Vector2.h"
 #include "Common/RTTI.h"
 
+#include <unordered_set>
+
 namespace Wanted { class BoxCollider; }
 
 using namespace Wanted;
@@ -20,18 +22,20 @@ public:
 
 	inline bool IsOnGrounded() const { return onGrounded; }
 	void RequestOnGrounded(int floorY);
-	inline void SetOnGrounded(bool grounded) { onGrounded = grounded; }
+
+	void OnFootEnter(BoxCollider* ground);
+	void OnFootExit(BoxCollider* ground);
 
 private:
 
 	float moveSpeed = 30.0f;
 	float jumpPower = 30.0f;
 	Vector2 velocity = {0, 0};
-	bool onGrounded = false;
+
 	float physY = 0.0f;
-
-	float elapsedTime = 0.0f;
-	float lastGroundedTime = 0.0f;
-
+	
 	BoxCollider* floorBox = nullptr;
+
+	std::unordered_set<BoxCollider*> groundContacts;
+	bool onGrounded = false;
 };

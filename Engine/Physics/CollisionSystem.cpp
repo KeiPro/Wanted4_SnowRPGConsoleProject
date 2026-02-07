@@ -27,60 +27,127 @@ CollisionSystem& CollisionSystem::Get()
 	return *instance;
 }
 
+void Wanted::CollisionSystem::RemovePairsIncluding(BoxCollider* c)
+{
+	const std::uintptr_t pc = (std::uintptr_t)c;
+
+	auto removeIfContains = [&](auto& set)
+	{
+		for (auto it = set.begin(); it != set.end(); )
+		{
+			if (it->a == pc || it->b == pc) 
+				it = set.erase(it);
+			else 
+				++it;
+		}
+	};
+
+	removeIfContains(previousPairs);
+	removeIfContains(currentPairs);
+}
+
 void CollisionSystem::Tick(float deltaTime)
 {
-	if (removeRequested.size() != 0)
-	{
-		for (BoxCollider* const boxCollider : removeRequested)
-		{
-			auto it = std::find(colliders.begin(), colliders.end(), boxCollider);
-			if (it != colliders.end())
-			{
-				*it = colliders.back();
-				colliders.pop_back();
-			}
-		}
-	}
+	ApplyNewRequested();
+	MakePairAndSwapPair();
+}
 
-	if (addRequested.size() != 0)
-	{
-		for (BoxCollider* const boxCollider : addRequested)
-		{
-			colliders.emplace_back(boxCollider);
-		}
+void Wanted::CollisionSystem::MakePairAndSwapPair()
+{
+	currentPairs.clear();
 
-		addRequested.clear();
-	}
-
-	// collision
-	int totalSize = colliders.size();
-	for (int i = 0; i < totalSize - 1; i++)
+	const int n = colliders.size();
+	for (int i = 0; i < n; i++)
 	{
-		if (colliders[i]->HasBeganPlay() == false ||
-			colliders[i]->GetIsActive() == false)
+		BoxCollider* a = colliders[i];
+		if (a->HasBeganPlay() == false)
 			continue;
 
-		for (int j = i + 1; j < totalSize; j++)
+		for (int j = i + 1; j < n; ++j)
 		{
-			if (colliders[j]->HasBeganPlay() == false ||
-				colliders[j]->GetIsActive() == false)
-				continue;
+			BoxCollider* b = colliders[j];
+			if (!b) continue;
 
-			if (colliders[i]->AABBCollision(colliders[j]))
+			if (a->AABBCollision(b))
 			{
-				colliders[i]->NotifyCollision(colliders[j]);
-				colliders[j]->NotifyCollision(colliders[i]);
+				currentPairs.insert(MakeKey(a, b));
 			}
 		}
 	}
+
+	// 2) Enter / Stay
+	for (const auto& key : currentPairs)
+	{
+		std::pair<BoxCollider*, BoxCollider*> pair = DecodeKey(key);
+		BoxCollider* a = pair.first;
+		BoxCollider* b = pair.second;
+
+		if (previousPairs.find(key) == previousPairs.end())
+		{
+			if (a && b)
+			{
+				a->NotifyEnter(b);
+				b->NotifyEnter(a);
+			}
+		}
+		else
+		{
+			// Stay
+			if (a && b)
+			{
+				a->NotifyStay(b);
+				b->NotifyStay(a);
+			}
+		}
+	}
+
+	// 3) Exit
+	for (const auto& key : previousPairs)
+	{
+		if (currentPairs.find(key) == currentPairs.end())
+		{
+			std::pair<BoxCollider*, BoxCollider*> pair = DecodeKey(key);
+			BoxCollider* a = pair.first;
+			BoxCollider* b = pair.second;
+			if (a && b)
+			{
+				a->NotifyExit(b);
+				b->NotifyExit(a);
+			}
+		}
+	}
+
+	// 4) 스왑
+	previousPairs = currentPairs;
+}
+
+void Wanted::CollisionSystem::ApplyNewRequested()
+{
+	for (int i = 0; i < static_cast<int>(colliders.size()); )
+	{
+		if (colliders[i]->DestoryRequested())
+		{
+			delete colliders[i];
+			colliders.erase(colliders.begin() + i);
+			continue;
+		}
+
+		++i;
+	}
+
+	if (addRequestedColliders.size() == 0)
+		return;
+
+	for (BoxCollider* const collider : addRequestedColliders)
+	{
+		colliders.emplace_back(collider);
+	}
+
+	addRequestedColliders.clear();
 }
 
 void CollisionSystem::Register(BoxCollider* newCollider)
 {
-	addRequested.emplace_back(newCollider);
-}
-
-void CollisionSystem::UnRegister(BoxCollider* collider)
-{
-	removeRequested.emplace_back(collider);
+	if (newCollider != nullptr)
+		addRequestedColliders.emplace_back(newCollider);
 }

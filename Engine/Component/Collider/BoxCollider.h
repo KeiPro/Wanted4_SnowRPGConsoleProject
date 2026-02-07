@@ -12,9 +12,8 @@ namespace Wanted
 		RTTI_DECLARATIONS(BoxCollider, Component)
 
 	public:
-
+		
 		using CollisionCallback = void(*)(BoxCollider* self, BoxCollider* const other);
-		using OnCollisionExit = void(*)(BoxCollider* self);
 
 		BoxCollider(int left, int top, int right, int bottom, int offsetX = 0, int offsetY = 0);
 		~BoxCollider();
@@ -23,10 +22,16 @@ namespace Wanted
 		virtual void Draw() override;
 
 		bool AABBCollision(const BoxCollider* const other);
+		inline bool DestoryRequested() const { return destroyRequested; }
 		void SetPosition(int left, int top);
-		void NotifyCollision(BoxCollider* const other);
-		
-		inline void SetCollisionCallback(CollisionCallback callback) { onCollision = callback; }
+
+		void SetOnEnter(CollisionCallback cb) { onEnter = cb; }
+		void SetOnStay(CollisionCallback cb) { onStay = cb; }
+		void SetOnExit(CollisionCallback cb) { onExit = cb; }
+
+		void NotifyEnter(BoxCollider* other) { if (onEnter) onEnter(this, other); }
+		void NotifyStay(BoxCollider* other) { if (onStay) onStay(this, other); }
+		void NotifyExit(BoxCollider* other) { if (onExit) onExit(this, other); }
 
 	public:
 
@@ -38,8 +43,11 @@ namespace Wanted
 		int offsetX = 0, offsetY = 0;
 		Vector2 size = {};
 
-		CollisionCallback onCollision = nullptr;
-		OnCollisionExit onCollisionExit = nullptr;
+		bool destroyRequested = false;
+
+		CollisionCallback onEnter = nullptr;
+		CollisionCallback onStay = nullptr;
+		CollisionCallback onExit = nullptr;
 	};
 }
 
