@@ -23,7 +23,8 @@ namespace Wanted
 
 		bool AABBCollision(const BoxCollider* const other);
 		inline bool DestoryRequested() const { return destroyRequested; }
-		void SetPosition(int left, int top);
+		void SyncToOwner();
+		void SetOffset(int offsetX, int offsetY);
 
 		void SetOnEnter(CollisionCallback cb) { onEnter = cb; }
 		void SetOnStay(CollisionCallback cb) { onStay = cb; }

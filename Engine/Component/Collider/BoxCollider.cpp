@@ -8,8 +8,9 @@
 using namespace Wanted;
 
 BoxCollider::BoxCollider(int left, int top, int right, int bottom, int offsetX, int offsetY)
-	: left(left), top(top), right(right), bottom(bottom), offsetX(offsetX), offsetY(offsetY)
+	: left(left), top(top), right(right), bottom(bottom)
 {
+	SetOffset(offsetX, offsetY);
 	size = { right - left, bottom - top };
 }
 
@@ -25,8 +26,10 @@ void BoxCollider::BeginPlay()
 
 void BoxCollider::Tick(float deltaTime)
 {
-	SetPosition(GetOwner()->GetPosition().x, GetOwner()->GetPosition().y);
+	SyncToOwner();
 }
+
+
 
 void BoxCollider::Draw()
 {
@@ -42,12 +45,18 @@ void BoxCollider::Draw()
 	}
 }
 
-void BoxCollider::SetPosition(int left, int top)
+void BoxCollider::SyncToOwner()
 {
-	this->left = GetOwner()->GetPosition().x + offsetX;
-	this->top = GetOwner()->GetPosition().y + offsetY;
+	this->left = (int)GetOwner()->GetPosition().x + offsetX;
+	this->top = (int)GetOwner()->GetPosition().y + offsetY;
 	this->right = this->left + size.x;
 	this->bottom = this->top + size.y;
+}
+
+void Wanted::BoxCollider::SetOffset(int offsetX, int offsetY)
+{
+	this->offsetX = offsetX;
+	this->offsetY = offsetY;
 }
 
 bool BoxCollider::AABBCollision(const BoxCollider* const other)
@@ -59,10 +68,10 @@ bool BoxCollider::AABBCollision(const BoxCollider* const other)
 	int otherXMin = other->left; int otherXMax = other->right; 
 	int otherYMin = other->top;  int otherYMax = other->bottom;
 
-	if (otherXMin > xMax || otherXMax < xMin)
+	if (otherXMin >= xMax || otherXMax <= xMin)
 		return false;
 	
-	if (otherYMin > yMax || otherYMax < yMin)
+	if (otherYMin >= yMax || otherYMax <= yMin)
 		return false;
 
 	return true;

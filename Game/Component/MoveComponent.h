@@ -5,37 +5,44 @@
 
 #include <unordered_set>
 
-namespace Wanted { class BoxCollider; }
-
-using namespace Wanted;
-class MoveComponent : public Component
+namespace Wanted
 {
-	RTTI_DECLARATIONS(MoveComponent, Component)
+	class BoxCollider;
+	class MoveComponent : public Component
+	{
+		RTTI_DECLARATIONS(MoveComponent, Component)
 
-public:
+	public:
 
-	MoveComponent();
-	~MoveComponent();
+		MoveComponent();
+		~MoveComponent();
 
-	virtual void BeginPlay() override;
-	virtual void Tick(float deltaTime) override;
+		virtual void BeginPlay() override;
+		virtual void Tick(float deltaTime) override;
 
-	inline bool IsOnGrounded() const { return onGrounded; }
-	void RequestOnGrounded(int floorY);
+		void SetBlockedLeft(bool v) { blockMoveLeft = v; }
+		void SetBlockedRight(bool v) { blockMoveRight = v; }
+		void ClearSideBlocks() { blockMoveLeft = false; blockMoveRight = false; }
 
-	void OnFootEnter(BoxCollider* ground);
-	void OnFootExit(BoxCollider* ground);
+		inline bool IsOnGrounded() const { return onGrounded; }
+		void RequestOnGrounded(int floorY);
 
-private:
+		void OnFootEnter(BoxCollider* ground);
+		void OnFootExit(BoxCollider* ground);
 
-	float moveSpeed = 30.0f;
-	float jumpPower = 30.0f;
-	Vector2 velocity = {0, 0};
+	private:
 
-	float physY = 0.0f;
-	
-	BoxCollider* floorBox = nullptr;
+		float moveSpeed = 30.0f;
+		float jumpPower = 30.0f;
+		Vector2 velocity = { 0, 0 };
 
-	std::unordered_set<BoxCollider*> groundContacts;
-	bool onGrounded = false;
-};
+		float physY = 0.0f;
+
+		BoxCollider* footCollider = nullptr;
+
+		std::unordered_set<BoxCollider*> groundContacts;
+		bool onGrounded = false;
+		bool blockMoveLeft = false;
+		bool blockMoveRight = false;
+	};
+}

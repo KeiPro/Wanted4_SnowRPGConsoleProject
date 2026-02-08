@@ -27,7 +27,7 @@ Player::Player(const Vector2 position)
 		int right = left + GetWidth();
 		int bottom = top + GetHeight();
 
-		BoxCollider* footCollider = new BoxCollider(left, bottom, right, bottom + 1, 0, 1);
+		footCollider = new BoxCollider(left, bottom, right, bottom + 1, 0, 1);
 		footCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
 			{
 				if (!other->GetOwner()->IsTypeOf<En_Wall>())
@@ -61,7 +61,93 @@ Player::Player(const Vector2 position)
 	}
 
 	// sideCollider
+	{
+		int left = static_cast<int>(position.x);
+		int top = static_cast<int>(position.y);
+		int right = left + GetWidth();
+		int bottom = top + GetHeight();
 
+		sideCollider = new BoxCollider(left, top, right, bottom, 1, 0);
+		
+		sideCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
+			{
+				if (!other->GetOwner()->IsTypeOf<En_Wall>()) 
+					return;
+
+				auto* move = self->GetOwner()->GetComponent<MoveComponent>();
+				if (!move || !move->HasBeganPlay()) return;
+
+				Player* p = static_cast<Player*>(self->GetOwner());
+				if (p->GetDir() == EDir::Right) 
+					move->SetBlockedRight(true);
+				else                           
+					move->SetBlockedLeft(true);
+			});
+
+		sideCollider->SetOnStay([](BoxCollider* self, BoxCollider* other)
+			{
+				if (!other->GetOwner()->IsTypeOf<En_Wall>())
+					return;
+
+				auto* move = self->GetOwner()->GetComponent<MoveComponent>();
+				if (!move || !move->HasBeganPlay()) return;
+
+				Player* p = static_cast<Player*>(self->GetOwner());
+				if (p->GetDir() == EDir::Right)
+					move->SetBlockedRight(true);
+				else
+					move->SetBlockedLeft(true);
+			});
+
+		sideCollider->SetOnExit([](BoxCollider* self, BoxCollider* other)
+			{
+				if (!other->GetOwner()->IsTypeOf<En_Wall>()) return;
+
+				auto* move = self->GetOwner()->GetComponent<MoveComponent>();
+				if (!move) return;
+
+				Player* p = static_cast<Player*>(self->GetOwner());
+				if (p->GetDir() == EDir::Right) 
+					move->SetBlockedRight(false);
+				else                           
+					move->SetBlockedLeft(false);
+			});
+
+		sideCollider->debugMode = true;
+
+		AddNewComponent(sideCollider);
+		CollisionSystem::Get().Register(sideCollider);
+	}
+}
+
+void Wanted::Player::SetDir(EDir newDir)
+{
+	if (dir == newDir)
+		return;
+
+	EDir old = dir;
+	dir = newDir;
+	OnChangedDir(old, newDir);
+}
+
+void Wanted::Player::OnChangedDir(EDir oldDir, EDir newDir)
+{
+	if (auto* move = GetComponent<MoveComponent>())
+		move->ClearSideBlocks();
+
+	UpdateSideColliderOffset();
+}
+
+void Wanted::Player::UpdateSideColliderOffset()
+{
+	if (!sideCollider) 
+		return;
+
+	int w = GetWidth();
+	if (dir == EDir::Right)
+		sideCollider->SetOffset(w, 0);
+	else
+		sideCollider->SetOffset(-1, 0);
 }
 
 void Player::BeginPlay()
@@ -73,7 +159,7 @@ void Player::Tick(float deltaTime)
 {
 	Actor::Tick(deltaTime);
 
-	if (Wanted::Input::Get().GetKeyDown(VK_ESCAPE))
+	if (Input::Get().GetKeyDown(VK_ESCAPE))
 	{
 		Game::Get().ToggleMenu();
 		return;
