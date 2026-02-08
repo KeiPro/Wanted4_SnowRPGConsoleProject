@@ -26,10 +26,8 @@ void BoxCollider::BeginPlay()
 
 void BoxCollider::Tick(float deltaTime)
 {
-	SyncToOwner();
+	//SyncToOwner();
 }
-
-
 
 void BoxCollider::Draw()
 {

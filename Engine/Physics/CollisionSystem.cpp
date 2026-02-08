@@ -49,6 +49,13 @@ void Wanted::CollisionSystem::RemovePairsIncluding(BoxCollider* c)
 void CollisionSystem::Tick(float deltaTime)
 {
 	ApplyNewRequested();
+
+	for (BoxCollider* c : colliders)
+	{
+		if (!c || !c->GetIsActive()) continue;
+		c->SyncToOwner();
+	}
+
 	MakePairAndSwapPair();
 }
 

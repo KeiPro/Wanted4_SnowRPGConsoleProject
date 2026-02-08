@@ -25,6 +25,10 @@ namespace Wanted
 
 		void QuitEngine();
 
+		int GetWidth()  const { return setting.width; }
+
+		int GetHeight() const { return setting.height; }
+
 		void SetNewLevel(class Level* newLevel);
 
 		static Engine& Get();

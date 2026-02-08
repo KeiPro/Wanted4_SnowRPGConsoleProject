@@ -20,12 +20,9 @@ namespace Wanted
 		virtual void BeginPlay() override;
 		virtual void Tick(float deltaTime) override;
 
-		void SetBlockedLeft(bool v) { blockMoveLeft = v; }
-		void SetBlockedRight(bool v) { blockMoveRight = v; }
-		void ClearSideBlocks() { blockMoveLeft = false; blockMoveRight = false; }
-
 		inline bool IsOnGrounded() const { return onGrounded; }
 		void RequestOnGrounded(int floorY);
+		void TryMoveX(Vector2& pos, float dx);
 
 		void OnFootEnter(BoxCollider* ground);
 		void OnFootExit(BoxCollider* ground);
@@ -42,7 +39,5 @@ namespace Wanted
 
 		std::unordered_set<BoxCollider*> groundContacts;
 		bool onGrounded = false;
-		bool blockMoveLeft = false;
-		bool blockMoveRight = false;
 	};
 }

@@ -3,6 +3,7 @@
 #include "Actor/Actor.h"
 #include "Component/Collider/BoxCollider.h"
 #include "Actor/Player.h"
+#include "Engine/Engine.h"
 
 using namespace Wanted;
 
@@ -29,14 +30,18 @@ void MoveComponent::Tick(float deltaTime)
     const float gravity = 200.0f;
     const float jumpHeight = 3;
     const float jumpPower = sqrtf(2.0f * gravity * jumpHeight);
-
-    float dt = deltaTime;
-    if (dt > 0.05f) dt = 0.05f;
     
+    Vector2 pos = GetOwner()->GetPosition();
+
     // Move Left, Right 
     float dirX = 0.f;
     if (Input::Get().GetKey(VK_RIGHT)) dirX += 1.f;
     if (Input::Get().GetKey(VK_LEFT))  dirX -= 1.f;
+
+    const int mapW = Engine::Get().GetWidth();
+    const int minX = 1;
+    const int maxX = mapW - 2;
+
     velocity.x = dirX * moveSpeed;
 
     Player* player = static_cast<Player*>(GetOwner());
@@ -48,10 +53,9 @@ void MoveComponent::Tick(float deltaTime)
             player->SetDir(Player::EDir::Left);
     }
 
-    if (velocity.x < 0 && blockMoveLeft)
-        velocity.x = 0;
-    if (velocity.x > 0 && blockMoveRight)
-        velocity.x = 0;
+    float nextX = pos.x + velocity.x * deltaTime;
+    if (nextX > minX && nextX < maxX)
+        pos.x = nextX;
 
     // Jump
     if (Input::Get().GetKeyDown('S') && onGrounded)
@@ -72,13 +76,11 @@ void MoveComponent::Tick(float deltaTime)
 		footCollider->SetIsActive(true);
 
     physY += velocity.y * deltaTime;
-
-    Vector2 pos = GetOwner()->GetPosition();
-    pos.x += velocity.x * deltaTime;       
     pos.y = static_cast<int>(physY);
 
     GetOwner()->SetPosition(pos);
 }
+
 
 void MoveComponent::RequestOnGrounded(int floorY)
 {
