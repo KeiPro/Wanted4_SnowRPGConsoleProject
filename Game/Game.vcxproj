@@ -93,6 +93,8 @@
     <ClCompile Include="Actor\Envrionments\En_Empty.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\Envrionments\En_Wall.cpp" />
+    <ClCompile Include="Actor\PlayerBullet.cpp" />
+    <ClCompile Include="Component\AttackComponent.cpp" />
     <ClCompile Include="Component\MoveComponent.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Level\MenuLevel.cpp" />
@@ -104,9 +106,11 @@
     <ClInclude Include="Actor\Envrionments\En_Empty.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="Actor\Envrionments\En_Wall.h" />
+    <ClInclude Include="Actor\PlayerBullet.h" />
+    <ClInclude Include="Component\AttackComponent.h" />
     <ClInclude Include="Component\MoveComponent.h" />
     <ClInclude Include="Game\Game.h" />
-    <ClInclude Include="Interface\ICanPlayerMove.h" />
+    <ClInclude Include="Interface\ISpawner.h" />
     <ClInclude Include="Level\MenuLevel.h" />
     <ClInclude Include="Level\SnowRPGLevel.h" />
     <ClInclude Include="Util\Timer.h" />

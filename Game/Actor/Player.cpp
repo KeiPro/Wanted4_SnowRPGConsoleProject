@@ -4,17 +4,17 @@
 #include "Level/Level.h"
 #include "Game/Game.h"
 #include "Component/MoveComponent.h"
+#include "Component/AttackComponent.h"
 #include "Component/Collider/BoxCollider.h"
 #include "Envrionments/En_Wall.h"
 #include "Physics/CollisionSystem.h"
-#include "Common/RTTI.h"
 
 #include <Windows.h>
 
 using namespace Wanted;
 
 Player::Player(const Vector2 position)
-	: super("P", position, Color::Blue)
+	: super("P", position, Color::White)
 {
 	sortingOrder = 10;
 
@@ -59,6 +59,12 @@ Player::Player(const Vector2 position)
 		AddNewComponent(footCollider);
 		CollisionSystem::Get().Register(footCollider);
 	}
+
+	// AttackComponent
+	{
+		attackComponent = new AttackComponent();
+		AddNewComponent(attackComponent);
+	}
 }
 
 void Wanted::Player::SetDir(EDir newDir)
@@ -66,34 +72,14 @@ void Wanted::Player::SetDir(EDir newDir)
 	if (dir == newDir)
 		return;
 
-	EDir old = dir;
 	dir = newDir;
-	//OnChangedDir(old, newDir);
 }
-
-//void Wanted::Player::OnChangedDir(EDir oldDir, EDir newDir)
-//{
-//	if (auto* move = GetComponent<MoveComponent>())
-//		move->ClearSideBlocks();
-//
-//	UpdateSideColliderOffset();
-//}
-//
-//void Wanted::Player::UpdateSideColliderOffset()
-//{
-//	if (!sideCollider) 
-//		return;
-//
-//	int w = GetWidth();
-//	if (dir == EDir::Right)
-//		sideCollider->SetOffset(w, 0);
-//	else
-//		sideCollider->SetOffset(-1, 0);
-//}
 
 void Player::BeginPlay()
 {
 	Actor::BeginPlay();
+
+	attackComponent->SetSpawner(GetOwner());
 }
 
 void Player::Tick(float deltaTime)

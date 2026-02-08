@@ -21,7 +21,6 @@ namespace Wanted
 		virtual void Draw();
 
 		void AddNewActor(Actor* newActor);
-
 		void ProcessAddAndDestroyActors();
 
 	protected:

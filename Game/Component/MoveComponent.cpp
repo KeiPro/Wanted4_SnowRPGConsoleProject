@@ -44,15 +44,6 @@ void MoveComponent::Tick(float deltaTime)
 
     velocity.x = dirX * moveSpeed;
 
-    Player* player = static_cast<Player*>(GetOwner());
-    if (player)
-    {
-        if (velocity.x > 0.f)     
-            player->SetDir(Player::EDir::Right);
-        else if (velocity.x < 0.f)
-            player->SetDir(Player::EDir::Left);
-    }
-
     float nextX = pos.x + velocity.x * deltaTime;
     if (nextX > minX && nextX < maxX)
         pos.x = nextX;
@@ -79,8 +70,24 @@ void MoveComponent::Tick(float deltaTime)
     pos.y = static_cast<int>(physY);
 
     GetOwner()->SetPosition(pos);
-}
 
+    Player* player = static_cast<Player*>(GetOwner());
+    if (player == nullptr)
+        return;
+
+    if (velocity.x > 0.f)
+        player->SetDir(Player::EDir::Right);
+    else if (velocity.x < 0.f)
+        player->SetDir(Player::EDir::Left);
+
+    Vector2 newFirePos = {GetOwner()->GetPosition().x, GetOwner()->GetPosition().y};
+    if (player->GetDir() == Player::EDir::Right)
+        newFirePos.x += player->GetWidth();
+    else
+        newFirePos.x -= 1;
+
+    player->SetFirePos(newFirePos);
+}
 
 void MoveComponent::RequestOnGrounded(int floorY)
 {

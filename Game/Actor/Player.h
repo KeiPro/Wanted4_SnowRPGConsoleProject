@@ -4,6 +4,7 @@
 //using namespace Wanted;
 namespace Wanted
 {
+	class AttackComponent;
 	class BoxCollider;
 	class Player : public Actor
 	{
@@ -18,14 +19,16 @@ namespace Wanted
 	public:
 		Player(const Vector2 postiion);
 
-		inline EDir GetDir() const { return dir; }
+		EDir GetDir() 
+		{
+			return dir;
+		}
+		inline Vector2 GetFirePos() const { return firePos; }
 
 		void SetDir(EDir dir);
-		void OnChangedDir(EDir oldDir, EDir newDir);
-		void UpdateSideColliderOffset();
+		inline void SetFirePos(Vector2 newPos) { firePos = newPos; }
 
 		inline BoxCollider* GetFootCollider() { return footCollider; }
-		inline BoxCollider* GetSideCollider() { return sideCollider; }
 		inline BoxCollider* GetBodyCollider() { return bodyCollider; }
 
 	protected:
@@ -36,9 +39,10 @@ namespace Wanted
 	private:
 
 		BoxCollider* footCollider = nullptr;
-		BoxCollider* sideCollider = nullptr;
 		BoxCollider* bodyCollider = nullptr;
+		AttackComponent* attackComponent = nullptr;
 
 		EDir dir = EDir::Right;
+		Vector2 firePos = {};
 	};
 }

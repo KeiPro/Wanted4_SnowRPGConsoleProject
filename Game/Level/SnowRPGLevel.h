@@ -1,23 +1,26 @@
 #pragma once
 #include "Level/Level.h"
-#include "Interface/ICanPlayerMove.h"
+#include "Interface/ISpawner.h"
 
-class SnowRPGLevel : public Wanted::Level
+namespace Wanted
 {
-	RTTI_DECLARATIONS(SnowRPGLevel, Level)
+	class SnowRPGLevel : public Level
+	{
+		RTTI_DECLARATIONS(SnowRPGLevel, Level)
 
-public:
-	SnowRPGLevel();
+	public:
+		SnowRPGLevel();
 
-	virtual void Draw() override;
+		virtual void Draw() override;
 
-private:
-	void LoadMap(const char* filename);
+	private:
+		void LoadMap(const char* filename);
 
-	bool CheckGameClear();
+		bool CheckGameClear();
 
-private:
-	int targetScore = 0;
+	private:
+		int targetScore = 0;
 
-	bool isGameClear = false;
-};
+		bool isGameClear = false;
+	};
+}

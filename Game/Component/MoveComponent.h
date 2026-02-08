@@ -22,7 +22,6 @@ namespace Wanted
 
 		inline bool IsOnGrounded() const { return onGrounded; }
 		void RequestOnGrounded(int floorY);
-		void TryMoveX(Vector2& pos, float dx);
 
 		void OnFootEnter(BoxCollider* ground);
 		void OnFootExit(BoxCollider* ground);

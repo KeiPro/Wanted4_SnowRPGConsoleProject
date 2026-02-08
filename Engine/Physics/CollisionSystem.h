@@ -1,4 +1,4 @@
-#pragma once-nb
+#pragma once
 
 #include "Common/RTTI.h"
 

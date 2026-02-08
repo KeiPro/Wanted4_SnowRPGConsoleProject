@@ -26,7 +26,7 @@ void BoxCollider::BeginPlay()
 
 void BoxCollider::Tick(float deltaTime)
 {
-	//SyncToOwner();
+	super::Tick(deltaTime);
 }
 
 void BoxCollider::Draw()
@@ -51,7 +51,7 @@ void BoxCollider::SyncToOwner()
 	this->bottom = this->top + size.y;
 }
 
-void Wanted::BoxCollider::SetOffset(int offsetX, int offsetY)
+void BoxCollider::SetOffset(int offsetX, int offsetY)
 {
 	this->offsetX = offsetX;
 	this->offsetY = offsetY;

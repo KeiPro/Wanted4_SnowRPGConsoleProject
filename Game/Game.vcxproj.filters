@@ -42,6 +42,12 @@
     <ClCompile Include="Component\MoveComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Component\AttackComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\PlayerBullet.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\Player.h">
@@ -51,9 +57,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Game\Game.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Interface\ICanPlayerMove.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Level\MenuLevel.h">
@@ -69,6 +72,15 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Component\MoveComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\AttackComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\PlayerBullet.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ISpawner.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
