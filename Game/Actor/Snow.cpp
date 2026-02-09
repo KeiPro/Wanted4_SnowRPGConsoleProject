@@ -1,4 +1,5 @@
-#include "Snow.h"
+ï»¿#include "Snow.h"
+#include "Actor/Enemy/Enemy.h"
 
 using namespace Wanted;
 
@@ -6,14 +7,15 @@ static const Snow::FreezeEffect sequence[] =
 {
 	Snow::FreezeEffect(".", 1.0f, 2, Color::Blue),
 	Snow::FreezeEffect(".", 1.0f, 2, Color::Blue),
-	Snow::FreezeEffect("¤·", 1.0f, 3, Color::Blue),
-	Snow::FreezeEffect("¡Ý", 1.0f, 4, Color::Blue),
-	Snow::FreezeEffect("¨¸", 2.0f, INT_MAX, Color::Blue),
+	Snow::FreezeEffect("ã…‡", 1.0f, 3, Color::Blue),
+	Snow::FreezeEffect("â—Ž", 1.0f, 4, Color::Blue),
+	Snow::FreezeEffect("ã‰§", 2.0f, 99999, Color::Blue),
 };
 
-Snow::Snow(const Vector2& position)
-	: super(sequence[0].frame, position, Color::Blue)
+Snow::Snow(const Vector2& position, Enemy* changedEnemy)
+	: super(sequence[0].frame, position, Color::Blue), changedEnemy(changedEnemy)
 {
+	sortingOrder = 10;
 	int effectFrameImageLength = 6;
 
 	freezeEffectSequenceCount = sizeof(sequence) / sizeof(sequence[0]);
@@ -40,6 +42,7 @@ void Snow::Tick(float deltaTime)
 	if (currentSequenceIndex < 0)
 	{
 		Destroy();
+		changedEnemy->OnSnowballReleased(position);
 		return;
 	}
 
@@ -60,7 +63,7 @@ void Snow::OnDamaged(int damage)
 	++currentSequenceIndex;
 	if (currentSequenceIndex >= freezeEffectSequenceCount)
 	{
-		// Todo : ÃÖ´ë index»óÅÂ Ã³¸®ÇÏ±â
+		currentSequenceIndex = freezeEffectSequenceCount - 1;
 		return;
 	}
 

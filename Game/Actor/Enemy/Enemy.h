@@ -22,6 +22,9 @@ namespace Wanted
 		Enemy(const char* image, const Vector2& position, Color color);
 		~Enemy();
 
+		void OnSnowballReleased(const Vector2& position);
+		void OnDamaged(int damage) override;
+
 	protected:
 
 		virtual void BeginPlay() override;
@@ -32,8 +35,6 @@ namespace Wanted
 		virtual void UpdateChase(float deltaTime);
 		virtual void UpdateAttack(float deltaTime);
 		virtual void Dead();
-		
-
 
 	protected:
 
@@ -41,8 +42,5 @@ namespace Wanted
 		bool isDead = false;
 		int moveSpeed = 10;
 		int freezeStack = 0;
-
-		// IDamageable을(를) 통해 상속됨
-		void OnDamaged(int damage) override;
 	};
 }

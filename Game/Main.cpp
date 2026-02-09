@@ -19,7 +19,9 @@ using namespace Wanted;
 
 int main()
 {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF);
+
+	_CrtSetBreakAlloc(2403); // <- 누수 블록 번호
 
 	Game game;
 	game.Run();

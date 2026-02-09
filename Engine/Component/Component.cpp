@@ -27,7 +27,7 @@ namespace Wanted
 
 	}
 
-	void Component::Destory()
+	void Component::Destroy()
 	{
 		destroyRequested = true;
 

@@ -27,6 +27,8 @@ void BoxCollider::BeginPlay()
 void BoxCollider::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
+	
+	SyncToOwner();
 }
 
 void BoxCollider::Draw()

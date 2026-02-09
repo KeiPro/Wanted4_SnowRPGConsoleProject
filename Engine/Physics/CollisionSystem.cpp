@@ -50,11 +50,11 @@ void CollisionSystem::Tick(float deltaTime)
 {
 	ApplyNewRequested();
 
-	for (BoxCollider* c : colliders)
+	/*for (BoxCollider* c : colliders)
 	{
 		if (!c || !c->GetIsActive()) continue;
 		c->SyncToOwner();
-	}
+	}*/
 
 	MakePairAndSwapPair();
 }
@@ -67,13 +67,13 @@ void Wanted::CollisionSystem::MakePairAndSwapPair()
 	for (int i = 0; i < n; i++)
 	{
 		BoxCollider* a = colliders[i];
-		if (!a || a->GetIsActive() == false)
+		if (!a || a->GetIsActive() == false || a->DestroyRequested())
 			continue;
 
 		for (int j = i + 1; j < n; ++j)
 		{
 			BoxCollider* b = colliders[j];
-			if (!b || b->GetIsActive() == false) 
+			if (!b || b->GetIsActive() == false || b->DestroyRequested()) 
 				continue;
 
 			if (a->AABBCollision(b))

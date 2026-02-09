@@ -27,8 +27,7 @@ namespace Wanted
 
 		for (Component* component : components)
 		{
-			delete component;
-			component = nullptr;
+			component->Destroy();
 		}
 	}
 
@@ -103,11 +102,9 @@ namespace Wanted
 
 	void Actor::ChangeImage(const char* newImage)
 	{
-		// 기존 메모리 해제.
 		delete[] image;
 		image = nullptr;
 
-		// 새로운 문자열 복사.
 		width = static_cast<int>(strlen(newImage));
 		image = new char[width + 1];
 		strcpy_s(image, width + 1, newImage);

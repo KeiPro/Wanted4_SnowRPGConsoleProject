@@ -6,6 +6,7 @@
 
 namespace Wanted
 {
+    class BoxCollider;
     class PlayerBullet : public Actor
     {
         RTTI_DECLARATIONS(PlayerBullet, Actor)
@@ -30,5 +31,6 @@ namespace Wanted
 
         float lifeTime = 0.0f;
         float maxLifeTime = 3.0f;
+        BoxCollider* boxCollider = nullptr;
     };
 }

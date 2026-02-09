@@ -23,7 +23,7 @@ Thief::Thief(const Vector2 position)
 	thiefMoveComp = new ThiefMoveComponent();
 	AddNewComponent(thiefMoveComp);
 
-	// bodyCollider -> boxÀÇ Å©±â : (width + 2, height + 2)
+	// bodyCollider -> boxï¿½ï¿½ Å©ï¿½ï¿½ : (width + 2, height + 2)
 	{
 		int left = static_cast<int>(position.x) - 1;
 		int top = static_cast<int>(position.y) - 1;
@@ -31,15 +31,15 @@ Thief::Thief(const Vector2 position)
 		int bottom = top + GetHeight() + 2;
 
 		bodyCollider = new BoxCollider(left, top, right, bottom, -1, -1);
-		bodyCollider->debugMode = true;
-		bodyCollider->debugColor = Color::Red;
+		//bodyCollider->debugMode = true;
+		//bodyCollider->debugColor = Color::Red;
 		CollisionSystem::Get().Register(bodyCollider);
 		AddNewComponent(bodyCollider);
 	}
 	
-	// footCollider -> boxÀÇ Å©±â : (width, 1)
+	// footCollider -> boxï¿½ï¿½ Å©ï¿½ï¿½ : (width, 1)
 	{
-		// ÃÊ±â À§Ä¡ ¼³Á¤.
+		// ï¿½Ê±ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½.
 		int left = static_cast<int>(position.x);
 		int top = static_cast<int>(position.y) + 1;
 		int right = left + GetWidth();
@@ -70,8 +70,8 @@ Thief::Thief(const Vector2 position)
 			moveComp->OnFootExit(other);
 		});
 
-		footCollider->debugMode = true;
-		footCollider->debugColor = Color::Green;
+		//footCollider->debugMode = true;
+		//footCollider->debugColor = Color::Green;
 		CollisionSystem::Get().Register(footCollider);
 		AddNewComponent(footCollider);
 	}
@@ -157,14 +157,14 @@ void Thief::UpdateChase(float deltaTime)
 	position.x += delta;
 
 	// UpdateChase 1.
-	// xÃàÀ¸·Î ÀÏÁ¤ ¹üÀ§ ¾È¿¡ µé¾î¿Ô´ÂÁö Ã¼Å©.
-	//    ¸¸¾à, µé¾î¿ÀÁö ¾Ê¾Ò´Ù¸é return;
+	// xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½È¿ï¿½ ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ Ã¼Å©.
+	//    ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò´Ù¸ï¿½ return;
 	if (CheckPlayerXRange(position.x, targetPosition.x) == false)
 		return;
 
 	float diff = position.y - targetPosition.y;
 
-	// °°Àº À§Ä¡¿¡ ÀÖ´Ù.
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ö´ï¿½.
 	if (abs(diff) <= 0.00001f)
 		return;
 
@@ -184,7 +184,7 @@ void Thief::UpdateChase(float deltaTime)
 
 	//if (position.y < targetPosition.y)
 	//{
-	//	// ¾Æ·¡·Î Á¡ÇÁ.
+	//	// ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	//	jumpElapsedTime = 0.0f;
 	//	MoveComponent* moveComp = GetComponent<MoveComponent>();
 	//}
@@ -192,12 +192,12 @@ void Thief::UpdateChase(float deltaTime)
 	//// UpdateChase 2.
 	//if (position.y < targetPosition.y)
 	//{
-	//	// ¾Æ·¡·Î Á¡ÇÁ ÁøÇà.
+	//	// ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 
 	//}
 	//else if (position.y > targetPosition.y)
 	//{
-	//	// À§·Î Á¡ÇÁ ÁøÇà.		
+	//	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.		
 
 	//}
 }

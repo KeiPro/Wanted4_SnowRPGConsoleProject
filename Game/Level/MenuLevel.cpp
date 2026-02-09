@@ -40,12 +40,12 @@ void MenuLevel::Tick(float deltaTime)
 	super::Tick(deltaTime);
 
 	static int length = items.size();
-	if (Input::Get().GetKeyDown('W'))
+	if (Input::Get().GetKeyDown(VK_UP))
 	{
 		currentIndex = (currentIndex + length - 1) % length;
 	}
 
-	if (Input::Get().GetKeyDown('S'))
+	if (Input::Get().GetKeyDown(VK_DOWN))
 	{
 		currentIndex = (currentIndex + 1) % length;
 	}

@@ -15,10 +15,9 @@ En_Wall::En_Wall(const Vector2& position)
 	int right = left + GetWidth();
 	int bottom = top + GetHeight();
 
-	BoxCollider* collider = new BoxCollider(left, top, right, bottom);
-
-	AddNewComponent(collider);
-	CollisionSystem::Get().Register(collider);
+	boxCollider = new BoxCollider(left, top, right, bottom);
+	AddNewComponent(boxCollider);
+	CollisionSystem::Get().Register(boxCollider);
 }
 
 

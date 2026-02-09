@@ -5,6 +5,7 @@
 
 namespace Wanted
 {
+	class Enemy;
 	class Snow : public Actor, public IDamageable
 	{
 		RTTI_DECLARATIONS(Snow, Actor)
@@ -18,7 +19,6 @@ namespace Wanted
 				Color color = Color::Red)
 				: meltTime(meltTime), hp(hp), color(color)
 			{
-				// 문자열 설정.
 				size_t length = strlen(frame) + 1;
 				this->frame = new char[length];
 				strcpy_s(this->frame, length, frame);
@@ -30,7 +30,6 @@ namespace Wanted
 				frame = nullptr;
 			}
 
-			// 문자열 변수 (화면에 보여줄 문자열).
 			char* frame = nullptr;
 			float meltTime = 0.0f;
 			int hp = 2;
@@ -38,7 +37,7 @@ namespace Wanted
 		};
 
 	public:
-		Snow(const Vector2& position);
+		Snow(const Vector2& position, Enemy* changedEnemy);
 		~Snow();
 
 		virtual void Tick(float deltaTime) override;
@@ -51,7 +50,8 @@ namespace Wanted
 		Timer timer;
 		int hp = 1;
 
-		
+	private:
+		Enemy* changedEnemy = nullptr;
 	};
 }
 

@@ -18,7 +18,7 @@ namespace Wanted
 		virtual void Tick(float deltaTime);
 		virtual void Draw();
 
-		void Destory();
+		void Destroy();
 		virtual void OnDestroy();
 
 		void SetOwner(Actor* newOwner) { owner = newOwner; }

@@ -50,6 +50,9 @@ void Enemy::Tick(float deltaTime)
 
 void Enemy::Draw()
 {
+	if (state == EnemyState::Freeze)
+		return;
+
 	Actor::Draw();
 }
 
@@ -71,33 +74,18 @@ void Enemy::UpdateAttack(float deltaTime)
 void Enemy::Dead()
 {
 	isDead = true;
-
 	Destroy();
+}
+
+void Enemy::OnSnowballReleased(const Vector2& position)
+{
+	SetPosition(position);
+	state = EnemyState::Idle;
 }
 
 void Enemy::OnDamaged(int damage)
 {
 	state = EnemyState::Freeze;
 
-	GetOwner()->AddNewActor(new Snow(GetPosition()));
+	GetOwner()->AddNewActor(new Snow(GetPosition(), this));
 }
-
-//void Enemy::Freeze()
-//{
-//
-//}
-
-//void Enemy::OnDamaged()
-//{
-//	freezeStack++;
-//	if (freezeStack >= sizeof(sequence) / sizeof(FreezeEffectFrame))
-//	{
-//		;
-//
-//		return;
-//	}
-//	const FreezeEffectFrame& frame = sequence[freezeStack - 1];
-//	image = frame.frame;
-//	color = frame.color;
-//}
-
