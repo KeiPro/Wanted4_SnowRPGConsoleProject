@@ -12,7 +12,7 @@ namespace Wanted
 
 		void SetPlayer(Player* newPlayer) { player = newPlayer; }
 
-		Player* GetPlayer() const { return player; }
+		Player* GetPlayer() { return player; }
 
 		static GameManager& Get();
 

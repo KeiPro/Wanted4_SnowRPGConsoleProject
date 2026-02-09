@@ -22,6 +22,5 @@ namespace Wanted
 	private:
 		int targetScore = 0;
 		bool isGameClear = false;
-		//GameManager* gameManager = nullptr;
 	};
 }
