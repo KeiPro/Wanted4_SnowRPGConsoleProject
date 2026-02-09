@@ -6,6 +6,7 @@
 #include "Manager/GameManager.h"
 #include "Component/Collider/BoxCollider.h"
 #include "Physics/CollisionSystem.h"
+#include "Actor/Envrionments/En_Wall.h"
 
 using namespace Wanted;
 
@@ -17,17 +18,60 @@ Thief::Thief(const Vector2 position)
 
 	moveSpeed = 5;
 
-	// box의 크기 : 3 by 3
-	int left = static_cast<int>(position.x) - 1;
-	int top = static_cast<int>(position.y) - 1;
-	int right = left + 3;
-	int bottom = top + 3;
+	// bodyCollider -> box의 크기 : (width + 2, height + 2)
+	{
+		int left = static_cast<int>(position.x) - 1;
+		int top = static_cast<int>(position.y) - 1;
+		int right = left + GetWidth() + 2;
+		int bottom = top + GetHeight() + 2;
 
-	bodyCollider = new BoxCollider(left, top, right, bottom, -1, -1);
-	bodyCollider->debugMode = true;
-	bodyCollider->debugColor = Color::Red;
-	CollisionSystem::Get().Register(bodyCollider);
-	AddNewComponent(bodyCollider);
+		bodyCollider = new BoxCollider(left, top, right, bottom, -1, -1);
+		bodyCollider->debugMode = true;
+		bodyCollider->debugColor = Color::Red;
+		CollisionSystem::Get().Register(bodyCollider);
+		AddNewComponent(bodyCollider);
+	}
+	
+	// footCollider -> box의 크기 : (width, 1)
+	{
+		// 초기 위치 설정.
+		/*int left = static_cast<int>(position.x);
+		int top = static_cast<int>(position.y) + 1;
+		int right = left + GetWidth();
+		int bottom = top + 1;
+	
+		footCollider = new BoxCollider(left, top, right, bottom, 0, 1);
+		footCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
+		{
+			if (!other->GetOwner()->IsTypeOf<En_Wall>())
+				return;
+
+			MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
+			if (!moveComp || !moveComp->HasBeganPlay())
+				return;
+
+			moveComp->OnFootEnter(other);
+
+			moveComp->RequestOnGrounded(other->GetOwner()->GetPosition().y - 1);
+		});
+
+		footCollider->SetOnExit([](BoxCollider* self, BoxCollider* other)
+		{
+			if (!other->GetOwner()->IsTypeOf<En_Wall>())
+				return;
+
+			MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
+			if (!moveComp)
+				return;
+
+			moveComp->OnFootExit(other);
+		});
+
+		footCollider->debugMode = true;
+		footCollider->debugColor = Color::Green;
+		CollisionSystem::Get().Register(footCollider);
+		AddNewComponent(footCollider);*/
+	}
 }
 
 Thief::~Thief()
@@ -38,6 +82,8 @@ Thief::~Thief()
 void Thief::BeginPlay()
 {
 	Enemy::BeginPlay();
+
+
 }
 
 void Thief::Tick(float deltaTime)
@@ -103,16 +149,29 @@ void Thief::UpdateChase(float deltaTime)
 	Player* player = GameManager::Get().GetPlayer();
 	if (!player)
 		return;
-
-	// UpdateChase 1.
-
-	// UpdateChase 2.
-
+	
 	Vector2 targetPosition = player->GetPosition();
-
 	moveDir = targetPosition.x - position.x >= 0.0f ? 1 : -1;
 	float delta = moveSpeed * deltaTime * moveDir;
 	position.x += delta;
+
+	// UpdateChase 1.
+	// x축으로 일정 범위 안에 들어왔는지 체크.
+	//    만약, 들어오지 않았다면 return;
+	if (CheckPlayerXRange(position.x, targetPosition.x) == false)
+		return;
+
+	//// UpdateChase 2.
+	//if (position.y < targetPosition.y)
+	//{
+	//	// 아래로 점프 진행.
+
+	//}
+	//else if (position.y > targetPosition.y)
+	//{
+	//	// 위로 점프 진행.		
+
+	//}
 }
 
 void Thief::UpdateAttack(float deltaTime)
@@ -123,4 +182,15 @@ void Thief::UpdateAttack(float deltaTime)
 void Thief::Dead()
 {
 	Enemy::Dead();
+}
+
+bool Thief::CheckPlayerXRange(float myPosX, float playerPosX)
+{
+	if (myPosX < playerPosX - 2.0f ||
+		myPosX > playerPosX + 2.0f)
+	{
+		return false;
+	}
+
+	return true;
 }

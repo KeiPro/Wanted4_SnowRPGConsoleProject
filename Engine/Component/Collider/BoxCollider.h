@@ -4,6 +4,7 @@
 
 #include "Component/Component.h"
 #include "Math/Vector2.h"
+#include "Math/Color.h"
 
 namespace Wanted
 {
@@ -37,7 +38,7 @@ namespace Wanted
 	public:
 
 		bool debugMode = false;
-		Color debugColor = Color::Baclk;
+		Color debugColor = Color::White;
 
 	private:
 

@@ -4,6 +4,7 @@
 #include "Level/Level.h"
 #include "Game/Game.h"
 #include "Component/MoveComponent.h"
+#include "Component/PlayerMoveComponent.h"
 #include "Component/AttackComponent.h"
 #include "Component/Collider/BoxCollider.h"
 #include "Envrionments/En_Wall.h"
@@ -18,7 +19,7 @@ Player::Player(const Vector2 position)
 {
 	sortingOrder = 10;
 
-	AddNewComponent(new MoveComponent());
+	AddNewComponent(new PlayerMoveComponent());
 
 	// footCollider
 	{
@@ -29,30 +30,28 @@ Player::Player(const Vector2 position)
 
 		footCollider = new BoxCollider(left, bottom, right, bottom + 1, 0, 1);
 		footCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
-			{
-				if (!other->GetOwner()->IsTypeOf<En_Wall>())
-					return;
+		{
+			if (!other->GetOwner()->IsTypeOf<En_Wall>())
+				return;
 
-				MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
-				if (!moveComp || !moveComp->HasBeganPlay())
-					return;
+			MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
+			if (!moveComp || !moveComp->HasBeganPlay())
+				return;
 
-				moveComp->OnFootEnter(other);
-
-				moveComp->RequestOnGrounded(other->GetOwner()->GetPosition().y - 1);
-			});
+			moveComp->OnFootEnter(other, other->GetOwner()->GetPosition().y - 1);
+		});
 
 		footCollider->SetOnExit([](BoxCollider* self, BoxCollider* other)
-			{
-				if (!other->GetOwner()->IsTypeOf<En_Wall>())
-					return;
+		{
+			if (!other->GetOwner()->IsTypeOf<En_Wall>())
+				return;
 
-				MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
-				if (!moveComp)
-					return;
+			MoveComponent* const moveComp = self->GetOwner()->GetComponent<MoveComponent>();
+			if (!moveComp)
+				return;
 
-				moveComp->OnFootExit(other);
-			});
+			moveComp->OnFootExit(other);
+		});
 
 		footCollider->debugMode = true;
 

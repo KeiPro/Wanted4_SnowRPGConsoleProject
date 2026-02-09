@@ -2,6 +2,7 @@
 
 #include "Actor/Actor.h"
 #include "Player.h"
+#include "Util/GameConstants.h"
 
 namespace Wanted
 {
@@ -22,7 +23,7 @@ namespace Wanted
         float moveSpeed = 50.0f;
 
         // gravity
-        float gravity = 200.0f;
+        float gravity = GameConst::Gravity;
         Vector2 velocity = {};
         float physX = 0.f;
         float physY = 0.0f;

@@ -25,6 +25,8 @@ namespace Wanted
 		virtual void UpdateAttack(float deltaTime) override;
 		virtual void Dead() override;
 
+		bool CheckPlayerXRange(float myPosX, float playerPosX);
+
 	private:
 
 		Vector2 initialPosition = {};
@@ -32,6 +34,7 @@ namespace Wanted
 		int chaseRange = 0;
 		int moveDir = 1;
 
+		BoxCollider* footCollider = nullptr;
 		BoxCollider* bodyCollider = nullptr;
 		float elapsedTime = 0.0f;
 		float changeDirInterval = 1.5f;

@@ -20,13 +20,16 @@ namespace Wanted
 		virtual void BeginPlay() override;
 		virtual void Tick(float deltaTime) override;
 
-		inline bool IsOnGrounded() const { return onGrounded; }
-		void RequestOnGrounded(int floorY);
-
-		void OnFootEnter(BoxCollider* ground);
+		void OnFootEnter(BoxCollider* ground, int floorY);
 		void OnFootExit(BoxCollider* ground);
 
-	private:
+	protected:
+
+		inline bool IsOnGrounded() const { return onGrounded; }
+		
+		void Jump();
+
+	protected:
 
 		float moveSpeed = 30.0f;
 		float jumpPower = 30.0f;

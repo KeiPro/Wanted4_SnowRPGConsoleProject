@@ -37,7 +37,7 @@ void BoxCollider::Draw()
 		{
 			for (int j = top; j < bottom; j++)
 			{
-				Renderer::Get().Submit("C", Vector2(i, j), Color::Red, 9999);
+				Renderer::Get().Submit("C", Vector2(i, j), debugColor, 9999);
 			}
 		}
 	}
