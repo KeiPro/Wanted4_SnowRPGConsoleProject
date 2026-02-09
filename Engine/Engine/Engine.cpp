@@ -3,6 +3,7 @@
 #include "Core/Input.h"
 #include "Util/Util.h"
 #include "Render/Renderer.h"
+#include "Physics/CollisionSystem.h"
 
 #include <iostream>
 #include <Windows.h>
@@ -24,6 +25,8 @@ namespace Wanted
 		Util::TurnOffCursor();
 
 		Util::SetRandomSeed();
+
+		collisionSystem = new CollisionSystem();
 	}
 
 	Engine::~Engine()
@@ -38,6 +41,12 @@ namespace Wanted
 		{
 			delete input;
 			input = nullptr;
+		}
+
+		if (collisionSystem)
+		{
+			delete collisionSystem;
+			collisionSystem = nullptr;
 		}
 
 		SafeDelete(renderer);

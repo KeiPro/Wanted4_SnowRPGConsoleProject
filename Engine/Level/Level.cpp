@@ -6,7 +6,7 @@ namespace Wanted
 {
 	Level::Level()
 	{
-		collisionSystem = new CollisionSystem();
+
 	}
 
 	Level::~Level()
@@ -21,9 +21,6 @@ namespace Wanted
 		}
 
 		actors.clear();
-
-		delete collisionSystem;
-		collisionSystem = nullptr;
 	}
 
 	void Level::BeginPlay()
@@ -44,7 +41,7 @@ namespace Wanted
 			actor->Tick(deltaTime);
 		}
 
-		collisionSystem->Tick(deltaTime);
+		CollisionSystem::Get().Tick(deltaTime);
 	}
 
 	void Level::Draw()

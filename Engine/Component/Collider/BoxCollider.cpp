@@ -1,6 +1,7 @@
 #include "BoxCollider.h"
 #include "Actor/Actor.h"
 #include "Render/Renderer.h"
+#include "Physics/CollisionSystem.h"
 
 #include <iostream>
 #include <Windows.h>
@@ -22,6 +23,11 @@ BoxCollider::~BoxCollider()
 void BoxCollider::BeginPlay()
 {
 	Component::BeginPlay();
+}
+
+void BoxCollider::OnDestroy()
+{
+	CollisionSystem::Get().Unregister(this);
 }
 
 void BoxCollider::Tick(float deltaTime)

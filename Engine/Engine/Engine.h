@@ -6,6 +6,7 @@ namespace Wanted
 {
 	class Input;
 	class Renderer;
+	class CollisionSystem;
 
 	// Main game engine class.
 	class WANTED_API Engine
@@ -55,6 +56,8 @@ namespace Wanted
 		Input* input = nullptr;
 		
 		Renderer* renderer = nullptr;
+
+		CollisionSystem* collisionSystem = nullptr;
 
 		class Level* mainLevel = nullptr;
 

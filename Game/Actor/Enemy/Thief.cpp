@@ -8,6 +8,8 @@
 #include "Physics/CollisionSystem.h"
 #include "Actor/Envrionments/En_Wall.h"
 #include "Component/ThiefMoveComponent.h"
+#include "Actor/Snow.h"
+
 #include <cmath>
 
 using namespace Wanted;
@@ -80,6 +82,19 @@ Thief::Thief(const Vector2 position)
 Thief::~Thief()
 {
 
+}
+
+void Thief::OnDamaged(int damage)
+{
+	if (state == EnemyState::Freeze)
+		return;
+
+	Enemy::OnDamaged(damage);
+
+	if (bodyCollider)
+		bodyCollider->SetIsActive(false);
+
+	GetOwner()->AddNewActor(new Snow(GetPosition(), this));
 }
 
 void Thief::BeginPlay()
@@ -157,14 +172,12 @@ void Thief::UpdateChase(float deltaTime)
 	position.x += delta;
 
 	// UpdateChase 1.
-	// x������ ���� ���� �ȿ� ���Դ��� üũ.
-	//    ����, ������ �ʾҴٸ� return;
+	// x axis
 	if (CheckPlayerXRange(position.x, targetPosition.x) == false)
 		return;
 
 	float diff = position.y - targetPosition.y;
 
-	// ���� ��ġ�� �ִ�.
 	if (abs(diff) <= 0.00001f)
 		return;
 
@@ -210,6 +223,12 @@ void Thief::UpdateAttack(float deltaTime)
 void Thief::Dead()
 {
 	Enemy::Dead();
+}
+
+void Thief::OnSnowballReleased(const Vector2& position)
+{
+	Enemy::OnSnowballReleased(position);
+	bodyCollider->SetIsActive(true);
 }
 
 bool Thief::CheckPlayerXRange(float myPosX, float playerPosX)

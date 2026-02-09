@@ -19,6 +19,8 @@ namespace Wanted
 		inline BoxCollider* GetFootCollider() { return footCollider; }
 		inline BoxCollider* GetBodyCollider() { return bodyCollider; }
 
+		void OnDamaged(int damage) override;
+
 	private:
 		virtual void BeginPlay() override;
 		virtual void Tick(float deltaTime) override;
@@ -28,6 +30,7 @@ namespace Wanted
 		virtual void UpdateChase(float deltaTime) override;
 		virtual void UpdateAttack(float deltaTime) override;
 		virtual void Dead() override;
+		virtual void OnSnowballReleased(const Vector2& position) override;
 
 		bool CheckPlayerXRange(float myPosX, float playerPosX);
 

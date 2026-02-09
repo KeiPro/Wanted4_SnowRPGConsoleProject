@@ -2,160 +2,175 @@
 #include "../Component/Collider/BoxCollider.h"
 #include <iostream>
 
-using namespace Wanted;
-
-CollisionSystem* CollisionSystem::instance = nullptr;
-
-CollisionSystem::CollisionSystem()
+namespace Wanted
 {
-	instance = this;
-}
+	CollisionSystem* CollisionSystem::instance = nullptr;
 
-CollisionSystem::~CollisionSystem()
-{
-
-}
-
-CollisionSystem& CollisionSystem::Get()
-{
-	if (!instance)
+	CollisionSystem::CollisionSystem()
 	{
-		std::cout << "Error: CollisionSystem::Get(). instance is null\n";
-		__debugbreak();
+		instance = this;
 	}
 
-	return *instance;
-}
-
-void Wanted::CollisionSystem::RemovePairsIncluding(BoxCollider* c)
-{
-	const std::uintptr_t pc = (std::uintptr_t)c;
-
-	auto removeIfContains = [&](auto& set)
+	CollisionSystem::~CollisionSystem()
 	{
-		for (auto it = set.begin(); it != set.end(); )
+
+	}
+
+	CollisionSystem& CollisionSystem::Get()
+	{
+		if (!instance)
 		{
-			if (it->a == pc || it->b == pc) 
-				it = set.erase(it);
-			else 
-				++it;
+			std::cout << "Error: CollisionSystem::Get(). instance is null\n";
+			__debugbreak();
 		}
-	};
 
-	removeIfContains(previousPairs);
-	removeIfContains(currentPairs);
-}
+		return *instance;
+	}
 
-void CollisionSystem::Tick(float deltaTime)
-{
-	ApplyNewRequested();
-
-	/*for (BoxCollider* c : colliders)
+	void Wanted::CollisionSystem::RemovePairsIncluding(BoxCollider* c)
 	{
-		if (!c || !c->GetIsActive()) continue;
-		c->SyncToOwner();
-	}*/
+		const std::uintptr_t pc = (std::uintptr_t)c;
 
-	MakePairAndSwapPair();
-}
+		auto removeIfContains = [&](auto& set)
+			{
+				for (auto it = set.begin(); it != set.end(); )
+				{
+					if (it->a == pc || it->b == pc)
+						it = set.erase(it);
+					else
+						++it;
+				}
+			};
 
-void Wanted::CollisionSystem::MakePairAndSwapPair()
-{
-	currentPairs.clear();
+		removeIfContains(previousPairs);
+		removeIfContains(currentPairs);
+	}
 
-	const int n = colliders.size();
-	for (int i = 0; i < n; i++)
+	void CollisionSystem::Tick(float deltaTime)
 	{
-		BoxCollider* a = colliders[i];
-		if (!a || a->GetIsActive() == false || a->DestroyRequested())
-			continue;
+		ApplyNewRequested();
 
-		for (int j = i + 1; j < n; ++j)
+		MakePairAndSwapPair();
+	}
+
+	void Wanted::CollisionSystem::MakePairAndSwapPair()
+	{
+		currentPairs.clear();
+
+		const int n = colliders.size();
+		for (int i = 0; i < n; i++)
 		{
-			BoxCollider* b = colliders[j];
-			if (!b || b->GetIsActive() == false || b->DestroyRequested()) 
+			BoxCollider* a = colliders[i];
+			if (!a || a->GetIsActive() == false || a->DestroyRequested())
 				continue;
 
-			if (a->AABBCollision(b))
+			for (int j = i + 1; j < n; ++j)
 			{
-				currentPairs.insert(MakeKey(a, b));
+				BoxCollider* b = colliders[j];
+				if (!b || b->GetIsActive() == false || b->DestroyRequested())
+					continue;
+
+				if (a->AABBCollision(b))
+				{
+					currentPairs.insert(MakeKey(a, b));
+				}
 			}
 		}
-	}
 
-	// 2) Enter / Stay
-	for (const auto& key : currentPairs)
-	{
-		std::pair<BoxCollider*, BoxCollider*> pair = DecodeKey(key);
-		BoxCollider* a = pair.first;
-		BoxCollider* b = pair.second;
-
-		if (previousPairs.find(key) == previousPairs.end())
-		{
-			if (a && b)
-			{
-				a->NotifyEnter(b);
-				b->NotifyEnter(a);
-			}
-		}
-		else
-		{
-			// Stay
-			if (a && b)
-			{
-				a->NotifyStay(b);
-				b->NotifyStay(a);
-			}
-		}
-	}
-
-	// 3) Exit
-	for (const auto& key : previousPairs)
-	{
-		if (currentPairs.find(key) == currentPairs.end())
+		// 2) Enter / Stay
+		for (const auto& key : currentPairs)
 		{
 			std::pair<BoxCollider*, BoxCollider*> pair = DecodeKey(key);
 			BoxCollider* a = pair.first;
 			BoxCollider* b = pair.second;
-			if (a && b)
+
+			if (previousPairs.find(key) == previousPairs.end())
 			{
-				a->NotifyExit(b);
-				b->NotifyExit(a);
+				if (a && b)
+				{
+					a->NotifyEnter(b);
+					b->NotifyEnter(a);
+				}
+			}
+			else
+			{
+				// Stay
+				if (a && b)
+				{
+					a->NotifyStay(b);
+					b->NotifyStay(a);
+				}
 			}
 		}
-	}
 
-	// 4) 스왑
-	previousPairs = currentPairs;
-}
-
-void Wanted::CollisionSystem::ApplyNewRequested()
-{
-	for (int i = 0; i < static_cast<int>(colliders.size()); )
-	{
-		if (colliders[i]->DestoryRequested())
+		// 3) Exit
+		for (const auto& key : previousPairs)
 		{
-			delete colliders[i];
-			colliders.erase(colliders.begin() + i);
-			continue;
+			if (currentPairs.find(key) == currentPairs.end())
+			{
+				std::pair<BoxCollider*, BoxCollider*> pair = DecodeKey(key);
+				BoxCollider* a = pair.first;
+				BoxCollider* b = pair.second;
+				if (a && b)
+				{
+					a->NotifyExit(b);
+					b->NotifyExit(a);
+				}
+			}
 		}
 
-		++i;
+		// 4) 스왑
+		previousPairs = currentPairs;
 	}
 
-	if (addRequestedColliders.size() == 0)
-		return;
-
-	for (BoxCollider* const collider : addRequestedColliders)
+	void Wanted::CollisionSystem::ApplyNewRequested()
 	{
-		colliders.emplace_back(collider);
+		for (int i = 0; i < static_cast<int>(colliders.size()); )
+		{
+			if (colliders[i]->DestroyRequested())
+			{
+				delete colliders[i];
+				colliders.erase(colliders.begin() + i);
+				continue;
+			}
+
+			++i;
+		}
+
+		if (addRequestedColliders.size() == 0)
+			return;
+
+		for (BoxCollider* const collider : addRequestedColliders)
+		{
+			colliders.emplace_back(collider);
+		}
+
+		addRequestedColliders.clear();
 	}
 
-	addRequestedColliders.clear();
-}
+	void CollisionSystem::Register(BoxCollider* newCollider)
+	{
+		if (newCollider != nullptr)
+			addRequestedColliders.emplace_back(newCollider);
+	}
+	void CollisionSystem::Unregister(BoxCollider* dead)
+	{
+		// colliders 제거
+		colliders.erase(std::remove(colliders.begin(), colliders.end(), dead), colliders.end());
 
-void CollisionSystem::Register(BoxCollider* newCollider)
-{
-	if (newCollider != nullptr)
-		addRequestedColliders.emplace_back(newCollider);
+		// pair set에서 dead 포함 key 제거
+		auto eraseDead = [&](auto& set) {
+			for (auto it = set.begin(); it != set.end(); )
+			{
+				std::pair<BoxCollider*, BoxCollider*> pairValue = DecodeKey(*it);
+				if (pairValue.first == dead || pairValue.second == dead) 
+					it = set.erase(it);
+				else
+					++it;
+			}
+			};
+
+		eraseDead(previousPairs);
+		eraseDead(currentPairs);
+	}
 }

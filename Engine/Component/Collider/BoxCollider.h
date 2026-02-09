@@ -21,9 +21,10 @@ namespace Wanted
 		virtual void BeginPlay() override;
 		virtual void Tick(float deltaTime) override;
 		virtual void Draw() override;
+		virtual void OnDestroy() override;
 
 		bool AABBCollision(const BoxCollider* const other);
-		inline bool DestoryRequested() const { return destroyRequested; }
+		
 		void SyncToOwner();
 		void SetOffset(int offsetX, int offsetY);
 
@@ -45,8 +46,6 @@ namespace Wanted
 		int left, top, right, bottom;
 		int offsetX = 0, offsetY = 0;
 		Vector2 size = {};
-
-		bool destroyRequested = false;
 
 		CollisionCallback onEnter = nullptr;
 		CollisionCallback onStay = nullptr;

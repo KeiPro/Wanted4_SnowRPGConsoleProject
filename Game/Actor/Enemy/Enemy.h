@@ -22,7 +22,7 @@ namespace Wanted
 		Enemy(const char* image, const Vector2& position, Color color);
 		~Enemy();
 
-		void OnSnowballReleased(const Vector2& position);
+		virtual void OnSnowballReleased(const Vector2& position);
 		void OnDamaged(int damage) override;
 
 	protected:

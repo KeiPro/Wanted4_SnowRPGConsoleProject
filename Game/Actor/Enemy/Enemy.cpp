@@ -1,7 +1,6 @@
 #include "Enemy.h"
 #include "Component/EnemyAI.h"
 #include "Level/Level.h"
-#include "Actor/Snow.h"
 
 using namespace Wanted;
 
@@ -86,6 +85,4 @@ void Enemy::OnSnowballReleased(const Vector2& position)
 void Enemy::OnDamaged(int damage)
 {
 	state = EnemyState::Freeze;
-
-	GetOwner()->AddNewActor(new Snow(GetPosition(), this));
 }

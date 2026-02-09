@@ -31,7 +31,6 @@ namespace Wanted
 		
 	private:
 
-		CollisionSystem* collisionSystem = nullptr;
 		std::vector<Enemy*> enemies;
 	};
 }

@@ -18,6 +18,7 @@ namespace Wanted
 		void Tick(float deltaTime);
 
 		void Register(BoxCollider* newCollider);
+		void Unregister(BoxCollider* dead);
 		void ApplyNewRequested();
 		void MakePairAndSwapPair();
 
@@ -68,6 +69,7 @@ namespace Wanted
 		std::unordered_set<PairKey, PairKeyHasher> currentPairs;
 
 		std::vector<BoxCollider*> addRequestedColliders;
+
 		static CollisionSystem* instance;
 	};
 }

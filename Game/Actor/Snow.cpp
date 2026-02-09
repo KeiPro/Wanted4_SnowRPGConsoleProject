@@ -1,74 +1,127 @@
 ﻿#include "Snow.h"
 #include "Actor/Enemy/Enemy.h"
+#include "Component/Collider/BoxCollider.h"
+#include "Physics/CollisionSystem.h"
 
 using namespace Wanted;
 
 static const Snow::FreezeEffect sequence[] =
 {
-	Snow::FreezeEffect(".", 1.0f, 2, Color::Blue),
-	Snow::FreezeEffect(".", 1.0f, 2, Color::Blue),
-	Snow::FreezeEffect("ㅇ", 1.0f, 3, Color::Blue),
-	Snow::FreezeEffect("◎", 1.0f, 4, Color::Blue),
-	Snow::FreezeEffect("㉧", 2.0f, 99999, Color::Blue),
+    {".", 1.0f, 2, Color::Blue},
+    {"o", 1.5f, 2, Color::Blue},
+    {"O", 2.0f, 2, Color::Blue},
+    {"@", 3.0f, 2, Color::Blue},
 };
 
 Snow::Snow(const Vector2& position, Enemy* changedEnemy)
-	: super(sequence[0].frame, position, Color::Blue), changedEnemy(changedEnemy)
+    : super(sequence[0].frame, position, sequence[0].color)
+    , changedEnemy(changedEnemy)
 {
-	sortingOrder = 10;
-	int effectFrameImageLength = 6;
+    sortingOrder = 10;
 
-	freezeEffectSequenceCount = sizeof(sequence) / sizeof(sequence[0]);
-	timer.SetTargetTime(sequence[0].meltTime);
-	hp = sequence[0].hp;
-	color = sequence[0].color;
+    freezeEffectSequenceCount = static_cast<int>(sizeof(sequence) / sizeof(sequence[0]));
+    currentSequenceIndex = 0;
+
+    ApplyEffect(currentSequenceIndex);
+    timer.Reset();
+
+    // collider
+    {
+        int left = static_cast<int>(position.x) - 1;
+        int top = static_cast<int>(position.y) - 1;
+        int right = left + GetWidth() + 2;
+        int bottom = top + GetHeight() + 2;
+
+        bodyCollider = new BoxCollider(left, top, right, bottom, -1, -1);
+        CollisionSystem::Get().Register(bodyCollider);
+        AddNewComponent(bodyCollider);
+    }
 }
 
-Snow::~Snow()
+void Snow::ApplyEffect(int index)
 {
+    if (index < 0) 
+        index = 0;
+
+    if (index >= freezeEffectSequenceCount) 
+        index = freezeEffectSequenceCount - 1;
+
+    timer.SetTargetTime(sequence[index].meltTime);
+    ChangeImage(sequence[index].frame);
+    hp = sequence[index].hp;
+    color = sequence[index].color;
 }
 
 void Snow::Tick(float deltaTime)
 {
-	super::Tick(deltaTime);
+    super::Tick(deltaTime);
 
-	timer.Tick(deltaTime);
-	if (!timer.IsTimeOut())
-		return;
+    if (isSnowballReleased)
+        return;
 
-	timer.Reset();
-	
-	--currentSequenceIndex;
-	if (currentSequenceIndex < 0)
-	{
-		Destroy();
-		changedEnemy->OnSnowballReleased(position);
-		return;
-	}
+    timer.Tick(deltaTime);
+    if (!timer.IsTimeOut())
+        return;
 
-	timer.SetTargetTime(sequence[currentSequenceIndex].meltTime);
-	ChangeImage(sequence[currentSequenceIndex].frame);
-	hp = sequence[currentSequenceIndex].hp;
-	color = sequence[currentSequenceIndex].color;
+    timer.Reset();
+    MeltOneStep();
+}
+
+void Snow::MeltOneStep()
+{
+    // 0 단계에서 더 녹으면 release
+    if (currentSequenceIndex <= 0)
+    {
+        ReleaseSnowball();
+        return;
+    }
+
+    --currentSequenceIndex;
+    ApplyEffect(currentSequenceIndex);
+}
+
+void Snow::GrowOneStep()
+{
+    const int last = freezeEffectSequenceCount - 1;
+    if (currentSequenceIndex >= last)
+    {
+        currentSequenceIndex = last;
+        return;
+    }
+
+    ++currentSequenceIndex;
+    ApplyEffect(currentSequenceIndex);
+}
+
+void Snow::ReleaseSnowball()
+{
+    isSnowballReleased = true;
+
+    if (bodyCollider)
+        bodyCollider->SetIsActive(false);
+
+    if (changedEnemy)
+        changedEnemy->OnSnowballReleased(position);
+
+    Destroy();
+}
+
+void Snow::Draw()
+{
+    if (!isSnowballReleased)
+        Actor::Draw();
 }
 
 void Snow::OnDamaged(int damage)
 {
-	timer.Reset();
+    if (isSnowballReleased)
+        return;
 
-	hp -= damage;
-	if (hp < 0)
-		hp = 0;
+    timer.Reset();
 
-	++currentSequenceIndex;
-	if (currentSequenceIndex >= freezeEffectSequenceCount)
-	{
-		currentSequenceIndex = freezeEffectSequenceCount - 1;
-		return;
-	}
+    hp -= damage;
+    if (hp > 0)
+        return;
 
-	timer.SetTargetTime(sequence[currentSequenceIndex].meltTime);
-	ChangeImage(sequence[currentSequenceIndex].frame);
-	hp = sequence[currentSequenceIndex].hp;
-	color = sequence[currentSequenceIndex].color;
+    GrowOneStep();
 }

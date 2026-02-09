@@ -5,54 +5,46 @@
 
 namespace Wanted
 {
-	class Enemy;
-	class Snow : public Actor, public IDamageable
-	{
-		RTTI_DECLARATIONS(Snow, Actor)
+    class Enemy;
+    class BoxCollider;
 
-		struct FreezeEffect
-		{
-			FreezeEffect(
-				const char* frame,
-				float meltTime = 0.05f,
-				int hp = 2,
-				Color color = Color::Red)
-				: meltTime(meltTime), hp(hp), color(color)
-			{
-				size_t length = strlen(frame) + 1;
-				this->frame = new char[length];
-				strcpy_s(this->frame, length, frame);
-			}
+    class Snow : public Actor, public IDamageable
+    {
+        RTTI_DECLARATIONS(Snow, Actor)
 
-			~FreezeEffect()
-			{
-				delete[] frame;
-				frame = nullptr;
-			}
+            struct FreezeEffect
+        {
+            const char* frame = ".";
+            float meltTime = 0.05f;
+            int hp = 2;
+            Color color = Color::Blue;
+        };
 
-			char* frame = nullptr;
-			float meltTime = 0.0f;
-			int hp = 2;
-			Color color = Color::Blue;
-		};
+    public:
+        Snow(const Vector2& position, Enemy* changedEnemy);
+        ~Snow() override = default;
 
-	public:
-		Snow(const Vector2& position, Enemy* changedEnemy);
-		~Snow();
+        void Tick(float deltaTime) override;
+        void Draw() override;
 
-		virtual void Tick(float deltaTime) override;
+        void OnDamaged(int damage) override;
 
-		void OnDamaged(int damage) override;
+    private:
+        void ApplyEffect(int index);
+        void GrowOneStep();     // 피해로 커짐
+        void MeltOneStep();     // 시간으로 녹음
+        void ReleaseSnowball(); // 완전히 녹아서 enemy 복구
 
-	public:
-		int freezeEffectSequenceCount = 0;
-		int currentSequenceIndex = 0;
-		Timer timer;
-		int hp = 1;
+    private:
+        Timer timer;
+        int hp = 1;
 
-	private:
-		Enemy* changedEnemy = nullptr;
-	};
+        int currentSequenceIndex = 0;
+        int freezeEffectSequenceCount = 0;
+
+        Enemy* changedEnemy = nullptr; // (가능하면 약한 참조/ID로 바꾸는게 더 안전)
+        bool isSnowballReleased = false;
+
+        BoxCollider* bodyCollider = nullptr;
+    };
 }
-
-

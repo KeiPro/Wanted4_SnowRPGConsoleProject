@@ -45,5 +45,4 @@ void Wanted::AttackComponent::Fire()
 		player = GetOwner()->As<Player>();
 
 	level->AddNewActor(new PlayerBullet(player->GetFirePos(), player->GetDir()));
-	return;
 }
