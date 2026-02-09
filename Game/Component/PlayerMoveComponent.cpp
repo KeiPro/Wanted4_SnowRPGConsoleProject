@@ -38,7 +38,7 @@ void PlayerMoveComponent::Tick(float deltaTime)
         dirX += 1.f;
 
     if (Input::Get().GetKey(VK_LEFT))
-        dirX -= 1.f;
+        dirX -= 1.f;                                         
 
     velocity.x = dirX * moveSpeed;
     float nextX = pos.x + velocity.x * deltaTime;

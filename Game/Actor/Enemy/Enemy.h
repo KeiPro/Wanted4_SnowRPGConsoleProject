@@ -1,19 +1,20 @@
 #pragma once
 #include "Actor/Actor.h"
-#include "Common/RTTI.h"
+#include "Interface/IDamageable.h"
 
 namespace Wanted
 {
-	class Enemy : public Actor
+	class Enemy : public Actor, public IDamageable
 	{
 		RTTI_DECLARATIONS(Enemy, Actor)
 
-			enum class EnemyState
+		enum class EnemyState
 		{
 			Idle,
 			Chase,
 			Attack,
 			Dead,
+			Freeze,
 		};
 
 	public:
@@ -31,11 +32,17 @@ namespace Wanted
 		virtual void UpdateChase(float deltaTime);
 		virtual void UpdateAttack(float deltaTime);
 		virtual void Dead();
+		
+
 
 	protected:
 
 		EnemyState state = EnemyState::Idle;;
 		bool isDead = false;
 		int moveSpeed = 10;
+		int freezeStack = 0;
+
+		// IDamageable을(를) 통해 상속됨
+		void OnDamaged(int damage) override;
 	};
 }

@@ -1,5 +1,7 @@
 #include "Enemy.h"
 #include "Component/EnemyAI.h"
+#include "Level/Level.h"
+#include "Actor/Snow.h"
 
 using namespace Wanted;
 
@@ -72,4 +74,30 @@ void Enemy::Dead()
 
 	Destroy();
 }
+
+void Enemy::OnDamaged(int damage)
+{
+	state = EnemyState::Freeze;
+
+	GetOwner()->AddNewActor(new Snow(GetPosition()));
+}
+
+//void Enemy::Freeze()
+//{
+//
+//}
+
+//void Enemy::OnDamaged()
+//{
+//	freezeStack++;
+//	if (freezeStack >= sizeof(sequence) / sizeof(FreezeEffectFrame))
+//	{
+//		;
+//
+//		return;
+//	}
+//	const FreezeEffectFrame& frame = sequence[freezeStack - 1];
+//	image = frame.frame;
+//	color = frame.color;
+//}
 

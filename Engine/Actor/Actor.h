@@ -66,6 +66,8 @@ namespace Wanted
 
 		void ProcessAddAndDestroyComponent();
 
+		void ChangeImage(const char* newImage);
+
 		// Getter
 		inline bool HasBeganPlay() const { return hasBeganPlay; }
 		inline bool IsActive() const { return isActive && !destroyRequested; }
@@ -74,6 +76,12 @@ namespace Wanted
 		inline int GetWidth() const { return width; }
 		inline int GetHeight() const { return height; }
 
+	public:
+		char* image = nullptr;
+
+		int width = 0;
+		int height = 0;
+
 	protected:
 		bool hasBeganPlay = false;
 
@@ -81,10 +89,7 @@ namespace Wanted
 
 		bool destroyRequested = false;
 
-		char* image = nullptr;
-		
-		int width = 0;
-		int height = 0;
+
 
 		Color color = Color::White;
 

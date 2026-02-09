@@ -97,6 +97,7 @@
     <ClCompile Include="Actor\Envrionments\En_Wall.cpp" />
     <ClCompile Include="Actor\PlayerBullet.cpp" />
     <ClCompile Include="Actor\Enemy\Thief.cpp" />
+    <ClCompile Include="Actor\Snow.cpp" />
     <ClCompile Include="Component\AttackComponent.cpp" />
     <ClCompile Include="Component\EnemyAI.cpp" />
     <ClCompile Include="Component\MoveComponent.cpp" />
@@ -118,12 +119,14 @@
     <ClInclude Include="Actor\Envrionments\En_Wall.h" />
     <ClInclude Include="Actor\PlayerBullet.h" />
     <ClInclude Include="Actor\Enemy\Thief.h" />
+    <ClInclude Include="Actor\Snow.h" />
     <ClInclude Include="Component\AttackComponent.h" />
     <ClInclude Include="Component\EnemyAI.h" />
     <ClInclude Include="Component\MoveComponent.h" />
     <ClInclude Include="Actor\Enemy\EnemySpawner.h" />
     <ClInclude Include="Component\PlayerMoveComponent.h" />
     <ClInclude Include="Component\ThiefMoveComponent.h" />
+    <ClInclude Include="Interface\IDamageable.h" />
     <ClInclude Include="Manager\GameManager.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Interface\ISpawner.h" />
