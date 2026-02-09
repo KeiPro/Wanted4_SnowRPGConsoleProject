@@ -10,6 +10,7 @@ static const Snow::FreezeEffect sequence[] =
     {".", 1.0f, 2, Color::Blue},
     {"o", 1.5f, 2, Color::Blue},
     {"O", 2.0f, 2, Color::Blue},
+    {"Q", 2.0f, 2, Color::Blue},
     {"@", 3.0f, 2, Color::Blue},
 };
 

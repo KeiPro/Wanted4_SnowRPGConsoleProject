@@ -18,10 +18,7 @@ namespace Wanted
 	public:
 		Player(const Vector2 postiion);
 
-		EDir GetDir() 
-		{
-			return dir;
-		}
+		inline EDir GetDir() const {return dir;}
 		inline Vector2 GetFirePos() const { return firePos; }
 
 		void SetDir(EDir dir);
