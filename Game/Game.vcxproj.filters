@@ -69,6 +69,9 @@
     <ClCompile Include="Component\PlayerMoveComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Component\ThiefMoveComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\Player.h">
@@ -126,6 +129,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Util\GameConstants.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ThiefMoveComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

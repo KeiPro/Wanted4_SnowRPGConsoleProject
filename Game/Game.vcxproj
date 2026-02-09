@@ -102,6 +102,7 @@
     <ClCompile Include="Component\MoveComponent.cpp" />
     <ClCompile Include="Actor\Enemy\EnemySpawner.cpp" />
     <ClCompile Include="Component\PlayerMoveComponent.cpp" />
+    <ClCompile Include="Component\ThiefMoveComponent.cpp" />
     <ClCompile Include="Manager\GameManager.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Level\MenuLevel.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="Component\MoveComponent.h" />
     <ClInclude Include="Actor\Enemy\EnemySpawner.h" />
     <ClInclude Include="Component\PlayerMoveComponent.h" />
+    <ClInclude Include="Component\ThiefMoveComponent.h" />
     <ClInclude Include="Manager\GameManager.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Interface\ISpawner.h" />

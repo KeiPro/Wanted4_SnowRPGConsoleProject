@@ -7,6 +7,7 @@
 namespace Wanted
 {
 	class BoxCollider;
+	class ThiefMoveComponent;
 	class Thief : public Enemy
 	{
 		RTTI_DECLARATIONS(Thief, Enemy)
@@ -14,6 +15,9 @@ namespace Wanted
 	public:
 		Thief(const Vector2 position);
 		~Thief();
+
+		inline BoxCollider* GetFootCollider() { return footCollider; }
+		inline BoxCollider* GetBodyCollider() { return bodyCollider; }
 
 	private:
 		virtual void BeginPlay() override;
@@ -34,11 +38,16 @@ namespace Wanted
 		int chaseRange = 0;
 		int moveDir = 1;
 
-		BoxCollider* footCollider = nullptr;
-		BoxCollider* bodyCollider = nullptr;
 		float elapsedTime = 0.0f;
 		float changeDirInterval = 1.5f;
 		bool needChangeDir = false;
+
+		float jumpElapsedTime = 0.0f;
+		float jumpInterval = 2.0f;
+
+		BoxCollider* footCollider = nullptr;
+		BoxCollider* bodyCollider = nullptr;
+		ThiefMoveComponent* thiefMoveComp = nullptr;
 	};
 }
 

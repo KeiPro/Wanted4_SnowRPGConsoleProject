@@ -15,19 +15,15 @@ namespace Wanted
 	public:
 
 		MoveComponent();
-		~MoveComponent();
+		virtual ~MoveComponent();
 
 		virtual void BeginPlay() override;
 		virtual void Tick(float deltaTime) override;
 
 		void OnFootEnter(BoxCollider* ground, int floorY);
 		void OnFootExit(BoxCollider* ground);
-
-	protected:
-
-		inline bool IsOnGrounded() const { return onGrounded; }
-		
-		void Jump();
+		bool IsOnGrounded() const { return onGrounded; }
+		virtual void Jump();
 
 	protected:
 
