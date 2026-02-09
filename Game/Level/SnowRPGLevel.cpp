@@ -4,12 +4,21 @@
 #include "Actor/Envrionments/En_Wall.h"
 #include "Actor/Envrionments/En_Empty.h"
 #include "Util/Util.h"
+#include "Actor/Enemy/Thief.h"
+#include "Actor/Enemy/Fly.h"
+#include "Manager/GameManager.h"
 
 #include <iostream>
+
+using namespace Wanted;
 
 SnowRPGLevel::SnowRPGLevel()
 {
 	LoadMap("TestMap.txt");
+}
+
+SnowRPGLevel::~SnowRPGLevel()
+{
 }
 
 void SnowRPGLevel::Draw()
@@ -79,8 +88,21 @@ void SnowRPGLevel::LoadMap(const char* filename)
 			break;
 
 		case 'p':
-			AddNewActor(new Player(position));
+		{
+			Player* player = new Player(position);
+			GameManager::Get().SetPlayer(player);
+			AddNewActor(player);
 			break;
+		}
+
+		case 't':
+			AddNewActor(new Thief(position));
+			break;
+
+		case 'f':
+			AddNewActor(new Fly(position));
+			break;
+
 		}
 
 		++position.x;

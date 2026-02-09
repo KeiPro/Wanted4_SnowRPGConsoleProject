@@ -90,12 +90,18 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor\Enemy\Enemy.cpp" />
+    <ClCompile Include="Actor\Enemy\Fly.cpp" />
     <ClCompile Include="Actor\Envrionments\En_Empty.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\Envrionments\En_Wall.cpp" />
     <ClCompile Include="Actor\PlayerBullet.cpp" />
+    <ClCompile Include="Actor\Enemy\Thief.cpp" />
     <ClCompile Include="Component\AttackComponent.cpp" />
+    <ClCompile Include="Component\EnemyAI.cpp" />
     <ClCompile Include="Component\MoveComponent.cpp" />
+    <ClCompile Include="Actor\Enemy\EnemySpawner.cpp" />
+    <ClCompile Include="Manager\GameManager.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Level\MenuLevel.cpp" />
     <ClCompile Include="Level\SnowRPGLevel.cpp" />
@@ -103,12 +109,18 @@
     <ClCompile Include="Util\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor\Enemy\Enemy.h" />
+    <ClInclude Include="Actor\Enemy\Fly.h" />
     <ClInclude Include="Actor\Envrionments\En_Empty.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="Actor\Envrionments\En_Wall.h" />
     <ClInclude Include="Actor\PlayerBullet.h" />
+    <ClInclude Include="Actor\Enemy\Thief.h" />
     <ClInclude Include="Component\AttackComponent.h" />
+    <ClInclude Include="Component\EnemyAI.h" />
     <ClInclude Include="Component\MoveComponent.h" />
+    <ClInclude Include="Actor\Enemy\EnemySpawner.h" />
+    <ClInclude Include="Manager\GameManager.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Interface\ISpawner.h" />
     <ClInclude Include="Level\MenuLevel.h" />

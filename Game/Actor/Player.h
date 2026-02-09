@@ -1,7 +1,6 @@
 #pragma once
 #include "Actor/Actor.h"
 
-//using namespace Wanted;
 namespace Wanted
 {
 	class AttackComponent;

@@ -10,17 +10,18 @@ namespace Wanted
 
 	public:
 		SnowRPGLevel();
+		~SnowRPGLevel();
 
 		virtual void Draw() override;
 
 	private:
 		void LoadMap(const char* filename);
-
+		
 		bool CheckGameClear();
 
 	private:
 		int targetScore = 0;
-
 		bool isGameClear = false;
+		//GameManager* gameManager = nullptr;
 	};
 }

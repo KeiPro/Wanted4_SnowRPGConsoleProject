@@ -2,14 +2,10 @@
 
 #include "Common/Common.h"
 
-// ��� ���迡 �ִ� Ŭ���� ����
-// ����(�����߿�) ����ȯ�� �ϱ� ���� ����ϴ� Ŭ����.
 // RunTime-Type-Information.
 
 namespace Wanted
 {
-	// Ŀ���� RTTI�� �����ϴ� Ŭ������ �ֻ��� Ŭ����.
-	// C#�� Object, Java�� object, �𸮾��� UObject�� �����غ� �� ����.
 	class WANTED_API RTTI
 	{
 	public:
@@ -25,7 +21,6 @@ namespace Wanted
 			return false;
 		}
 
-		// Ÿ�� ���� �Լ�.
 		template<typename T>
 		bool IsTypeOf()
 		{
@@ -56,14 +51,6 @@ namespace Wanted
 	};
 }
 
-/* 
-	�Լ� ���ο� static�� ������, ���� ������ ó���ϰ� �ȴ�.
-	����, ������ �ܺο��� �ʱ�ȭ�� ����� ������, �� ��쿡�� �����൵ �ȴ�.
-	�ᱹ, RTTI�� ��ӹް� �ִ� Ŭ������ ��ü�� ���鶧���� �� ���� ���������� �ϳ� ���� �ִ� ���� �ȴ�.
-*/
-
-// RTTI�� ������ Ŭ������ �߰��� ��ũ��.
-// �Ʒ� �ڵ忡�� Type, ParentType�� ���� Ÿ������ ��ȯ�Ǿ� ����/�ٿ��ֱ� ��.
 #define RTTI_DECLARATIONS(Type, ParentType)												\
 friend class RTTI;																		\
 protected:																				\

@@ -30,6 +30,7 @@ namespace Wanted
 		int GetHeight() const { return setting.height; }
 
 		void SetNewLevel(class Level* newLevel);
+		Level* GetLevel() { return mainLevel; }
 
 		static Engine& Get();
 
@@ -44,6 +45,7 @@ namespace Wanted
 		void Tick(float deltaTime);
 
 		void Draw();
+
 
 	protected:
 		bool isQuit = false;

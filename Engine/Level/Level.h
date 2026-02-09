@@ -7,6 +7,8 @@
 namespace Wanted
 {
 	class Actor;
+	class Player;
+	class Enemy;
 	class CollisionSystem;
 	class WANTED_API Level : public RTTI
 	{
@@ -22,14 +24,14 @@ namespace Wanted
 
 		void AddNewActor(Actor* newActor);
 		void ProcessAddAndDestroyActors();
-
+		
 	protected:
 		std::vector<Actor*> actors;
-
 		std::vector<Actor*> addRequestedActors;
-
+		
 	private:
 
 		CollisionSystem* collisionSystem = nullptr;
+		std::vector<Enemy*> enemies;
 	};
 }

@@ -30,7 +30,7 @@ void MoveComponent::Tick(float deltaTime)
     const float gravity = 200.0f;
     const float jumpHeight = 3;
     const float jumpPower = sqrtf(2.0f * gravity * jumpHeight);
-    
+
     Vector2 pos = GetOwner()->GetPosition();
 
     // Move Left, Right 
@@ -40,7 +40,7 @@ void MoveComponent::Tick(float deltaTime)
 
     const int mapW = Engine::Get().GetWidth();
     const int minX = 1;
-    const int maxX = mapW - 2;
+    const int maxX = mapW - 1;
 
     velocity.x = dirX * moveSpeed;
 

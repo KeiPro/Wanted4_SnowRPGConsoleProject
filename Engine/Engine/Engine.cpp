@@ -22,6 +22,8 @@ namespace Wanted
 		renderer = new Renderer(Vector2(setting.width, setting.height));
 
 		Util::TurnOffCursor();
+
+		Util::SetRandomSeed();
 	}
 
 	Engine::~Engine()

@@ -37,6 +37,7 @@ namespace Wanted
 	public:
 
 		bool debugMode = false;
+		Color debugColor = Color::Baclk;
 
 	private:
 
