@@ -20,6 +20,7 @@ SnowRPGLevel::SnowRPGLevel()
 	Engine::Get().SetNewLevel(this);
 	//LoadMap("GameMap.txt");
 	LoadMap("TestMap.txt");
+	//LoadMap("TestMap_1.txt");
 }
 
 SnowRPGLevel::~SnowRPGLevel()

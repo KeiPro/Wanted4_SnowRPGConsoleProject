@@ -14,14 +14,20 @@
 
 using namespace Wanted;
 
+//static const Snow::FreezeEffect sequence[] =
+//{
+//    {".", 1.0f, 2, Color::Blue},
+//    {"*", 1.0f, 2, Color::Blue},
+//    {"o", 1.5f, 3, Color::Blue},
+//    {"O", 2.0f, 3, Color::Blue},
+//    {"Q", 2.0f, 4, Color::Blue},
+//    {"@", 4.0f, 3, Color::Blue},
+//};
+
 static const Snow::FreezeEffect sequence[] =
 {
-    {".", 1.0f, 2, Color::Blue},
-    {"*", 1.0f, 2, Color::Blue},
-    {"o", 1.5f, 3, Color::Blue},
-    {"O", 2.0f, 3, Color::Blue},
-    {"Q", 2.0f, 4, Color::Blue},
-    {"@", 3.0f, 3, Color::Blue},
+    {"Q", 10.0f, 4, Color::Blue},
+    {"@", 4.0f, 3, Color::Blue},
 };
 
 Snow::Snow(const Vector2& position, Enemy* changedEnemy)
@@ -75,32 +81,51 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
         int bottom = top + GetHeight() + 2;
 
         bodyCollider = new BoxCollider(left, top, right, bottom, -1, -1);
-
         bodyCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
-        {
-            IDamageable* damageable = dynamic_cast<IDamageable*>(other->GetOwner());
-            if (damageable == nullptr)
-                return;
-
-            // 눈덩이가 날라가는 상황에서만 몬스터에게 데미지가 들어가야 함.
-            if (self->GetOwner()->IsTypeOf<Snow>())
             {
-                Snow* snow = self->GetOwner()->As<Snow>();
-                if (snow->GetMode() != Snow::ESnowMode::Projectile)
-					return;
+                Actor* selfOwner = self->GetOwner();
+                Actor* otherOwner = other->GetOwner();
+                if (!selfOwner || !otherOwner) return;
 
-                snow->AddKillCount();
+                if (!selfOwner->IsTypeOf<Snow>()) return;
+                Snow* selfSnow = selfOwner->As<Snow>();
 
-                // 추가점수 진행.
-                GameManager::Get().AddScore(snow->GetKillCount() * 1.6f);
+                if (selfSnow->GetMode() != Snow::ESnowMode::Projectile) return;
 
-                char buffer[10];
-                sprintf_s(buffer, sizeof(buffer), "+%d", snow->GetKillCount());
-                snow->GetOwner()->AddNewActor(new DeadEffect(buffer, other->GetOwner()->GetPosition()));
-            }
+                if (otherOwner->IsTypeOf<Snow>())
+                {
+                    Snow* otherSnow = otherOwner->As<Snow>();
 
-            damageable->OnDamaged((int)Enemy::EDamageType::Dead);
-        });
+                    if (otherSnow->IsSnowSizeMaxed())
+                    {
+                        if (selfSnow->alreadyMaximumSizeCollision || otherSnow->alreadyMaximumSizeCollision)
+                            return;
+
+                        selfSnow->alreadyMaximumSizeCollision = true;
+                        otherSnow->alreadyMaximumSizeCollision = true;
+
+                        selfSnow->BounceX(2);
+
+                        int growDir = (selfSnow->velocity.x > 0.0f) ? -1 : 1;
+                        otherSnow->GrowOneStep(growDir);
+
+                        return;
+                    }
+
+                    otherSnow->KillCapturedEnemyAsDead();
+                    otherSnow->Destroy();
+
+                    selfSnow->GiveKillReward(otherOwner->GetPosition());
+                    return;
+                }
+
+                // [1] Snow ↔ NonSnow : IDamageable이면 Dead 데미지
+                if (IDamageable* damageable = dynamic_cast<IDamageable*>(otherOwner))
+                {
+                    damageable->OnDamaged((int)Enemy::EDamageType::Dead);
+                    selfSnow->GiveKillReward(otherOwner->GetPosition());
+                }
+            });
 
         CollisionSystem::Get().Register(bodyCollider);
         AddNewComponent(bodyCollider);
@@ -225,19 +250,24 @@ void Snow::MeltOneStep()
     ApplyEffect(currentSequenceIndex);
 }
 
-void Snow::GrowOneStep()
+void Snow::GrowOneStep(int dir)
 {
     const int last = freezeEffectSequenceCount - 1;
 
     if (currentSequenceIndex >= last)
     {
-        Launch((int)GameManager::Get().GetPlayer()->GetDir());
-        changedEnemy->Destroy();
+        Launch(dir);
+        KillOwnedEnemy();
         return;
     }
 
     ++currentSequenceIndex;
     ApplyEffect(currentSequenceIndex);
+}
+
+void Snow::KillOwnedEnemy()
+{
+    changedEnemy->Destroy();
 }
 
 void Snow::ReleaseSnowball()
@@ -264,6 +294,24 @@ void Snow::Draw()
         Actor::Draw();
 }
 
+void Snow::OnDestroy()
+{
+
+}
+
+void Snow::GiveKillReward(const Vector2& effectPos)
+{
+    AddKillCount();
+
+    char buffer[10];
+    sprintf_s(buffer, sizeof(buffer), "%d kill", GetKillCount());
+
+    // Snow(Actor)에서 바로 AddNewActor 호출 가능한 구조라면 this->AddNewActor로도 가능
+    GetOwner()->AddNewActor(new DeadEffect(buffer, effectPos));
+
+    GameManager::Get().AddScore(GetKillCount() * 2);
+}
+
 void Snow::OnDamaged(int damage)
 {
     if (isSnowballReleased)
@@ -278,7 +326,11 @@ void Snow::OnDamaged(int damage)
     if (hp > 0)
         return;
 
-    GrowOneStep();
+    Player* player = GameManager::Get().GetPlayer();
+    if (player != nullptr)
+        GrowOneStep((int)player->GetDir());
+    else
+        GrowOneStep(1);
 }
 
 void Snow::Launch(int dirX)
@@ -301,12 +353,14 @@ void Snow::Launch(int dirX)
     onGround = false;
 }
 
-void Snow::BounceX()
+void Snow::BounceX(int add)
 {
     if (mode != ESnowMode::Projectile)
         return;
 
     velocity.x *= -1.0f;
+
+    remainingBounces += add;
 
     --remainingBounces;
     if (remainingBounces <= 0)

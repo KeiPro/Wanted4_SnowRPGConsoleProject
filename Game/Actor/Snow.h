@@ -2,6 +2,7 @@
 #include "Actor/Actor.h"
 #include "Util/Timer.h"
 #include "Interface/IDamageable.h"
+#include "Enemy/Enemy.h"
 
 #include <unordered_set>
 #include <vector>
@@ -37,6 +38,24 @@ namespace Wanted
 		void BeginPlay() override;
         void Tick(float deltaTime) override;
         void Draw() override;
+        virtual void OnDestroy() override;
+
+        void GiveKillReward(const Vector2& effectPos);
+        void CaptureEnemy(Enemy* enemy) { capturedEnemy = enemy; }
+        Enemy* GetCapturedEnemy() const { return capturedEnemy; }
+
+        void KillCapturedEnemyAsDead()
+        {
+            if (!capturedEnemy)
+                return;
+
+            if (IDamageable* d = dynamic_cast<IDamageable*>(capturedEnemy))
+            {
+                d->OnDamaged((int)Enemy::EDamageType::Dead);
+            }
+
+            capturedEnemy = nullptr;
+        }
 
         inline void AddKillCount() { killCount++; }
 
@@ -47,9 +66,14 @@ namespace Wanted
         void OnDamaged(int damage) override;
 
         void Launch(int dirX);
+        void KillOwnedEnemy();
 
         void OnFootEnter(BoxCollider* ground, int floorY);
         void OnFootExit(BoxCollider* ground);
+        bool IsSnowSizeMaxed() const 
+        { 
+            return (currentSequenceIndex >= freezeEffectSequenceCount - 1);
+        }
 
     private:
         void ApplyEffect(int index);
@@ -57,12 +81,16 @@ namespace Wanted
         void TickProjectile(float dt);
 
         void MeltOneStep();
-        void GrowOneStep();
+        void GrowOneStep(int dir);
 
         void ReleaseSnowball();
 
-        void BounceX();
+        void BounceX(int add = 0);
         void KillProjectile();
+
+    public:
+
+        bool alreadyMaximumSizeCollision = false;
 
     private:
         // State
@@ -96,5 +124,7 @@ namespace Wanted
         BoxCollider* footCollider = nullptr;
 
         int killCount = 0;
+
+        Enemy* capturedEnemy = nullptr;
     };
 }
