@@ -84,5 +84,14 @@ void Enemy::OnSnowballReleased(const Vector2& position)
 
 void Enemy::OnDamaged(int damage)
 {
-	state = EnemyState::Freeze;
+	if (damage == (int)EDamageType::Freeze)
+	{
+		state = EnemyState::Freeze;
+		return;
+	}
+	else
+	{
+		state = EnemyState::Dead;
+		return;
+	}
 }

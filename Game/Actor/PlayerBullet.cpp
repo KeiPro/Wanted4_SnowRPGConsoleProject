@@ -2,11 +2,10 @@
 #include "Component/Collider/BoxCollider.h"
 #include "Interface/IDamageable.h"
 #include "Physics/CollisionSystem.h"
-#include "Component/Collider/BoxCollider.h"
+#include "Actor/Enemy/Enemy.h"
 
 #include <Windows.h>
 #include <cmath>
-
 
 using namespace Wanted;
 
@@ -30,7 +29,9 @@ PlayerBullet::PlayerBullet(const Vector2& position, Player::EDir dir)
         if (damageable == nullptr)
             return;
         
-        damageable->OnDamaged(1);
+        damageable->OnDamaged((int)Enemy::EDamageType::Freeze);
+		self->GetOwner()->Destroy();
+		self->SetIsActive(false);
     });
 
     AddNewComponent(boxCollider);

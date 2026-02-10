@@ -17,15 +17,15 @@ using namespace Wanted;
 Thief::Thief(const Vector2 position)
 	: super("T", position, Color::Red), initialPosition(position)
 {
-	chaseCount = 1;  Util::Random(3, 5);
-	chaseRange = 1; Util::Random(5, 8); // move 2~4 pixels
+	chaseCount = Util::Random(3, 5);
+	chaseRange = Util::Random(5, 8);
 
 	moveSpeed = 5;
 
 	thiefMoveComp = new ThiefMoveComponent();
 	AddNewComponent(thiefMoveComp);
 
-	// bodyCollider -> box�� ũ�� : (width + 2, height + 2)
+	// bodyCollider
 	{
 		int left = static_cast<int>(position.x) - 1;
 		int top = static_cast<int>(position.y) - 1;
@@ -33,15 +33,12 @@ Thief::Thief(const Vector2 position)
 		int bottom = top + GetHeight() + 2;
 
 		bodyCollider = new BoxCollider(left, top, right, bottom, -1, -1);
-		//bodyCollider->debugMode = true;
-		//bodyCollider->debugColor = Color::Red;
 		CollisionSystem::Get().Register(bodyCollider);
 		AddNewComponent(bodyCollider);
 	}
 	
-	// footCollider -> box�� ũ�� : (width, 1)
+	// footCollider
 	{
-		// �ʱ� ��ġ ����.
 		int left = static_cast<int>(position.x);
 		int top = static_cast<int>(position.y) + 1;
 		int right = left + GetWidth();
@@ -72,8 +69,6 @@ Thief::Thief(const Vector2 position)
 			moveComp->OnFootExit(other);
 		});
 
-		//footCollider->debugMode = true;
-		//footCollider->debugColor = Color::Green;
 		CollisionSystem::Get().Register(footCollider);
 		AddNewComponent(footCollider);
 	}
@@ -93,6 +88,9 @@ void Thief::OnDamaged(int damage)
 
 	if (bodyCollider)
 		bodyCollider->SetIsActive(false);
+
+	if (state == EnemyState::Dead)
+		return;
 
 	GetOwner()->AddNewActor(new Snow(GetPosition(), this));
 }
@@ -194,25 +192,6 @@ void Thief::UpdateChase(float deltaTime)
 			thiefMoveComp->Jump();
 		}
 	}
-
-	//if (position.y < targetPosition.y)
-	//{
-	//	// �Ʒ��� ����.
-	//	jumpElapsedTime = 0.0f;
-	//	MoveComponent* moveComp = GetComponent<MoveComponent>();
-	//}
-
-	//// UpdateChase 2.
-	//if (position.y < targetPosition.y)
-	//{
-	//	// �Ʒ��� ���� ����.
-
-	//}
-	//else if (position.y > targetPosition.y)
-	//{
-	//	// ���� ���� ����.		
-
-	//}
 }
 
 void Thief::UpdateAttack(float deltaTime)

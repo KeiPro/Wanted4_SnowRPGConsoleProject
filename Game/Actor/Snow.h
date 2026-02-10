@@ -37,6 +37,8 @@ namespace Wanted
         void Tick(float deltaTime) override;
         void Draw() override;
 
+		ESnowMode GetMode() const { return mode; }
+
         // IDamageable
         void OnDamaged(int damage) override;
 

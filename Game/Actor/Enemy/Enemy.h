@@ -8,6 +8,7 @@ namespace Wanted
 	{
 		RTTI_DECLARATIONS(Enemy, Actor)
 
+	public:
 		enum class EnemyState
 		{
 			Idle,
@@ -15,6 +16,12 @@ namespace Wanted
 			Attack,
 			Dead,
 			Freeze,
+		};
+
+		enum class EDamageType
+		{
+			Freeze = 1,
+			Dead = 999
 		};
 
 	public:

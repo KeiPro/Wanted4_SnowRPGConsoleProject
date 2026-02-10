@@ -23,7 +23,7 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
     : super(sequence[0].frame, position, sequence[0].color)
     , changedEnemy(changedEnemy)
 {
-    sortingOrder = 10;
+    sortingOrder = 3;
 
     freezeEffectSequenceCount = static_cast<int>(sizeof(sequence) / sizeof(sequence[0]));
     currentSequenceIndex = 0;
@@ -69,6 +69,23 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
         int bottom = top + GetHeight() + 2;
 
         bodyCollider = new BoxCollider(left, top, right, bottom, -1, -1);
+
+        bodyCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
+        {
+            IDamageable* damageable = dynamic_cast<IDamageable*>(other->GetOwner());
+            if (damageable == nullptr)
+                return;
+
+            if (self->GetOwner()->IsTypeOf<Snow>())
+            {
+                Snow* snow = self->GetOwner()->As<Snow>();
+                if (snow->GetMode() != Snow::ESnowMode::Projectile)
+					return;
+            }
+
+            damageable->OnDamaged((int)Enemy::EDamageType::Dead);
+        });
+
         CollisionSystem::Get().Register(bodyCollider);
         AddNewComponent(bodyCollider);
     }
