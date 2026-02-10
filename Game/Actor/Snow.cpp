@@ -14,19 +14,13 @@
 
 using namespace Wanted;
 
-//static const Snow::FreezeEffect sequence[] =
-//{
-//    {".", 1.0f, 2, Color::Blue},
-//    {"*", 1.0f, 2, Color::Blue},
-//    {"o", 1.5f, 3, Color::Blue},
-//    {"O", 2.0f, 3, Color::Blue},
-//    {"Q", 2.0f, 4, Color::Blue},
-//    {"@", 4.0f, 3, Color::Blue},
-//};
-
 static const Snow::FreezeEffect sequence[] =
 {
-    {"Q", 10.0f, 4, Color::Blue},
+    {".", 1.0f, 2, Color::Blue},
+    {"*", 1.0f, 2, Color::Blue},
+    {"o", 1.5f, 3, Color::Blue},
+    {"O", 2.0f, 3, Color::Blue},
+    {"Q", 2.0f, 4, Color::Blue},
     {"@", 4.0f, 3, Color::Blue},
 };
 
@@ -119,7 +113,6 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
                     return;
                 }
 
-                // [1] Snow ↔ NonSnow : IDamageable이면 Dead 데미지
                 if (IDamageable* damageable = dynamic_cast<IDamageable*>(otherOwner))
                 {
                     damageable->OnDamaged((int)Enemy::EDamageType::Dead);

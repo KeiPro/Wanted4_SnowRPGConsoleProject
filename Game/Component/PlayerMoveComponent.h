@@ -16,5 +16,9 @@ namespace Wanted
 
 		virtual void BeginPlay() override;
 		virtual void Tick(float deltaTime) override;
+
+		bool isDroppingDown = false;
+		float dropDisableTimer = 0.0f;
+		float dropDisableDuration = 0.15f;
 	};
 }

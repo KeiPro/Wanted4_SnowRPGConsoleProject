@@ -86,7 +86,7 @@ Player::Player(const Vector2 position)
 
 			//	snow->AddKillCount();
 
-			//	// Ãß°¡Á¡¼ö ÁøÇà.
+			//	// ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 			//	GameManager::Get().AddScore(snow->GetKillCount() * 1.6f);
 			//}
 

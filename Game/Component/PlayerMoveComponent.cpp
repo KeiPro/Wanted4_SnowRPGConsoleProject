@@ -4,6 +4,7 @@
 #include "Actor/Player.h"
 #include "Core/Input.h"
 #include "Engine/Engine.h"
+#include "Component/Collider/BoxCollider.h"
 
 using namespace Wanted;
 
@@ -46,7 +47,28 @@ void PlayerMoveComponent::Tick(float deltaTime)
         pos.x = nextX;
 
     if (Input::Get().GetKeyDown('S') && onGrounded)
-        Jump();
+    {
+        if (Input::Get().GetKey(VK_DOWN))
+        {
+            // 하드코딩...
+            if (pos.y > 18)
+                return;
+
+            isDroppingDown = true;
+            dropDisableTimer = dropDisableDuration;
+
+            onGrounded = false;
+
+            if (footCollider)
+                footCollider->SetIsActive(false);
+
+            physY += 1.0f;
+        }
+        else
+        {
+            Jump();
+        }
+    }
 
     pos.y = static_cast<int>(physY);
     GetOwner()->SetPosition(pos);
