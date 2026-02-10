@@ -30,7 +30,7 @@ PlayerBullet::PlayerBullet(int damage, float range, const Vector2& position, Pla
         if (damageable)
         {
             PlayerBullet* pb = self->GetOwner()->As<PlayerBullet>();
-            damageable->OnDamaged(5);
+            damageable->OnDamaged(pb->power);
 		    self->GetOwner()->Destroy();
 		    self->SetIsActive(false);
             return;
