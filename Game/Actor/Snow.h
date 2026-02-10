@@ -3,6 +3,8 @@
 #include "Util/Timer.h"
 #include "Interface/IDamageable.h"
 
+#include <unordered_set>
+
 namespace Wanted
 {
     class Enemy;
@@ -31,14 +33,17 @@ namespace Wanted
         Snow(const Vector2& position, Enemy* changedEnemy);
         ~Snow() override = default;
 
+		void BeginPlay() override;
         void Tick(float deltaTime) override;
         void Draw() override;
 
         // IDamageable
         void OnDamaged(int damage) override;
 
-        // 외부에서 강제 발사하고 싶을 때
         void Launch(int dirX);
+
+        void OnFootEnter(BoxCollider* ground, int floorY);
+        void OnFootExit(BoxCollider* ground);
 
     private:
         void ApplyEffect(int index);
@@ -53,9 +58,6 @@ namespace Wanted
         void BounceX();
         void KillProjectile();
 
-        void SetCollidersActive_Frozen();
-        void SetCollidersActive_Projectile();
-
     private:
         // State
         ESnowMode mode = ESnowMode::Frozen;
@@ -69,11 +71,12 @@ namespace Wanted
 
         // Projectile
         Vector2 velocity = {};
+        float physY = 0.0f;
         int remainingBounces = 3;
         bool onGround = false;
 
         // projectile params
-        float launchSpeedX = 3.0f;
+        float launchSpeedX = 80.0f;
         float launchSpeedY = -8.0f;
 
         int pendingLaunchDirX = 1;
@@ -82,6 +85,7 @@ namespace Wanted
         Enemy* changedEnemy = nullptr;
 
         // colliders
+        std::unordered_set<BoxCollider*> groundContacts;
         BoxCollider* bodyCollider = nullptr;
         BoxCollider* footCollider = nullptr;
     };

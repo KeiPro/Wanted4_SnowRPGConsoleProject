@@ -32,7 +32,6 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
     timer.Reset();
 
     {
-        // 발 아래 1칸짜리
         int left = static_cast<int>(position.x);
         int top = static_cast<int>(position.y) + 1;
         int right = left + 1;
@@ -42,36 +41,20 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
 
         footCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
         {
-            auto* snow = self->GetOwner()->As<Snow>();
-            if (!snow) 
-                return;
-
-            if (snow->mode != Snow::ESnowMode::Projectile)
-                return;
-
             if (!other || !other->GetOwner() || !other->GetOwner()->IsTypeOf<En_Wall>())
                 return;
 
-            snow->onGround = true;
-
-            snow->position.y = other->GetOwner()->GetPosition().y - 1;
-            if (snow->velocity.y > 0.0f)
-                snow->velocity.y = 0.0f;
+            Snow* snow = self->GetOwner()->As<Snow>();
+            snow->OnFootEnter(other, other->GetOwner()->GetPosition().y - 1);
         });
 
         footCollider->SetOnExit([](BoxCollider* self, BoxCollider* other)
         {
-            auto* snow = self->GetOwner()->As<Snow>();
-            if (!snow) 
-                return;
-
-            if (snow->mode != Snow::ESnowMode::Projectile)
-                return;
-
             if (!other || !other->GetOwner() || !other->GetOwner()->IsTypeOf<En_Wall>())
                 return;
 
-            snow->onGround = false;
+            Snow* snow = self->GetOwner()->As<Snow>();
+            snow->OnFootExit(other);
         });
 
         CollisionSystem::Get().Register(footCollider);
@@ -90,32 +73,32 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
         AddNewComponent(bodyCollider);
     }
 
-    SetCollidersActive_Frozen();
-}
-
-void Snow::SetCollidersActive_Frozen()
-{
     if (bodyCollider)
         bodyCollider->SetIsActive(true);
 
     if (footCollider)
-        footCollider->SetIsActive(false);
+        footCollider->SetIsActive(true);
 }
 
-
-void Snow::SetCollidersActive_Projectile()
+void Snow::OnFootEnter(BoxCollider* ground, int floorY)
 {
-    if (bodyCollider) 
-        bodyCollider->SetIsActive(true);
+    groundContacts.insert(ground);
+    onGround = true;
+    physY = floorY;
+    velocity.y = 0.f;
+}
 
-    if (footCollider) 
-        footCollider->SetIsActive(true);
+void Snow::OnFootExit(BoxCollider* ground)
+{
+    groundContacts.erase(ground);
+    onGround = !groundContacts.empty();
 }
 
 void Snow::ApplyEffect(int index)
 {
     if (index < 0) 
         index = 0;
+
     if (index >= freezeEffectSequenceCount) 
         index = freezeEffectSequenceCount - 1;
 
@@ -124,6 +107,12 @@ void Snow::ApplyEffect(int index)
     ChangeImage(e.frame);
     hp = e.hp;
     color = e.color;
+}
+
+void Snow::BeginPlay()
+{
+    super::BeginPlay();
+	physY = position.y;
 }
 
 void Snow::Tick(float deltaTime)
@@ -176,9 +165,7 @@ void Snow::TickProjectile(float dt)
         pos.x = nextX;
     }
 
-    const bool wasGrounded = onGround;
-
-    if (wasGrounded)
+    if (onGround)
     {
         if (velocity.y > 0.0f)
             velocity.y = 0.0f;
@@ -186,17 +173,10 @@ void Snow::TickProjectile(float dt)
     else
     {
         velocity.y += GameConst::Gravity * dt;
+        physY += velocity.y * dt;
     }
 
-    float nextY = pos.y + velocity.y * dt;
-    if (!wasGrounded && velocity.y > 0.0f)
-    {
-        const float maxFallStep = 0.9f;
-        if (nextY - pos.y > maxFallStep)
-            nextY = pos.y + maxFallStep;
-    }
-
-    pos.y = nextY;
+    pos.y = (int)physY;
     SetPosition(pos);
 }
 
@@ -279,15 +259,12 @@ void Snow::Launch(int dirX)
 
     timer.Reset();
 
-    // 속도 세팅
     const int sign = (dirX >= 0) ? 1 : -1;
     velocity.x = launchSpeedX * static_cast<float>(sign);
     velocity.y = 0.0f;
 
     remainingBounces = 3;
     onGround = false;
-
-    SetCollidersActive_Projectile();
 }
 
 void Snow::BounceX()

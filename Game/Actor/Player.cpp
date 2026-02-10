@@ -53,7 +53,7 @@ Player::Player(const Vector2 position)
 			moveComp->OnFootExit(other);
 		});
 
-		footCollider->debugMode = true;
+		//footCollider->debugMode = true;
 
 		AddNewComponent(footCollider);
 		CollisionSystem::Get().Register(footCollider);

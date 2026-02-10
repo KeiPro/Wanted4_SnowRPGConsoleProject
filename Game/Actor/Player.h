@@ -11,8 +11,8 @@ namespace Wanted
 
 		enum class EDir
 		{
-			Left,
-			Right
+			Left = -1,
+			Right = 1
 		};
 
 	public:

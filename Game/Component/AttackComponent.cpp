@@ -33,7 +33,7 @@ void AttackComponent::Tick(float deltaTime)
 	}
 }
 
-void Wanted::AttackComponent::Fire()
+void AttackComponent::Fire()
 {
 	if (!level)
 	{
