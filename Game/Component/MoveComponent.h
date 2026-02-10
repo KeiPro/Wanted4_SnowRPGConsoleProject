@@ -24,6 +24,15 @@ namespace Wanted
 		void OnFootExit(BoxCollider* ground);
 		bool IsOnGrounded() const { return onGrounded; }
 		virtual void Jump();
+		void AddMoveSpeed(float value) 
+		{ 
+			if (moveSpeed >= 30.0f)
+				return;
+
+			moveSpeed += value; 
+			if (moveSpeed >= 30.0f)
+				moveSpeed = 30.0f;
+		}
 
 	protected:
 

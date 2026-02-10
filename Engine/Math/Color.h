@@ -16,11 +16,12 @@ namespace Wanted
 		Blue = FOREGROUND_BLUE,
 		White = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,
 
-		// π‡¿∫ ªˆ (Intensity)
+		// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩ (Intensity)
 		BrightRed = Red | FOREGROUND_INTENSITY,
 		BrightGreen = Green | FOREGROUND_INTENSITY,
 		BrightBlue = Blue | FOREGROUND_INTENSITY,
 		BrightWhite = White | FOREGROUND_INTENSITY,
+		BrightYellow = (Red | Green) | FOREGROUND_INTENSITY,
 
 		// ---------- Background ----------
 		BgBlack = 0,
@@ -29,7 +30,7 @@ namespace Wanted
 		BgBlue = BACKGROUND_BLUE,
 		BgWhite = BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE,
 
-		// π‡¿∫ πË∞Ê
+		// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩ
 		BgBrightRed = BgRed | BACKGROUND_INTENSITY,
 		BgBrightGreen = BgGreen | BACKGROUND_INTENSITY,
 		BgBrightBlue = BgBlue | BACKGROUND_INTENSITY,
@@ -39,6 +40,12 @@ namespace Wanted
 		WhiteOnRed = White | BgRed,
 		BlackOnWhite = BgWhite,
 		GreenOnBlack = Green,
+
 		Warning = Red | BgGreen | BgBrightRed,
+
+		// Ïó∞Ìïú Î∞∞Í≤Ω ÎäêÎÇå ÌîÑÎ¶¨ÏÖã
+		BlackOnLightRed = Black | BgBrightRed,   // Ïó∞Ìïú Îπ®Í∞Ñ Î∞∞Í≤Ω ÎäêÎÇå
+		BlackOnLightBlue = Black | BgBrightBlue,  // Ïó∞Ìïú ÌååÎûÄ Î∞∞Í≤Ω ÎäêÎÇå
+		BlackOnLightYellow = Black | (BgBrightRed | BgBrightGreen),
 	};
 }

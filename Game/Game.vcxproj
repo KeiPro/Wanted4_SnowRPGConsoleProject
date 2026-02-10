@@ -97,6 +97,8 @@
     <ClCompile Include="Actor\Enemy\Fly.cpp" />
     <ClCompile Include="Actor\Enemy\Spawner.cpp" />
     <ClCompile Include="Actor\Envrionments\En_Empty.cpp" />
+    <ClCompile Include="Actor\Item.cpp" />
+    <ClCompile Include="Actor\ItemSpawner.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\Envrionments\En_Wall.cpp" />
     <ClCompile Include="Actor\PlayerBullet.cpp" />
@@ -121,6 +123,8 @@
     <ClInclude Include="Actor\Enemy\Fly.h" />
     <ClInclude Include="Actor\Enemy\Spawner.h" />
     <ClInclude Include="Actor\Envrionments\En_Empty.h" />
+    <ClInclude Include="Actor\Item.h" />
+    <ClInclude Include="Actor\ItemSpawner.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="Actor\Envrionments\En_Wall.h" />
     <ClInclude Include="Actor\PlayerBullet.h" />
@@ -139,6 +143,7 @@
     <ClInclude Include="Level\MenuLevel.h" />
     <ClInclude Include="Level\SnowRPGLevel.h" />
     <ClInclude Include="Util\GameConstants.h" />
+    <ClInclude Include="Util\ItemTypes.h" />
     <ClInclude Include="Util\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

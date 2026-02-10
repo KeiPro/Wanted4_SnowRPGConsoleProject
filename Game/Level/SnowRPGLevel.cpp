@@ -102,35 +102,47 @@ void SnowRPGLevel::LoadMap(const char* filename)
 		
 		switch (mapCharacter)
 		{
-		case '#':
-			AddNewActor(new En_Wall(screenSize));
-			break;
+			case '#':
+				AddNewActor(new En_Wall(screenSize));
+				break;
 
-		case '.':
-			AddNewActor(new En_Empty(screenSize));
-			break;
+			case '.':
+				AddNewActor(new En_Empty(screenSize));
+				break;
 
-		case 'p':
-		{
-			Player* player = new Player(screenSize);
-			GameManager::Get().SetPlayer(player);
-			AddNewActor(player);
-			break;
-		}
+			case 'p':
+			{
+				Player* player = new Player(screenSize);
+				GameManager::Get().SetPlayer(player);
+				AddNewActor(player);
+				break;
+			}
 
-		case 't':
-			AddNewActor(new Thief(screenSize));
-			break;
+			case 't':
+				AddNewActor(new Thief(screenSize));
+				break;
 
-		case 'f':
-			AddNewActor(new Fly(screenSize));
-			break;
+			case 'f':
+				AddNewActor(new Fly(screenSize));
+				break;
 
-		case 's':
-			Spawner* spawner = new Spawner(screenSize);
-			GameManager::Get().AddSpawner(spawner);
-			AddNewActor(spawner);
-			break;
+			case 'i':
+			{
+				Spawner* itemSpawn = new Spawner(screenSize);
+				GameManager::Get().AddItemSpawner(itemSpawn);
+				AddNewActor(itemSpawn);
+				break;
+			}
+
+
+			case 's':
+			{
+				Spawner* enemySpawn = new Spawner(screenSize);
+				GameManager::Get().AddSpawner(enemySpawn);
+				AddNewActor(enemySpawn);
+				break;
+			}
+		
 		}
 
 		++screenSize.x;

@@ -32,7 +32,7 @@ private:
 	int initCount = 0;
 	float remainTime = 0.0f;
 
-	// »ý¼º Å¸ÀÌ¸Ó.
+	// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ì¸ï¿½.
 	Timer timer;
 	std::vector<Spawner*> spawners;
 	bool isSelected = false;

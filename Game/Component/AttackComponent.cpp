@@ -44,5 +44,5 @@ void AttackComponent::Fire()
 	if (player == nullptr)
 		player = GetOwner()->As<Player>();
 
-	level->AddNewActor(new PlayerBullet(player->GetFirePos(), player->GetDir()));
+	level->AddNewActor(new PlayerBullet(power, range, player->GetFirePos(), player->GetDir()));
 }

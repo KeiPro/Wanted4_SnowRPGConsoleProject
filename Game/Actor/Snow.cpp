@@ -19,9 +19,9 @@ static const Snow::FreezeEffect sequence[] =
     {".", 1.0f, 2, Color::Blue},
     {"*", 1.0f, 2, Color::Blue},
     {"o", 1.5f, 3, Color::Blue},
-    {"O", 2.0f, 3, Color::Blue},
-    {"Q", 2.0f, 4, Color::Blue},
-    {"@", 4.0f, 3, Color::Blue},
+    {"O", 3.0f, 3, Color::Blue},
+    {"Q", 5.0f, 4, Color::Blue},
+    {"@", 7.0f, 3, Color::Blue},
 };
 
 Snow::Snow(const Vector2& position, Enemy* changedEnemy)
@@ -299,7 +299,6 @@ void Snow::GiveKillReward(const Vector2& effectPos)
     char buffer[10];
     sprintf_s(buffer, sizeof(buffer), "%d kill", GetKillCount());
 
-    // Snow(Actor)에서 바로 AddNewActor 호출 가능한 구조라면 this->AddNewActor로도 가능
     GetOwner()->AddNewActor(new DeadEffect(buffer, effectPos));
 
     GameManager::Get().AddScore(GetKillCount() * 2);

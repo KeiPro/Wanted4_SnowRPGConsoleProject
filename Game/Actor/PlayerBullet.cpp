@@ -10,12 +10,12 @@
 
 using namespace Wanted;
 
-PlayerBullet::PlayerBullet(const Vector2& position, Player::EDir dir)
+PlayerBullet::PlayerBullet(int damage, float range, const Vector2& position, Player::EDir dir)
     : super("*", position, Color::BrightBlue)
-    , dir(dir)
+    , power(damage), range(range), dir(dir)
 {
     sortingOrder = 10;
-    velocity.x = (dir == Player::EDir::Right) ? moveSpeed : -moveSpeed;
+    velocity.x = (dir == Player::EDir::Right) ? range : -range;
     velocity.y = 0.0f;
 
     int left = static_cast<int>(position.x) - 1;
@@ -29,7 +29,8 @@ PlayerBullet::PlayerBullet(const Vector2& position, Player::EDir dir)
         IDamageable* damageable = dynamic_cast<IDamageable*>(other->GetOwner());
         if (damageable)
         {
-            damageable->OnDamaged((int)Enemy::EDamageType::Freeze);
+            PlayerBullet* pb = self->GetOwner()->As<PlayerBullet>();
+            damageable->OnDamaged(5);
 		    self->GetOwner()->Destroy();
 		    self->SetIsActive(false);
             return;

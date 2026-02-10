@@ -1,11 +1,14 @@
 #pragma once
 #include "Actor/Actor.h"
+#include "Item.h"
+#include "Util/ItemTypes.h"
 
 namespace Wanted
 {
+	class MoveComponent;
 	class AttackComponent;
 	class BoxCollider;
-	class Player : public Actor
+	class Player : public Actor, public IItemReceiver
 	{
 		RTTI_DECLARATIONS(Player, Actor)
 
@@ -37,10 +40,13 @@ namespace Wanted
 		BoxCollider* footCollider = nullptr;
 		BoxCollider* bodyCollider = nullptr;
 		AttackComponent* attackComponent = nullptr;
+		MoveComponent* moveComponent = nullptr;
 
 		EDir dir = EDir::Right;
 		Vector2 firePos = {};
 
 		bool isDead = false;
+
+		void ApplyItem(EItemType type, float value) override;
 	};
 }

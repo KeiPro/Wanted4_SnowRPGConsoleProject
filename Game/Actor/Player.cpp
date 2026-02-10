@@ -11,6 +11,7 @@
 #include "Physics/CollisionSystem.h"
 #include "../Manager/GameManager.h"
 #include "Enemy/Enemy.h"
+#include "Util/ItemTypes.h"
 
 #include <Windows.h>
 
@@ -21,7 +22,8 @@ Player::Player(const Vector2 position)
 {
 	sortingOrder = 10;
 
-	AddNewComponent(new PlayerMoveComponent());
+	moveComponent = new PlayerMoveComponent();
+	AddNewComponent(moveComponent);
 
 	// footCollider
 	{
@@ -126,7 +128,6 @@ void Player::Tick(float deltaTime)
 		return;
 
 	Actor::Tick(deltaTime);
-
 	if (Input::Get().GetKeyDown(VK_ESCAPE))
 	{
 		Game::Get().ToggleMenu();
@@ -137,4 +138,22 @@ void Player::Tick(float deltaTime)
 void Player::Draw()
 {
 	Actor::Draw();
+}
+
+void Player::ApplyItem(EItemType type, float value)
+{
+	switch (type)
+	{
+	case EItemType::SpeedUp:
+		moveComponent->AddMoveSpeed(value);
+		break;
+
+	case EItemType::PowerUp:
+		attackComponent->AddPowerUp(value);
+		break;
+
+	case EItemType::RangeUp:
+		attackComponent->AddRangeUp(value);
+		break;
+	}
 }

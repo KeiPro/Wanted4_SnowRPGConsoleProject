@@ -12,7 +12,7 @@ namespace Wanted
         RTTI_DECLARATIONS(PlayerBullet, Actor)
 
     public:
-        PlayerBullet(const Vector2& position, Player::EDir dir);
+        PlayerBullet(int damage, float range, const Vector2& position, Player::EDir dir);
         ~PlayerBullet();
 
         virtual void BeginPlay() override;
@@ -21,7 +21,7 @@ namespace Wanted
     private:
         Player::EDir dir;
 
-        float moveSpeed = 50.0f;
+        float range = 50.0f;
 
         // gravity
         float gravity = GameConst::Gravity;
@@ -32,5 +32,6 @@ namespace Wanted
         float lifeTime = 0.0f;
         float maxLifeTime = 0.15f;
         BoxCollider* boxCollider = nullptr;
+        int power = 1;
     };
 }
