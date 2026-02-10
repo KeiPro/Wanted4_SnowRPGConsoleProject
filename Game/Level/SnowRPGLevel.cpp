@@ -28,13 +28,8 @@ void SnowRPGLevel::Draw()
 
 	DrawScore();
 
-	if (isGameClear)
-	{
-		Util::SetConsolePosition(Vector2(30, 0));
-		Util::SetConsoleTextColor(Color::White);
-
-		std::cout << "Game Clear!";
-	}
+	if (GameManager::Get().isGameOver)
+		DrawGameOver();
 }
 
 void SnowRPGLevel::DrawScore()
@@ -44,6 +39,20 @@ void SnowRPGLevel::DrawScore()
 
 	Renderer::Get().Submit(buffer, Vector2(screenSize.x / 4.0f, screenSize.y + 2), Color::White);
 }
+
+void SnowRPGLevel::DrawGameClear()
+{
+	Util::SetConsolePosition(Vector2(30, 0));
+	Util::SetConsoleTextColor(Color::White);
+
+	std::cout << "Game Clear!";
+}
+
+void SnowRPGLevel::DrawGameOver()
+{
+	Renderer::Get().Submit("Game Over!", Vector2(screenSize.x / 4.0f, screenSize.y / 2.0f), Color::White);
+}
+
 
 void SnowRPGLevel::LoadMap(const char* filename)
 {
@@ -120,9 +129,4 @@ void SnowRPGLevel::LoadMap(const char* filename)
 	delete[] data;
 
 	fclose(file);
-}
-
-bool SnowRPGLevel::CheckGameClear()
-{
-	return false;
 }

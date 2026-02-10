@@ -1,5 +1,7 @@
 #include <iostream>
 #include "GameManager.h"
+#include "Util/Util.h"
+#include "Render/Renderer.h"
 
 using namespace Wanted;
 
@@ -11,7 +13,7 @@ GameManager& GameManager::Get()
 
 GameManager::GameManager()
 {
-	
+	isGameOver = false;
 }
 
 GameManager::~GameManager()

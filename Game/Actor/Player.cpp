@@ -9,6 +9,8 @@
 #include "Component/Collider/BoxCollider.h"
 #include "Envrionments/En_Wall.h"
 #include "Physics/CollisionSystem.h"
+#include "../Manager/GameManager.h"
+#include "Enemy/Enemy.h"
 
 #include <Windows.h>
 
@@ -59,6 +61,43 @@ Player::Player(const Vector2 position)
 		CollisionSystem::Get().Register(footCollider);
 	}
 
+	// bodyCollider
+	{
+		int left = static_cast<int>(position.x);
+		int top = static_cast<int>(position.y);
+		int right = left + GetWidth();
+		int bottom = top + GetHeight();
+
+		bodyCollider = new BoxCollider(left, top, right, bottom, 0, 0);
+		bodyCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other)
+		{
+			if (other->GetOwner()->IsTypeOf<Enemy>())
+			{
+				GameManager::Get().GameOver();
+				self->GetOwner()->Destroy();
+				return;
+			}
+
+			//if (self->GetOwner()->IsTypeOf<Snow>())
+			//{
+			//	Snow* snow = self->GetOwner()->As<Snow>();
+			//	if (snow->GetMode() != Snow::ESnowMode::Projectile)
+			//		return;
+
+			//	snow->AddKillCount();
+
+			//	// 추가점수 진행.
+			//	GameManager::Get().AddScore(snow->GetKillCount() * 1.6f);
+			//}
+
+			// damageable->OnDamaged((int)Enemy::EDamageType::Dead);
+		});
+
+
+		CollisionSystem::Get().Register(bodyCollider);
+		AddNewComponent(bodyCollider);
+	}
+
 	// AttackComponent
 	{
 		attackComponent = new AttackComponent();
@@ -83,6 +122,9 @@ void Player::BeginPlay()
 
 void Player::Tick(float deltaTime)
 {
+	if (GameManager::Get().isGameOver)
+		return;
+
 	Actor::Tick(deltaTime);
 
 	if (Input::Get().GetKeyDown(VK_ESCAPE))

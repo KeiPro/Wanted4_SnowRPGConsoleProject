@@ -102,6 +102,9 @@ void Thief::BeginPlay()
 
 void Thief::Tick(float deltaTime)
 {
+	if (GameManager::Get().isGameOver)
+		return;
+
 	Enemy::Tick(deltaTime);
 }
 

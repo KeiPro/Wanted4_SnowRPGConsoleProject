@@ -15,10 +15,11 @@ using namespace Wanted;
 static const Snow::FreezeEffect sequence[] =
 {
     {".", 1.0f, 2, Color::Blue},
-    {"o", 1.5f, 2, Color::Blue},
-    {"O", 2.0f, 2, Color::Blue},
-    {"Q", 2.0f, 2, Color::Blue},
-    {"@", 3.0f, 2, Color::Blue},
+    {"*", 1.0f, 2, Color::Blue},
+    {"o", 1.5f, 3, Color::Blue},
+    {"O", 2.0f, 3, Color::Blue},
+    {"Q", 2.0f, 4, Color::Blue},
+    {"@", 3.0f, 1, Color::Blue},
 };
 
 Snow::Snow(const Vector2& position, Enemy* changedEnemy)

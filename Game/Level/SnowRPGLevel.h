@@ -12,6 +12,9 @@ namespace Wanted
 		SnowRPGLevel();
 		~SnowRPGLevel();
 
+		void DrawGameClear();
+		void DrawGameOver();
+
 		virtual void Draw() override;
 		
 		void DrawScore();
@@ -19,11 +22,9 @@ namespace Wanted
 	private:
 		void LoadMap(const char* filename);
 		
-		bool CheckGameClear();
-
 	private:
 		int targetScore = 0;
-		bool isGameClear = false;
+
 		Vector2 screenSize = {};
 	};
 }

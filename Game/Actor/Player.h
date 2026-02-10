@@ -40,5 +40,7 @@ namespace Wanted
 
 		EDir dir = EDir::Right;
 		Vector2 firePos = {};
+
+		bool isDead = false;
 	};
 }

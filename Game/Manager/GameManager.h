@@ -10,6 +10,8 @@ namespace Wanted
 		GameManager();
 		~GameManager();
 
+		inline void GameOver() { isGameOver = true; }
+
 		void SetPlayer(Player* newPlayer) { player = newPlayer; }
 		inline void AddScore(int add) { this->score += add; }
 
@@ -18,10 +20,11 @@ namespace Wanted
 
 		static GameManager& Get();
 
-
 	public:
 
 		Player* player = nullptr;
 		int score = 0;
+
+		bool isGameOver = false;
 	};
 }
