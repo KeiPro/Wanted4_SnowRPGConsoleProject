@@ -39,6 +39,6 @@ namespace Wanted
 		WhiteOnRed = White | BgRed,
 		BlackOnWhite = BgWhite,
 		GreenOnBlack = Green,
-		Warning = BrightWhite | BgBrightRed,
+		Warning = Red | BgGreen | BgBrightRed,
 	};
 }

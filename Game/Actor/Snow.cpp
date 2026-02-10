@@ -26,7 +26,7 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
     : super(sequence[0].frame, position, sequence[0].color)
     , changedEnemy(changedEnemy)
 {
-    sortingOrder = 3;
+    sortingOrder = 10;
 
     freezeEffectSequenceCount = static_cast<int>(sizeof(sequence) / sizeof(sequence[0]));
     currentSequenceIndex = 0;

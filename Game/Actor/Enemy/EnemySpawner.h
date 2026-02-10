@@ -23,9 +23,12 @@ private:
 	virtual void Tick(float deltaTime) override;
 
 	void SpawnEnemy(float deltaTime);
+	void WarnNextSpawnPos();
 
 private:
 	// 생성 타이머.
 	Timer timer;
 	std::vector<Spawner*> spawners;
+	bool isSelected = false;
+	Vector2 spawnPos = {};
 };

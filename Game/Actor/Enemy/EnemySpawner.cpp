@@ -3,12 +3,13 @@
 #include "Util/Util.h"
 #include "Level/Level.h"
 #include "Actor/Enemy/Thief.h"
+#include "Render/Renderer.h"
 
 EnemySpawner::EnemySpawner()
 {
 	spawners = {};
 	// 적 생성 타이머 설정.
-	timer.SetTargetTime(Util::RandomRange(5.0f, 10.0f));
+	timer.SetTargetTime(Util::RandomRange(3.0f, 5.0f));
 }
 
 EnemySpawner::~EnemySpawner()
@@ -19,27 +20,36 @@ void EnemySpawner::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
 
-	SpawnEnemy(deltaTime);
-}
+	if (isSelected == false)
+	{
+		isSelected = true;
+		int spawnIndex = Util::Random(0, spawners.size() - 1);
+		int xPosition = Util::Random(-3, 3);
+		spawnPos = spawners[spawnIndex]->GetPosition();
+		spawnPos.x -= xPosition;
+		return;
+	}
 
-void EnemySpawner::SpawnEnemy(float deltaTime)
-{
+	Renderer::Get().Submit("!", spawnPos, Color::Warning, 1);
 	timer.Tick(deltaTime);
 	if (!timer.IsTimeOut())
 		return;
 
 	timer.Reset();
+	SpawnEnemy(deltaTime);
+	isSelected = false;
+}
 
-	int spawnIndex = Util::Random(0, spawners.size() - 1);
 
-	int xPosition = Util::Random(-3, 3);
-	int yPosition = Util::Random(-2, -1);
+void EnemySpawner::SpawnEnemy(float deltaTime)
+{
 	
-	Vector2 spawnPos = spawners[spawnIndex]->GetPosition();
-	spawnPos.x -= xPosition;
-	spawnPos.y -= yPosition;
 
-	GetOwner()->AddNewActor(
-		new Thief(spawnPos)
-	);
+	GetOwner()->AddNewActor(new Thief(spawnPos));
+}
+
+void EnemySpawner::WarnNextSpawnPos()
+{
+
+
 }
