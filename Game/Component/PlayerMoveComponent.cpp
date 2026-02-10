@@ -55,7 +55,6 @@ void PlayerMoveComponent::Tick(float deltaTime)
                 return;
 
             isDroppingDown = true;
-            dropDisableTimer = dropDisableDuration;
 
             onGrounded = false;
 
