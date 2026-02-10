@@ -164,6 +164,6 @@ namespace Wanted
 		command.color = color;
 		command.sortingOrder = sortingOrder;
 
-		renderQueue.emplace_back(command);
+		renderQueue.emplace_back(std::move(command));
 	}
 }

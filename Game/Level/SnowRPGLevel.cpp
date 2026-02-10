@@ -7,6 +7,7 @@
 #include "Actor/Enemy/Thief.h"
 #include "Actor/Enemy/Fly.h"
 #include "Manager/GameManager.h"
+#include "Render/Renderer.h"
 
 #include <iostream>
 
@@ -25,6 +26,8 @@ void SnowRPGLevel::Draw()
 {
 	super::Draw();
 
+	DrawScore();
+
 	if (isGameClear)
 	{
 		Util::SetConsolePosition(Vector2(30, 0));
@@ -32,6 +35,14 @@ void SnowRPGLevel::Draw()
 
 		std::cout << "Game Clear!";
 	}
+}
+
+void SnowRPGLevel::DrawScore()
+{
+	static char buffer[64];
+	sprintf_s(buffer, sizeof(buffer), "Score : %d", GameManager::Get().GetScore());
+
+	Renderer::Get().Submit(buffer, Vector2(screenSize.x / 4.0f, screenSize.y + 2), Color::White);
 }
 
 void SnowRPGLevel::LoadMap(const char* filename)
@@ -61,8 +72,6 @@ void SnowRPGLevel::LoadMap(const char* filename)
 	
 	int index = 0;
 	
-	Wanted::Vector2 position;
-	
 	while (true)
 	{
 		if (index >= fileSize)
@@ -72,40 +81,40 @@ void SnowRPGLevel::LoadMap(const char* filename)
 
 		if (mapCharacter == '\n')
 		{
-			++position.y;
-			position.x = 0;
+			++screenSize.y;
+			screenSize.x = 0;
 			continue;
 		}
 		
 		switch (mapCharacter)
 		{
 		case '#':
-			AddNewActor(new En_Wall(position));
+			AddNewActor(new En_Wall(screenSize));
 			break;
 
 		case '.':
-			AddNewActor(new En_Empty(position));
+			AddNewActor(new En_Empty(screenSize));
 			break;
 
 		case 'p':
 		{
-			Player* player = new Player(position);
+			Player* player = new Player(screenSize);
 			GameManager::Get().SetPlayer(player);
 			AddNewActor(player);
 			break;
 		}
 
 		case 't':
-			AddNewActor(new Thief(position));
+			AddNewActor(new Thief(screenSize));
 			break;
 
 		case 'f':
-			AddNewActor(new Fly(position));
+			AddNewActor(new Fly(screenSize));
 			break;
 
 		}
 
-		++position.x;
+		++screenSize.x;
 	}
 
 	delete[] data;

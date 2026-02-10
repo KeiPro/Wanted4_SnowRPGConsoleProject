@@ -6,7 +6,7 @@
 using namespace Wanted;
 
 En_Wall::En_Wall(const Vector2& position)
-	: super("#", position, Color::White)
+	: super("#", position, Color::BrightGreen)
 {
 	sortingOrder = 0;
 

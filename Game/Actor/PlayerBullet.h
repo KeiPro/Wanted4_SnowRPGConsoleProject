@@ -30,7 +30,7 @@ namespace Wanted
         float physY = 0.0f;
 
         float lifeTime = 0.0f;
-        float maxLifeTime = 3.0f;
+        float maxLifeTime = 0.15f;
         BoxCollider* boxCollider = nullptr;
     };
 }

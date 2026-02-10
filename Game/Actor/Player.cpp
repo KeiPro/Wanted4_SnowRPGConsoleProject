@@ -15,7 +15,7 @@
 using namespace Wanted;
 
 Player::Player(const Vector2 position)
-	: super("P", position, Color::White)
+	: super("P", position, Color::BrightWhite)
 {
 	sortingOrder = 10;
 

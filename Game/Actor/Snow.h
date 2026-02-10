@@ -4,6 +4,7 @@
 #include "Interface/IDamageable.h"
 
 #include <unordered_set>
+#include <vector>
 
 namespace Wanted
 {
@@ -37,8 +38,11 @@ namespace Wanted
         void Tick(float deltaTime) override;
         void Draw() override;
 
-		ESnowMode GetMode() const { return mode; }
+        inline void AddKillCount() { killCount++; }
 
+        inline int GetKillCount() const { return killCount; }
+		ESnowMode GetMode() const { return mode; }
+        
         // IDamageable
         void OnDamaged(int damage) override;
 
@@ -90,5 +94,7 @@ namespace Wanted
         std::unordered_set<BoxCollider*> groundContacts;
         BoxCollider* bodyCollider = nullptr;
         BoxCollider* footCollider = nullptr;
+
+        int killCount = 0;
     };
 }

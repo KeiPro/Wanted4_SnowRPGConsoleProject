@@ -202,6 +202,8 @@ void Thief::UpdateAttack(float deltaTime)
 void Thief::Dead()
 {
 	Enemy::Dead();
+
+	GameManager::Get().AddScore(20);
 }
 
 void Thief::OnSnowballReleased(const Vector2& position)

@@ -158,7 +158,6 @@ namespace Wanted
 		// colliders 제거
 		colliders.erase(std::remove(colliders.begin(), colliders.end(), dead), colliders.end());
 
-		// pair set에서 dead 포함 key 제거
 		auto eraseDead = [&](auto& set) {
 			for (auto it = set.begin(); it != set.end(); )
 			{

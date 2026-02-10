@@ -3,6 +3,7 @@
 #include "Interface/IDamageable.h"
 #include "Physics/CollisionSystem.h"
 #include "Actor/Enemy/Enemy.h"
+#include"Envrionments/En_Wall.h"
 
 #include <Windows.h>
 #include <cmath>
@@ -22,16 +23,29 @@ PlayerBullet::PlayerBullet(const Vector2& position, Player::EDir dir)
     int right = left + GetWidth() + 1;
     int bottom = top + GetHeight() + 1;
 
+    /*int left = static_cast<int>(position.x);
+    int top = static_cast<int>(position.y);
+    int right = left + GetWidth();
+    int bottom = top + GetHeight();*/
+
     boxCollider = new BoxCollider(left, top, right, bottom);
     boxCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other) 
     {
         IDamageable* damageable = dynamic_cast<IDamageable*>(other->GetOwner());
-        if (damageable == nullptr)
+        if (damageable)
+        {
+            damageable->OnDamaged((int)Enemy::EDamageType::Freeze);
+		    self->GetOwner()->Destroy();
+		    self->SetIsActive(false);
             return;
-        
-        damageable->OnDamaged((int)Enemy::EDamageType::Freeze);
-		self->GetOwner()->Destroy();
-		self->SetIsActive(false);
+        }
+
+        //if (other->GetOwner()->IsTypeOf<En_Wall>())
+        //{
+        //    self->GetOwner()->Destroy();
+        //    self->SetIsActive(false);
+        //    return;
+        //}
     });
 
     AddNewComponent(boxCollider);

@@ -82,9 +82,9 @@ void Enemy::OnSnowballReleased(const Vector2& position)
 	state = EnemyState::Idle;
 }
 
-void Enemy::OnDamaged(int damage)
+void Enemy::OnDamaged(int damageType)
 {
-	if (damage == (int)EDamageType::Freeze)
+	if (damageType == (int)EDamageType::Freeze)
 	{
 		state = EnemyState::Freeze;
 		return;
@@ -92,6 +92,7 @@ void Enemy::OnDamaged(int damage)
 	else
 	{
 		state = EnemyState::Dead;
+		Dead();
 		return;
 	}
 }

@@ -8,6 +8,8 @@
 #include "Manager/GameManager.h"
 #include "Player.h"
 
+#include <vector>
+
 using namespace Wanted;
 
 static const Snow::FreezeEffect sequence[] =
@@ -76,11 +78,17 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
             if (damageable == nullptr)
                 return;
 
+            // 눈덩이가 날라가는 상황에서만 몬스터에게 데미지가 들어가야 함.
             if (self->GetOwner()->IsTypeOf<Snow>())
             {
                 Snow* snow = self->GetOwner()->As<Snow>();
                 if (snow->GetMode() != Snow::ESnowMode::Projectile)
 					return;
+
+                snow->AddKillCount();
+
+                // 추가점수 진행.
+                GameManager::Get().AddScore(snow->GetKillCount() * 1.6f);
             }
 
             damageable->OnDamaged((int)Enemy::EDamageType::Dead);
@@ -306,5 +314,6 @@ void Snow::KillProjectile()
     if (footCollider)
         footCollider->SetIsActive(false);
 
+    GameManager::Get().AddScore(10);
     Destroy();
 }
