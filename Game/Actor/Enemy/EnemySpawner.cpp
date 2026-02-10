@@ -8,8 +8,7 @@
 EnemySpawner::EnemySpawner()
 {
 	spawners = {};
-	// 적 생성 타이머 설정.
-	timer.SetTargetTime(Util::RandomRange(3.0f, 5.0f));
+	timer.SetTargetTime(baseSpawnTime);
 }
 
 EnemySpawner::~EnemySpawner()
@@ -22,15 +21,28 @@ void EnemySpawner::Tick(float deltaTime)
 
 	if (isSelected == false)
 	{
+		if (spawners.size() == 0)
+			return;
+
 		isSelected = true;
 		int spawnIndex = Util::Random(0, spawners.size() - 1);
 		int xPosition = Util::Random(-3, 3);
 		spawnPos = spawners[spawnIndex]->GetPosition();
-		spawnPos.x -= xPosition;
+		spawnPos.x += xPosition;
 		return;
 	}
 
+	elapsedTime += deltaTime;
+	if (elapsedTime >= 10.0f)
+	{
+		elapsedTime = 0.0f;
+		initCount++;
+		if (initCount < 4)
+			timer.SetTargetTime(baseSpawnTime - initCount * 0.75f);
+	}
+
 	Renderer::Get().Submit("!", spawnPos, Color::Warning, 1);
+
 	timer.Tick(deltaTime);
 	if (!timer.IsTimeOut())
 		return;

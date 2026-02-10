@@ -27,7 +27,7 @@ namespace Wanted
 
 	protected:
 
-		float moveSpeed = 30.0f;
+		float moveSpeed = 15.0f;
 		float jumpPower = 30.0f;
 		Vector2 velocity = { 0, 0 };
 

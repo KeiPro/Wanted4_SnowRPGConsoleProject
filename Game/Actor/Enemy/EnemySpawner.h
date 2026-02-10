@@ -26,6 +26,12 @@ private:
 	void WarnNextSpawnPos();
 
 private:
+
+	float elapsedTime = 0.0f;
+	float baseSpawnTime = 5.0f;
+	int initCount = 0;
+	float remainTime = 0.0f;
+
 	// 생성 타이머.
 	Timer timer;
 	std::vector<Spawner*> spawners;

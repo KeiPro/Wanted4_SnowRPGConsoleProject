@@ -23,11 +23,6 @@ PlayerBullet::PlayerBullet(const Vector2& position, Player::EDir dir)
     int right = left + GetWidth() + 1;
     int bottom = top + GetHeight() + 1;
 
-    /*int left = static_cast<int>(position.x);
-    int top = static_cast<int>(position.y);
-    int right = left + GetWidth();
-    int bottom = top + GetHeight();*/
-
     boxCollider = new BoxCollider(left, top, right, bottom);
     boxCollider->SetOnEnter([](BoxCollider* self, BoxCollider* other) 
     {
@@ -39,13 +34,6 @@ PlayerBullet::PlayerBullet(const Vector2& position, Player::EDir dir)
 		    self->SetIsActive(false);
             return;
         }
-
-        //if (other->GetOwner()->IsTypeOf<En_Wall>())
-        //{
-        //    self->GetOwner()->Destroy();
-        //    self->SetIsActive(false);
-        //    return;
-        //}
     });
 
     AddNewComponent(boxCollider);

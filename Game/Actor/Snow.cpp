@@ -7,6 +7,8 @@
 #include "Engine/Engine.h"
 #include "Manager/GameManager.h"
 #include "Player.h"
+#include "DeadEffect.h"
+#include "Level/Level.h"
 
 #include <vector>
 
@@ -19,7 +21,7 @@ static const Snow::FreezeEffect sequence[] =
     {"o", 1.5f, 3, Color::Blue},
     {"O", 2.0f, 3, Color::Blue},
     {"Q", 2.0f, 4, Color::Blue},
-    {"@", 3.0f, 1, Color::Blue},
+    {"@", 3.0f, 3, Color::Blue},
 };
 
 Snow::Snow(const Vector2& position, Enemy* changedEnemy)
@@ -91,6 +93,10 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
 
                 // 추가점수 진행.
                 GameManager::Get().AddScore(snow->GetKillCount() * 1.6f);
+
+                char buffer[10];
+                sprintf_s(buffer, sizeof(buffer), "+%d", snow->GetKillCount());
+                snow->GetOwner()->AddNewActor(new DeadEffect(buffer, other->GetOwner()->GetPosition()));
             }
 
             damageable->OnDamaged((int)Enemy::EDamageType::Dead);
@@ -226,6 +232,7 @@ void Snow::GrowOneStep()
     if (currentSequenceIndex >= last)
     {
         Launch((int)GameManager::Get().GetPlayer()->GetDir());
+        changedEnemy->Destroy();
         return;
     }
 
