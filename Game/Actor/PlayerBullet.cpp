@@ -11,7 +11,7 @@
 using namespace Wanted;
 
 PlayerBullet::PlayerBullet(const Vector2& position, Player::EDir dir)
-    : super("*", position, Color::Blue)
+    : super("*", position, Color::BrightBlue)
     , dir(dir)
 {
     sortingOrder = 10;

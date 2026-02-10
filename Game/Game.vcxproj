@@ -94,6 +94,7 @@
   <ItemGroup>
     <ClCompile Include="Actor\Enemy\Enemy.cpp" />
     <ClCompile Include="Actor\Enemy\Fly.cpp" />
+    <ClCompile Include="Actor\Enemy\Spawner.cpp" />
     <ClCompile Include="Actor\Envrionments\En_Empty.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\Envrionments\En_Wall.cpp" />
@@ -116,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="Actor\Enemy\Enemy.h" />
     <ClInclude Include="Actor\Enemy\Fly.h" />
+    <ClInclude Include="Actor\Enemy\Spawner.h" />
     <ClInclude Include="Actor\Envrionments\En_Empty.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="Actor\Envrionments\En_Wall.h" />

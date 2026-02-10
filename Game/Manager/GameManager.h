@@ -1,9 +1,13 @@
 #pragma once
+#include <vector>
 
-#include "Actor/Player.h"
+//#include "Actor/Player.h"
+#include "Actor/Enemy/EnemySpawner.h"
 
 namespace Wanted
 {
+	class Spawner;
+	class Player;
 	class GameManager
 	{
 	public:
@@ -14,6 +18,7 @@ namespace Wanted
 
 		void SetPlayer(Player* newPlayer) { player = newPlayer; }
 		inline void AddScore(int add) { this->score += add; }
+		void AddSpawner(Spawner* spawner);
 
 		inline Player* GetPlayer() const { return player; }
 		inline int GetScore() const { return score; }
@@ -26,5 +31,10 @@ namespace Wanted
 		int score = 0;
 
 		bool isGameOver = false;
+
+	private:
+
+		//std::vector<Spawner*> spawners;
+		EnemySpawner* enemySpawner = nullptr;
 	};
 }

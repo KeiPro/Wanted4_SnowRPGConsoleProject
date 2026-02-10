@@ -8,6 +8,8 @@
 #include "Actor/Enemy/Fly.h"
 #include "Manager/GameManager.h"
 #include "Render/Renderer.h"
+#include "Actor/Enemy/Spawner.h"
+#include "Engine/Engine.h"
 
 #include <iostream>
 
@@ -15,6 +17,8 @@ using namespace Wanted;
 
 SnowRPGLevel::SnowRPGLevel()
 {
+	Engine::Get().SetNewLevel(this);
+	//LoadMap("GameMap.txt");
 	LoadMap("TestMap.txt");
 }
 
@@ -121,6 +125,11 @@ void SnowRPGLevel::LoadMap(const char* filename)
 			AddNewActor(new Fly(screenSize));
 			break;
 
+		case 's':
+			Spawner* spawner = new Spawner(screenSize);
+			GameManager::Get().AddSpawner(spawner);
+			AddNewActor(spawner);
+			break;
 		}
 
 		++screenSize.x;

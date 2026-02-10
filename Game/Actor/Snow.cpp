@@ -34,6 +34,7 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
     ApplyEffect(currentSequenceIndex);
     timer.Reset();
 
+    // Foot
     {
         int left = static_cast<int>(position.x);
         int top = static_cast<int>(position.y) + 1;
