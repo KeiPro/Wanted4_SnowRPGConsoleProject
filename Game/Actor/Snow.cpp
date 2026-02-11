@@ -28,6 +28,7 @@ Snow::Snow(const Vector2& position, Enemy* changedEnemy)
     : super(sequence[0].frame, position, sequence[0].color)
     , changedEnemy(changedEnemy)
 {
+    remainingBounces = 6;
     sortingOrder = 10;
 
     freezeEffectSequenceCount = static_cast<int>(sizeof(sequence) / sizeof(sequence[0]));
@@ -260,7 +261,8 @@ void Snow::GrowOneStep(int dir)
 
 void Snow::KillOwnedEnemy()
 {
-    changedEnemy->Destroy();
+    if (!changedEnemy->DestroyRequested())
+        changedEnemy->Destroy();
 }
 
 void Snow::ReleaseSnowball()
@@ -340,8 +342,6 @@ void Snow::Launch(int dirX)
     const int sign = (dirX >= 0) ? 1 : -1;
     velocity.x = launchSpeedX * static_cast<float>(sign);
     velocity.y = 0.0f;
-
-    remainingBounces = 3;
     onGround = false;
 }
 

@@ -106,7 +106,7 @@ namespace Wanted
         // Projectile
         Vector2 velocity = {};
         float physY = 0.0f;
-        int remainingBounces = 5;
+        int remainingBounces = 6;
         bool onGround = false;
 
         // projectile params

@@ -11,7 +11,7 @@
 using namespace Wanted;
 
 PlayerBullet::PlayerBullet(int damage, float range, const Vector2& position, Player::EDir dir)
-    : super("*", position, Color::BrightBlue)
+    : super("O", position, Color::BrightBlue)
     , power(damage), range(range), dir(dir)
 {
     sortingOrder = 10;

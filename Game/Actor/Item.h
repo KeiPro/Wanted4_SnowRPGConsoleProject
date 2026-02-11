@@ -33,7 +33,7 @@ namespace Wanted
 		{
 			switch (t)
 			{
-				case EItemType::SpeedUp: return Color::BrightRed;
+				case EItemType::SpeedUp: return Color::BrightGreen;
 				case EItemType::PowerUp: return Color::BrightBlue;
 				case EItemType::RangeUp: return Color::BrightYellow;
 				default: return Color::White;
