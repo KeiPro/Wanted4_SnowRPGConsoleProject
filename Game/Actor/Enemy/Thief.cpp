@@ -92,7 +92,8 @@ void Thief::OnDamaged(int damage)
 	if (state == EnemyState::Dead)
 		return;
 
-	GetOwner()->AddNewActor(new Snow(GetPosition(), this));
+	ownerSnow = new Snow(GetPosition(), this);
+	GetOwner()->AddNewActor(ownerSnow);
 }
 
 void Thief::BeginPlay()
@@ -207,12 +208,24 @@ void Thief::Dead()
 	Enemy::Dead();
 
 	GameManager::Get().AddScore(20);
+
+	if (ownerSnow)
+	{
+		ownerSnow->ClearOwnedEnemy(this);
+		ownerSnow = nullptr;
+	}
 }
 
 void Thief::OnSnowballReleased(const Vector2& position)
 {
 	Enemy::OnSnowballReleased(position);
 	bodyCollider->SetIsActive(true);
+
+	if (ownerSnow)
+	{
+		ownerSnow->ClearOwnedEnemy(this);
+		ownerSnow = nullptr;
+	}
 }
 
 bool Thief::CheckPlayerXRange(float myPosX, float playerPosX)

@@ -4,6 +4,7 @@
 
 namespace Wanted
 {
+	class Snow;
 	class Enemy : public Actor, public IDamageable
 	{
 		RTTI_DECLARATIONS(Enemy, Actor)
@@ -49,5 +50,7 @@ namespace Wanted
 		bool isDead = false;
 		int moveSpeed = 10;
 		int freezeStack = 0;
+
+		Snow* ownerSnow = nullptr;
 	};
 }

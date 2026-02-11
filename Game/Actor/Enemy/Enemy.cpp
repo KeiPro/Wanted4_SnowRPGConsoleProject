@@ -93,3 +93,5 @@ void Enemy::OnDamaged(int damageType)
 	state = EnemyState::Dead;
 	Dead();
 }
+
+

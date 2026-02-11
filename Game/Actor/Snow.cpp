@@ -146,6 +146,12 @@ void Snow::OnFootExit(BoxCollider* ground)
     onGround = !groundContacts.empty();
 }
 
+void Snow::ClearOwnedEnemy(Enemy* who)
+{
+    if (capturedEnemy == who)
+        capturedEnemy = nullptr;
+}
+
 void Snow::ApplyEffect(int index)
 {
     if (index < 0) 
@@ -261,8 +267,11 @@ void Snow::GrowOneStep(int dir)
 
 void Snow::KillOwnedEnemy()
 {
-    if (!changedEnemy->DestroyRequested())
+    if (changedEnemy != nullptr)
+    {
         changedEnemy->Destroy();
+        changedEnemy = nullptr;
+    }
 }
 
 void Snow::ReleaseSnowball()

@@ -75,6 +75,8 @@ namespace Wanted
             return (currentSequenceIndex >= freezeEffectSequenceCount - 1);
         }
 
+        void ClearOwnedEnemy(Enemy* who);
+
     private:
         void ApplyEffect(int index);
         void TickFrozen(float dt);
